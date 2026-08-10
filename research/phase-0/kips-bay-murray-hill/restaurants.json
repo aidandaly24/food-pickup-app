@@ -1,7 +1,7 @@
 {
   "studyCenter": "East 34th Street and Third Avenue, New York, NY 10016",
   "walkingLimitMinutes": 15,
-  "verifiedAt": "2026-08-09T16:00:00-04:00",
+  "verifiedAt": "2026-08-10T00:36:02-04:00",
   "routeStatus": "openstreetmap_pedestrian_estimate_complete; field_calibration_pending",
   "channelDiscoveryStatus": "initial_not_exhaustive",
   "restaurants": [
@@ -335,11 +335,26 @@
       "cuisine": "Mexican",
       "anchorItem": "Vinegar-Garlic Marinated Chicken Parador",
       "website": "https://www.elparadorcafe.com/",
-      "channelsObserved": [],
-      "notes": "Official site verifies the location and menu but exposed no online ordering link in the seed pass.",
+      "channelsObserved": [
+        {
+          "channel": "doordash_marketplace",
+          "provider": "DoorDash",
+          "relationship": "location_matched",
+          "url": "https://www.doordash.com/store/26319/"
+        },
+        {
+          "channel": "uber_eats",
+          "provider": "Uber Eats",
+          "relationship": "location_matched",
+          "url": "https://www.ubereats.com/store/el-parador-cafe/Z1thk-HYQ_mzHKOpCjXCbA"
+        }
+      ],
+      "notes": "DoorDash and Uber Eats both matched the 325 East 34th Street location. Both were closed until Tuesday at noon during the discovery pass, so no current pickup quote was captured.",
       "sources": [
         "https://www.elparadorcafe.com/",
-        "https://www.elparadorcafe.com/menus/"
+        "https://www.elparadorcafe.com/menus/",
+        "https://www.doordash.com/store/26319/",
+        "https://www.ubereats.com/store/el-parador-cafe/Z1thk-HYQ_mzHKOpCjXCbA"
       ]
     },
     {
@@ -350,8 +365,11 @@
       "anchorItem": "Brunch entree plus coffee; exact menu names pending",
       "website": "https://penelopenewyork.com/",
       "channelsObserved": [],
-      "notes": "The official page verifies current hours and address but contains unrelated spam links in its footer. Do not automatically follow untrusted outbound links.",
-      "sources": ["https://penelopenewyork.com/"]
+      "notes": "The official page verifies current hours and address but contains unrelated spam links in its footer. Grubhub has a correctly matched 159 Lexington Avenue listing marked no longer available; exact-location searches found no active Uber Eats or DoorDash listing. Do not automatically follow untrusted outbound links or classify stale listings as orderable channels.",
+      "sources": [
+        "https://penelopenewyork.com/",
+        "https://www.grubhub.com/restaurant/penelope-159-lexington-ave-new-york/2383171"
+      ]
     },
     {
       "id": "patrizias-manhattan",

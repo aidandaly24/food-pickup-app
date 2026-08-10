@@ -48,6 +48,10 @@ offers, and states whether the total is exact or estimated.
   legitimate official page currently contains unrelated spam links in its
   footer, so blindly following or crawling every first-party link would be a
   security and data-quality mistake.
+- Channel discovery must preserve negative evidence as well as live links. El
+  Parador's DoorDash and Uber Eats pages both match 325 East 34th Street, while
+  Penelope's correctly matched Grubhub page is marked no longer available and
+  exact-location searches found no active Uber Eats or DoorDash listing.
 
 The preliminary public menu observations are in
 [`observations.json`](./observations.json). The first live anonymous pickup pass
