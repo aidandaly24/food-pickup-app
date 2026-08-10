@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "captureRunId": "2026-08-10-kips-bay-deli-single-repeat-0145",
+  "repeatOfCaptureRunId": "2026-08-09-kips-bay-deli-single",
+  "basketKind": "single",
+  "capturedOn": "2026-08-10",
+  "timeZone": "America/New_York",
+  "fulfillment": "pickup",
+  "experimentContext": "Repeat the same basket after the local date boundary to measure short-term quote and offer visibility without placing an order.",
+  "tipPolicy": "Set optional pickup tips to $0 before recording a final checkout total.",
+  "collection": {
+    "scope": "post_assembly_quote_and_recheck",
+    "startedAt": "2026-08-10T05:43:57.766Z",
+    "completedAt": "2026-08-10T05:49:07.401Z",
+    "durationSeconds": 310
+  },
+  "comparisonStatus": "About 2.5 hours after the first capture, both channel totals and the $0.69 Uber Eats advantage were unchanged. The quotes were captured within 121 seconds and immediately rechecked.",
+  "comparison": {
+    "winnerChannel": "uber_eats",
+    "savingsCents": 69,
+    "quoteWindowSeconds": 121,
+    "recheckedAt": "2026-08-10T05:49:07.401Z"
+  },
+  "limitations": [
+    "This crossed the local date boundary but is still a same-night repeat; it does not satisfy the nonconsecutive multi-day requirement.",
+    "The direct cart restored stale state after it had appeared empty. The duplicate item was removed and the one-item subtotal was verified before either quote was accepted.",
+    "The timer started after both baskets were assembled. The 310 seconds measure quote handling and recheck, not end-to-end restaurant capture, so the manual-capture gate remains unproven.",
+    "The direct checkout was anonymous and Uber Eats was signed in because those were the user's normal available paths; account context is recorded per observation.",
+    "Uber Eats displayed one available promotion but no discount line. Its conditions were not verified, so no offer claim is made.",
+    "Both temporary carts were cleared after the recheck and no order was placed."
+  ],
+  "observations": [
+    {
+      "restaurantId": "kips-bay-deli",
+      "basketKey": "reuben-on-rye-roll",
+      "itemSignature": "16. Reuben on Rye Classic Deli Sandwich; size Roll; quantity 1; no extras; no note",
+      "channel": "restaurant_direct",
+      "provider": "Slice",
+      "accountContext": "anonymous",
+      "availability": "available_now",
+      "captureStage": "checkout",
+      "itemsSubtotalCents": 999,
+      "taxCents": 89,
+      "feesCents": 199,
+      "discountCents": 0,
+      "tipCents": 0,
+      "finalTotalCents": 1287,
+      "result": "exact_checkout",
+      "basketComparable": true,
+      "capturedAt": "2026-08-10T05:45:38.128Z",
+      "promotionsObserved": [],
+      "notes": "The one-item $12.87 pickup total matched both earlier captures and remained unchanged on immediate recheck.",
+      "source": "https://www.kipsbaydeli.com/"
+    },
+    {
+      "restaurantId": "kips-bay-deli",
+      "basketKey": "reuben-on-rye-roll",
+      "itemSignature": "16. Reuben on Rye Classic Deli Sandwich; size Roll; quantity 1; no extras; no note",
+      "channel": "uber_eats",
+      "provider": "Uber Eats",
+      "accountContext": "signed_in",
+      "availability": "available_now",
+      "captureStage": "checkout",
+      "itemsSubtotalCents": 1119,
+      "taxCents": 99,
+      "feesCents": 0,
+      "discountCents": 0,
+      "tipCents": 0,
+      "finalTotalCents": 1218,
+      "result": "exact_checkout",
+      "basketComparable": true,
+      "capturedAt": "2026-08-10T05:47:38.703Z",
+      "promotionsObserved": [
+        {
+          "label": "One promotion available (conditions not verified)",
+          "applied": false,
+          "conditionsVerified": false
+        }
+      ],
+      "notes": "No discount applied. The $12.18 pickup total matched both earlier captures and remained unchanged on immediate recheck.",
+      "source": "https://www.ubereats.com/store/kips-bay-deli-smb-parent/gJ9_tFeSWoy0wzcSnY6jvg"
+    }
+  ]
+}

@@ -46,7 +46,7 @@ test("server-renders the Sidewalk POC", async () => {
   assert.match(html, /OBSERVED DATA/);
   assert.match(textHtml, /25 nearby restaurants/);
   assert.match(textHtml, /47 known ordering links/);
-  assert.match(textHtml, /3 basket comparisons/);
+  assert.match(textHtml, /4 basket comparisons/);
   assert.equal(html.match(/data-restaurant-id=/g)?.length, 25);
   assert.match(html, /Sarge/);
   assert.match(html, /Medium Rare Murray Hill/);
@@ -63,6 +63,7 @@ test("server-renders the Sidewalk POC", async () => {
   assert.match(html, /Observed August 9–10, 2026/);
   assert.match(html, /single · 11:12 PM/);
   assert.match(html, /single · 12:43 AM/);
+  assert.match(html, /single · 1:45 AM/);
   assert.match(html, /actually walkable/);
   assert.match(html, /OpenStreetMap/);
   assert.match(html, /Sidewalk hands off to the source/);

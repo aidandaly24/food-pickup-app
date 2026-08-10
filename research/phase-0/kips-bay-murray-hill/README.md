@@ -1,6 +1,6 @@
 # Kips Bay / Murray Hill feasibility study
 
-Status: 25-restaurant discovery panel surfaced, first anonymous pass and three signed-in comparison runs complete, including one same-night repeat; multi-day repetition not started
+Status: 25-restaurant discovery panel surfaced, first anonymous pass and four signed-in comparison runs complete, including two same-night repeats; nonconsecutive multi-day repetition not started
 Verified: 2026-08-10
 Study center: East 34th Street and Third Avenue, New York, NY 10016  
 Boundary: all 25 candidates fit within an OpenStreetMap pedestrian-route estimate of 11 minutes; field calibration remains pending
@@ -197,6 +197,22 @@ starting cart; opening the right restaurant and selecting the right item is not
 enough. This is imported provider/session complexity to contain in the capture
 protocol, not a reason to build a generalized state-recovery framework yet.
 
+## Cross-midnight stability repeat
+
+At 1:45 AM, about 2.5 hours after the first single-Reuben comparison, the same
+basket was captured again. Slice remained **$12.87**, Uber Eats remained
+**$12.18**, and Uber was again **$0.69 cheaper**. The quotes were captured 121
+seconds apart and both totals survived the immediate recheck. Both carts were
+cleared afterward and no order was placed.
+
+The timed post-assembly quote and recheck took 310 seconds. End-to-end capture
+time was not recorded, so the five-minute gate remains unproven. The direct cart
+restored stale state after appearing empty, so the duplicate item had to be
+removed and the $9.99 one-item subtotal reverified. Uber exposed one available
+promotion but applied no discount and did not expose verified conditions in the
+captured flow. This is evidence that empty-cart proof and offer visibility both
+need measurement; it still does not justify a generalized recovery framework.
+
 ## Complexity assessment
 
 | Class | Complexity in this POC | Treatment now |
@@ -305,11 +321,11 @@ keep, revise, or reject them based on the actual failure distribution.
 | --- | --- | --- |
 | Relevant restaurant discovery | 25 of 25 fixed-panel restaurants appear in the POC; six have checkout research | 100% panel recall passes the POC gate; neighborhood-wide recall remains unproven |
 | Correct physical-location matching | One DoorDash same-name/different-address result was detected and rejected | Identity rule works; sample is too small for a rate |
-| Exact comparison coverage | Three complete comparison runs, all for Kips Bay Deli | Proven repeatable at one restaurant, not broad enough for the 70% gate |
-| Equivalent baskets | 3 of 3 declared comparisons used identical item, size, quantity, and modifiers within each run | 100% in a very small sample |
-| Winner recheck stability | 3 of 3 winners remained unchanged on immediate recheck; the single-basket winner and totals also survived a 91-minute repeat | Promising short-term stability; multi-day freshness remains unknown |
-| Meaningful savings | $0.69 on both single-basket runs and $5.94 on the threshold basket | Promising; cross-restaurant frequency remains unknown |
-| Manual capture time and adapter burden | Capture duration is not yet recorded consistently; no automated adapter exists | Unknown |
+| Exact comparison coverage | Four complete comparison runs, all for Kips Bay Deli | Proven repeatable at one restaurant, not broad enough for the 70% gate |
+| Equivalent baskets | 4 of 4 declared comparisons used identical item, size, quantity, and modifiers within each run | 100% in a very small sample |
+| Winner recheck stability | 4 of 4 winners remained unchanged on immediate recheck; the single-basket totals also survived a 2.5-hour cross-midnight span | Promising short-term stability; nonconsecutive multi-day freshness remains unknown |
+| Meaningful savings | $0.69 on all three single-basket runs and $5.94 on the threshold basket | Promising; cross-restaurant frequency remains unknown |
+| Manual capture time and adapter burden | One post-assembly quote/recheck took 310 seconds; end-to-end capture time is still unmeasured | Gate remains unknown, and stale-cart recovery is an observed burden |
 
 ## Keys and access
 

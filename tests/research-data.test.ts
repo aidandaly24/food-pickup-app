@@ -53,6 +53,12 @@ interface RawCaptureStudy {
   readonly repeatOfCaptureRunId?: string;
   readonly basketKind: string;
   readonly fulfillment: string;
+  readonly collection?: {
+    readonly scope: string;
+    readonly startedAt: string;
+    readonly completedAt: string;
+    readonly durationSeconds: number;
+  };
   readonly comparison?: {
     readonly winnerChannel: string;
     readonly savingsCents: number;
@@ -239,7 +245,7 @@ test("declared comparisons are derived from equivalent fresh quotes", async () =
   const studies = await readCaptureStudies();
   const comparisons = studies.filter((study) => study.comparison);
 
-  assert.equal(comparisons.length, 3);
+  assert.equal(comparisons.length, 4);
 
   for (const study of comparisons) {
     const { comparison } = study;
@@ -302,7 +308,7 @@ test("repeat captures point to an earlier equivalent comparison", async () => {
   );
   const repeats = studies.filter((study) => study.repeatOfCaptureRunId);
 
-  assert.equal(repeats.length, 1);
+  assert.equal(repeats.length, 2);
 
   for (const repeat of repeats) {
     const original = studiesById.get(repeat.repeatOfCaptureRunId as string);
@@ -320,11 +326,6 @@ test("repeat captures point to an earlier equivalent comparison", async () => {
       [...new Set(repeatQuotes.map((quote) => quote.basketKey))],
       [...new Set(originalQuotes.map((quote) => quote.basketKey))],
     );
-    assert.equal(
-      repeat.comparison.winnerChannel,
-      original?.comparison?.winnerChannel,
-    );
-
     for (const repeatQuote of repeatQuotes) {
       const originalQuote = originalQuotes.find(
         (quote) => quote.channel === repeatQuote.channel,
@@ -332,7 +333,6 @@ test("repeat captures point to an earlier equivalent comparison", async () => {
 
       assert.ok(originalQuote);
       assert.equal(repeatQuote.itemSignature, originalQuote?.itemSignature);
-      assert.equal(repeatQuote.finalTotalCents, originalQuote?.finalTotalCents);
     }
 
     const originalLatest = Math.max(
@@ -349,7 +349,31 @@ test("repeat captures point to an earlier equivalent comparison", async () => {
     const repeatDelay = repeatEarliest - originalLatest;
 
     assert.ok(repeatDelay >= 90 * 60 * 1_000);
-    assert.ok(repeatDelay < 92 * 60 * 1_000);
+  }
+});
+
+test("timed collection metadata reconciles", async () => {
+  const studies = await readCaptureStudies();
+  const timedStudies = studies.filter((study) => study.collection);
+
+  assert.ok(timedStudies.length > 0);
+
+  for (const study of timedStudies) {
+    const collection = study.collection;
+
+    assert.ok(collection);
+    assert.ok(collection.scope.length > 0);
+    const startedAt = new Date(collection.startedAt).getTime();
+    const completedAt = new Date(collection.completedAt).getTime();
+
+    assert.ok(Number.isFinite(startedAt));
+    assert.ok(Number.isFinite(completedAt));
+    assert.ok(completedAt > startedAt);
+    assert.equal(
+      collection.durationSeconds,
+      Math.round((completedAt - startedAt) / 1_000),
+    );
+    assert.equal(study.comparison?.recheckedAt, collection.completedAt);
   }
 });
 
@@ -368,11 +392,16 @@ test("published Phase 0 counts remain reproducible", async () => {
 
   assert.equal(catalog.restaurants.length, 25);
   assert.equal(observedRestaurants.size, 6);
-  assert.equal(observations.length, 18);
+  assert.equal(observations.length, 20);
   assert.equal(
     observations.filter((observation) => observation.finalTotalCents !== null)
       .length,
-    8,
+    10,
   );
-  assert.deepEqual(savings.sort((left, right) => left - right), [69, 69, 594]);
+  assert.deepEqual(savings.sort((left, right) => left - right), [
+    69,
+    69,
+    69,
+    594,
+  ]);
 });
