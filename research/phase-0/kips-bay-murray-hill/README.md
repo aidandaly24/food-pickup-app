@@ -32,7 +32,7 @@ offers, and states whether the total is exact or estimated.
   still needs spot-calibration for walking pace and signal delay.
 - A restaurant-branded ordering link is not a provider. The initial set already
   includes Toast, DoorDash Commerce Platform (`order.online`), Sauce, Slice,
-  Grubhub-backed ordering, and brand-owned or unresolved storefronts.
+  ChowNow, Grubhub-backed ordering, and brand-owned or unresolved storefronts.
 - A single restaurant may expose multiple nominally "direct" choices. Pio Pio 7,
   for example, links to Toast, DoorDash Storefront, and DoorDash Marketplace from
   its own location page.
@@ -99,6 +99,7 @@ without creating scheduled orders:
 | Bhatti Indian Grill | 100 Lexington Avenue | One Dilli Ka Butter Chicken with every optional add-on unselected | DoorDash-powered storefront and Uber Eats both showed the same item at $23.95 | Both channels were closed; the storefront showed a noon opening |
 | Little Ruby's Murray Hill | 442 Third Avenue | One Classic Cheeseburger with no modifiers | Toast and Uber Eats resolve to the same location; Uber showed the target at $16.50 | Both channels were closed; Toast hides its live menu until Monday at 9 AM |
 | Tara Rose | 384 Third Avenue | One Tara Rose Burger, quantity 1, with optional side and bread substitutions unselected and no note | Toast, Uber Eats, and Grubhub all showed the same description and $23.00 base price | All three channels showed an 11 AM pickup opening; scheduled checkout was excluded because it is not an immediate quote |
+| Vezzo Thin Crust Pizza | 178 Lexington Avenue | One 9-inch Plain pizza with the default marinara and cheese and every optional change unselected | Its official location page links to ChowNow, which showed $13.50; Grubhub matches the address but hid its closed menu | ChowNow showed an 11:15 AM opening; Grubhub basket parity must be verified while open before comparison |
 | The Flying Cock | 497 Third Avenue | One Famous Crispy Chicken Sandwich; modifiers and included-side parity still need open-hours confirmation | Grubhub, Uber Eats, and DoorDash resolve to the same location; Uber showed $20.00 and DoorDash showed $21.50 | All channels were closed until 3 PM, and Grubhub hid the current pickup price, so this is not yet a comparable basket |
 
 Sarge's exposes an identical base item description, required bread group, and
@@ -112,7 +113,9 @@ and rice, so the unmodified entrée is a reproducible basket. Little Ruby's Toas
 configuration still needs to be rechecked while open before its Uber basket can
 be declared equivalent. Tara Rose's three menus align on description, base
 price, quantity, and optional substitution groups, making the unmodified burger
-a reproducible three-provider target. Uber also displayed account-specific and time-limited
+a reproducible three-provider target. Vezzo's ChowNow configuration exposes
+only optional base, crust, and topping changes, but its Grubhub menu must be
+checked while open before the plain pie is declared equivalent. Uber also displayed account-specific and time-limited
 offers during the preflight; those are observations to recapture at checkout,
 not durable basket assumptions.
 

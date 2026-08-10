@@ -1,7 +1,7 @@
 {
   "studyCenter": "East 34th Street and Third Avenue, New York, NY 10016",
   "walkingLimitMinutes": 15,
-  "verifiedAt": "2026-08-10T00:56:07-04:00",
+  "verifiedAt": "2026-08-10T01:02:49-04:00",
   "routeStatus": "openstreetmap_pedestrian_estimate_complete; field_calibration_pending",
   "channelDiscoveryStatus": "initial_not_exhaustive",
   "restaurants": [
@@ -517,9 +517,15 @@
       "name": "Vezzo Thin Crust Pizza",
       "address": "178 Lexington Avenue, New York, NY 10016",
       "cuisine": "Pizza",
-      "anchorItem": "9-inch plain pizza",
-      "website": "http://www.vezzothincrust.com/",
+      "anchorItem": "9-inch Plain pizza; quantity 1; default marinara and cheese; all optional base, crust, and topping changes unselected",
+      "website": "https://www.nycthincrust.com/location/vezzo-thin-crust/",
       "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "ChowNow",
+          "relationship": "official_location_page_link",
+          "url": "https://direct.chownow.com/order/15319/locations/21648"
+        },
         {
           "channel": "grubhub",
           "provider": "Grubhub",
@@ -527,8 +533,10 @@
           "url": "https://www.grubhub.com/restaurant/vezzo-nycthincrust-pizza---murray-hill-178-lexington-ave-new-york/915337"
         }
       ],
-      "notes": "The restaurant domain and a current marketplace listing need direct storefront confirmation.",
+      "notes": "The former restaurant domain redirects to the current NYC Thin Crust Vezzo page, which verifies 178 Lexington Avenue and links to ChowNow. ChowNow listed a 9-inch Plain pizza at $13.50 with only optional base, crust, and topping changes and showed an 11:15 AM opening. Grubhub matched the address but hid its closed menu; Uber Eats and DoorDash returned no exact-location result.",
       "sources": [
+        "https://www.nycthincrust.com/location/vezzo-thin-crust/",
+        "https://direct.chownow.com/order/15319/locations/21648",
         "https://ny.eater.com/venue/44295/vezzo-thin-crust",
         "https://www.grubhub.com/restaurant/vezzo-nycthincrust-pizza---murray-hill-178-lexington-ave-new-york/915337"
       ]
