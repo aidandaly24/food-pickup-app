@@ -17,18 +17,21 @@
           "channel": "restaurant_direct",
           "provider": "Toast",
           "relationship": "official_site_link",
+          "locationMatch": "verified_exact",
           "url": "https://order.toasttab.com/online/sarges-deli-548-3rd-ave"
         },
         {
           "channel": "doordash_marketplace",
           "provider": "DoorDash",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.doordash.com/store/30397/"
         },
         {
           "channel": "uber_eats",
           "provider": "Uber Eats",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.ubereats.com/store/sarges-delicatessen-%26-diner/v9COnSNcS7-VOtGjV_PhDA"
         }
       ],
@@ -51,12 +54,14 @@
           "channel": "restaurant_storefront",
           "provider": "DoorDash Commerce Platform",
           "relationship": "storefront_discovered_location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://order.online/store/2ndAveDeli-24260/"
         },
         {
           "channel": "doordash_marketplace",
           "provider": "DoorDash",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.doordash.com/en/business/2nd-ave-deli-16528/"
         }
       ],
@@ -77,6 +82,7 @@
           "channel": "restaurant_direct",
           "provider": "Toast",
           "relationship": "official_site_link",
+          "locationMatch": "verified_exact",
           "url": "https://www.toasttab.com/local/order/norma-gastronomia-siciliana-438-3rd-ave"
         }
       ],
@@ -94,18 +100,21 @@
           "channel": "restaurant_direct",
           "provider": "Toast",
           "relationship": "official_site_link",
+          "locationMatch": "verified_exact",
           "url": "https://order.toasttab.com/online/pio-pio-7-kips-bay-210-east-34th-st"
         },
         {
           "channel": "restaurant_storefront",
           "provider": "DoorDash Commerce Platform",
           "relationship": "official_site_link",
+          "locationMatch": "verified_exact",
           "url": "https://order.online/business/pio-pio-7--kips-bay-15399"
         },
         {
           "channel": "doordash_marketplace",
           "provider": "DoorDash",
           "relationship": "official_site_link",
+          "locationMatch": "verified_exact",
           "url": "https://www.doordash.com/en-US/store/pio-pio-7-%E2%80%93-kips-bay-new-york-25125237/"
         }
       ],
@@ -127,6 +136,7 @@
           "channel": "restaurant_direct",
           "provider": "Sauce",
           "relationship": "official_site_link",
+          "locationMatch": "verified_exact",
           "url": "https://www.getsauce.com/order/nom-nam-vietnamese-kitchen/menu"
         }
       ],
@@ -148,6 +158,7 @@
           "channel": "restaurant_direct",
           "provider": "Lunchbox",
           "relationship": "location_matched_brand_ordering_site",
+          "locationMatch": "verified_exact",
           "url": "https://order.bareburger.com/3/"
         }
       ],
@@ -169,12 +180,14 @@
           "channel": "restaurant_direct",
           "provider": "Toast",
           "relationship": "location_matched_ordering_page",
+          "locationMatch": "verified_exact",
           "url": "https://order.toasttab.com/online/rubysmurrayhill"
         },
         {
           "channel": "uber_eats",
           "provider": "Uber Eats",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.ubereats.com/store/rubys-cafe-murray-hill/K9senlVlU5C1O-9ELCnLyw"
         }
       ],
@@ -196,18 +209,21 @@
           "channel": "restaurant_direct",
           "provider": "Toast",
           "relationship": "official_site_link",
+          "locationMatch": "verified_exact",
           "url": "https://order.toasttab.com/online/banc-cafe-431-3rd-ave"
         },
         {
           "channel": "grubhub",
           "provider": "Grubhub",
           "relationship": "official_site_link",
+          "locationMatch": "verified_exact",
           "url": "https://www.grubhub.com/restaurant/banc-cafe-431-3rd-ave-new-york/2498252"
         },
         {
           "channel": "doordash_marketplace",
           "provider": "DoorDash",
           "relationship": "official_site_link",
+          "locationMatch": "verified_exact",
           "url": "https://www.doordash.com/store/banc-cafe-new-york-49491/"
         }
       ],
@@ -231,6 +247,7 @@
           "channel": "restaurant_storefront",
           "provider": "DoorDash Commerce Platform",
           "relationship": "storefront_discovered_location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://order.online/en-US/store/momosan-ramen-sake-new-york-26306693"
         }
       ],
@@ -253,12 +270,14 @@
           "channel": "restaurant_storefront",
           "provider": "DoorDash Commerce Platform",
           "relationship": "storefront_discovered_location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://order.online/en-US/store/MakimakiSushi-765903"
         },
         {
           "channel": "doordash_marketplace",
           "provider": "DoorDash",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.doordash.com/business/makimaki-sushi-341094/"
         }
       ],
@@ -279,24 +298,28 @@
           "channel": "restaurant_storefront",
           "provider": "DoorDash Commerce Platform",
           "relationship": "storefront_discovered_location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://order.online/store/bhatti-indian-grill-221684"
         },
         {
           "channel": "doordash_marketplace",
           "provider": "DoorDash",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.doordash.com/store/bhatti-indian-grill-new-york-221684/"
         },
         {
           "channel": "grubhub",
           "provider": "Grubhub",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.grubhub.com/restaurant/bhatti-indian-grill-100-lexington-ave-new-york/81752"
         },
         {
           "channel": "uber_eats",
           "provider": "Uber Eats",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.ubereats.com/store/bhatti-indian-grill-kips-bay/Vtkze_NiTO-RY87xT-9U5w"
         }
       ],
@@ -319,6 +342,7 @@
           "channel": "restaurant_direct",
           "provider": "Grubhub-backed branded site",
           "relationship": "official_ordering_site",
+          "locationMatch": "verified_exact",
           "url": "https://www.curryinahurrynewyork.com/"
         }
       ],
@@ -336,6 +360,7 @@
           "channel": "restaurant_storefront",
           "provider": "DoorDash Commerce Platform",
           "relationship": "storefront_discovered_location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://order.online/en/store/152602"
         }
       ],
@@ -356,12 +381,14 @@
           "channel": "doordash_marketplace",
           "provider": "DoorDash",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.doordash.com/store/26319/"
         },
         {
           "channel": "uber_eats",
           "provider": "Uber Eats",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.ubereats.com/store/el-parador-cafe/Z1thk-HYQ_mzHKOpCjXCbA"
         }
       ],
@@ -399,12 +426,14 @@
           "channel": "restaurant_direct",
           "provider": "Toast",
           "relationship": "official_site_link",
+          "locationMatch": "verified_exact",
           "url": "https://order.toasttab.com/online/patrizias-manhattan-462-466-2nd-ave"
         },
         {
           "channel": "restaurant_delivery",
           "provider": "Sauce",
           "relationship": "official_site_link",
+          "locationMatch": "unverified",
           "url": "https://www.getsauce.com/order/patrizias-of-manhattan/menu"
         }
       ],
@@ -427,12 +456,14 @@
           "channel": "restaurant_direct",
           "provider": "Square",
           "relationship": "official_site_link",
+          "locationMatch": "verified_exact",
           "url": "https://colettanyc.square.site/"
         },
         {
           "channel": "restaurant_storefront",
           "provider": "DoorDash Commerce Platform",
           "relationship": "location_matched_storefront",
+          "locationMatch": "verified_exact",
           "url": "https://order.online/store/coletta-new-york-22928935"
         }
       ],
@@ -455,12 +486,14 @@
           "channel": "restaurant_direct",
           "provider": "Appfront / Just Order",
           "relationship": "official_site_link",
+          "locationMatch": "unverified",
           "url": "https://order.stickys.com/"
         },
         {
           "channel": "uber_eats",
           "provider": "Uber Eats",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.ubereats.com/store/stickys-murray-hill-2/rM22eOEgSwCkcyOTeaMQnw"
         }
       ],
@@ -483,12 +516,14 @@
           "channel": "restaurant_direct",
           "provider": "DIG branded ordering",
           "relationship": "official_site_pickup_handoff",
+          "locationMatch": "verified_exact",
           "url": "https://www.diginn.com/menu/228552"
         },
         {
           "channel": "restaurant_storefront",
           "provider": "DoorDash Commerce Platform",
           "relationship": "storefront_discovered_location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://order.online/store/DIG-23104320/"
         }
       ],
@@ -511,6 +546,7 @@
           "channel": "restaurant_direct",
           "provider": "Shake Shack web/app",
           "relationship": "official_location_page_pickup_handoff",
+          "locationMatch": "verified_exact",
           "url": "https://shakeshack.com/location/midtown-east-ny"
         }
       ],
@@ -529,12 +565,14 @@
           "channel": "restaurant_direct",
           "provider": "Slice",
           "relationship": "official_ordering_site",
+          "locationMatch": "verified_exact",
           "url": "https://www.kipsbaydeli.com/"
         },
         {
           "channel": "uber_eats",
           "provider": "Uber Eats",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.ubereats.com/store/kips-bay-deli-smb-parent/gJ9_tFeSWoy0wzcSnY6jvg"
         }
       ],
@@ -555,12 +593,14 @@
           "channel": "restaurant_direct",
           "provider": "ChowNow",
           "relationship": "official_location_page_link",
+          "locationMatch": "verified_exact",
           "url": "https://direct.chownow.com/order/15319/locations/21648"
         },
         {
           "channel": "grubhub",
           "provider": "Grubhub",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.grubhub.com/restaurant/vezzo-nycthincrust-pizza---murray-hill-178-lexington-ave-new-york/915337"
         }
       ],
@@ -584,18 +624,21 @@
           "channel": "restaurant_direct",
           "provider": "Toast",
           "relationship": "location_matched_ordering_page",
+          "locationMatch": "verified_exact",
           "url": "https://order.toasttab.com/online/tara-rose-384-third-ave"
         },
         {
           "channel": "grubhub",
           "provider": "Grubhub / Seamless",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.grubhub.com/restaurant/tara-rose-384-3rd-ave-new-york/1282514"
         },
         {
           "channel": "uber_eats",
           "provider": "Uber Eats",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.ubereats.com/store/tara-rose/sCISHchLTNSMGpfvxarcbQ"
         }
       ],
@@ -618,18 +661,21 @@
           "channel": "restaurant_direct",
           "provider": "Grubhub",
           "relationship": "official_site_order_link",
+          "locationMatch": "verified_exact",
           "url": "https://www.grubhub.com/restaurant/the-flying-cock-497-3rd-ave-new-york/6034104"
         },
         {
           "channel": "doordash_marketplace",
           "provider": "DoorDash",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.doordash.com/store/866991/"
         },
         {
           "channel": "uber_eats",
           "provider": "Uber Eats",
           "relationship": "location_matched",
+          "locationMatch": "verified_exact",
           "url": "https://www.ubereats.com/store/the-flying-cock/7dZjE5B2XwKgfyjDg4KoMw"
         }
       ],
@@ -653,6 +699,7 @@
           "channel": "restaurant_storefront",
           "provider": "DoorDash Commerce Platform",
           "relationship": "location_matched_storefront",
+          "locationMatch": "verified_exact",
           "url": "https://sf-classic.order.online/store/medium-rare-31602501/"
         }
       ],

@@ -13,6 +13,7 @@ import type {
   CaptureStage,
   ChannelKind,
   Fulfillment,
+  LocationMatch,
   ObservationResult,
   PickupObservation,
   StudyBasket,
@@ -59,6 +60,11 @@ const BASKET_KINDS = [
   "single",
   "threshold",
 ] as const satisfies readonly BasketKind[];
+
+const LOCATION_MATCHES = [
+  "verified_exact",
+  "unverified",
+] as const satisfies readonly LocationMatch[];
 
 const AVAILABILITIES = [
   "available_now",
@@ -316,6 +322,11 @@ export const STUDY_RESTAURANTS: readonly StudyRestaurant[] =
         key: channel.channel,
         name: catalogChannelName(channel.channel),
         provider: channel.provider,
+        locationMatch: parseOneOf(
+          channel.locationMatch,
+          LOCATION_MATCHES,
+          "location match",
+        ),
         sourceUrl: channel.url,
       })),
       baskets,
@@ -326,6 +337,14 @@ export const STUDY_SUMMARY = {
   restaurants: STUDY_RESTAURANTS.length,
   knownChannels: STUDY_RESTAURANTS.reduce(
     (total, restaurant) => total + restaurant.channels.length,
+    0,
+  ),
+  verifiedChannels: STUDY_RESTAURANTS.reduce(
+    (total, restaurant) =>
+      total +
+      restaurant.channels.filter(
+        (channel) => channel.locationMatch === "verified_exact",
+      ).length,
     0,
   ),
   quotedRestaurants: STUDY_RESTAURANTS.filter(

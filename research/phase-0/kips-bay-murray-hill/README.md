@@ -30,6 +30,9 @@ offers, and states whether the total is exact or estimated.
 - All 25 candidates resolved to pedestrian routes of 2–11 estimated minutes from
   the study center. The route evidence is in [`routes.json`](./routes.json); it
   still needs spot-calibration for walking pace and signal delay.
+- Forty-five of 47 known ordering links have explicit exact-location evidence.
+  Sticky's direct handoff and Patrizia's Sauce page remain unverified and are
+  labeled that way in the POC rather than counted as matches.
 - A restaurant-branded ordering link is not a provider. The initial set already
   includes Toast, Square, DoorDash Commerce Platform (`order.online`), Sauce,
   Slice, ChowNow, Grubhub-backed ordering, and brand-owned storefronts.
@@ -320,7 +323,7 @@ keep, revise, or reject them based on the actual failure distribution.
 | Gate signal | Evidence so far | Judgment |
 | --- | --- | --- |
 | Relevant restaurant discovery | 25 of 25 fixed-panel restaurants appear in the POC; six have checkout research | 100% panel recall passes the POC gate; neighborhood-wide recall remains unproven |
-| Correct physical-location matching | One DoorDash same-name/different-address result was detected and rejected | Identity rule works; sample is too small for a rate |
+| Correct physical-location matching | 45 of 47 known links have explicit exact-location evidence; Sticky's direct handoff and Patrizia's Sauce page remain unverified | 95.7% passes the fixed-panel 95% gate; link freshness still requires ongoing checks |
 | Exact comparison coverage | Four complete comparison runs, all for Kips Bay Deli | Proven repeatable at one restaurant, not broad enough for the 70% gate |
 | Equivalent baskets | 4 of 4 declared comparisons used identical item, size, quantity, and modifiers within each run | 100% in a very small sample |
 | Winner recheck stability | 4 of 4 winners remained unchanged on immediate recheck; the single-basket totals also survived a 2.5-hour cross-midnight span | Promising short-term stability; nonconsecutive multi-day freshness remains unknown |

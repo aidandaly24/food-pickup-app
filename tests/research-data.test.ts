@@ -12,6 +12,7 @@ interface RawRestaurant {
   readonly channelsObserved: readonly {
     readonly channel: string;
     readonly provider: string;
+    readonly locationMatch: string;
     readonly url: string;
   }[];
 }
@@ -111,12 +112,34 @@ test("the 25-restaurant catalog and pedestrian routes stay aligned", async () =>
     for (const channel of restaurant.channelsObserved) {
       assert.ok(channel.channel.length > 0);
       assert.match(channel.url, /^https?:\/\//);
+      assert.ok(
+        ["verified_exact", "unverified"].includes(channel.locationMatch),
+      );
       assert.notEqual(channel.url, "https://order.toasttab.com/");
       assert.notEqual(channel.url, "https://www.grubhub.com/");
       assert.notEqual(channel.url, "https://order.online/");
       assert.notEqual(channel.url, "https://www.getsauce.com/");
     }
   }
+
+  const channels = catalog.restaurants.flatMap((restaurant) =>
+    restaurant.channelsObserved.map((channel) => ({ restaurant, channel })),
+  );
+  const verifiedChannels = channels.filter(
+    ({ channel }) => channel.locationMatch === "verified_exact",
+  );
+  const unverifiedChannels = channels
+    .filter(({ channel }) => channel.locationMatch === "unverified")
+    .map(({ restaurant, channel }) => `${restaurant.id}/${channel.provider}`)
+    .sort();
+
+  assert.equal(channels.length, 47);
+  assert.equal(verifiedChannels.length, 45);
+  assert.ok(verifiedChannels.length / channels.length >= 0.95);
+  assert.deepEqual(unverifiedChannels, [
+    "patrizias-manhattan/Sauce",
+    "stickys-murray-hill/Appfront / Just Order",
+  ]);
 
   for (const route of routeStudy.routes) {
     assert.ok(Number.isFinite(route.latitude));

@@ -20,6 +20,8 @@ export type Fulfillment = "pickup";
 
 export type BasketKind = "single" | "threshold";
 
+export type LocationMatch = "verified_exact" | "unverified";
+
 export type ObservationResult =
   | "exact_checkout"
   | "exact_active_cart"
@@ -38,6 +40,7 @@ export interface CatalogChannel {
   readonly key: string;
   readonly name: string;
   readonly provider: string;
+  readonly locationMatch: LocationMatch;
   readonly sourceUrl: string;
 }
 

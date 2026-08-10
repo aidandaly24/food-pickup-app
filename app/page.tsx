@@ -628,6 +628,13 @@ export default function Home() {
                       <span>
                         <small>{channel.name}</small>
                         <strong>{channel.provider}</strong>
+                        <em
+                          className={`location-match location-match--${channel.locationMatch}`}
+                        >
+                          {channel.locationMatch === "verified_exact"
+                            ? "Exact location"
+                            : "Location unverified"}
+                        </em>
                       </span>
                       <b aria-hidden="true">↗</b>
                     </a>
@@ -692,7 +699,10 @@ export default function Home() {
         <p>
           All 25 panel restaurants support discovery, walking filters, map
           selection, and source handoff. {STUDY_SUMMARY.quotedRestaurants}{" "}
-          currently have checkout research.
+          currently have checkout research. {STUDY_SUMMARY.verifiedChannels} of{" "}
+          {STUDY_SUMMARY.knownChannels} ordering links have exact-location
+          evidence. Individual handoffs are labeled Exact location or Location
+          unverified.
         </p>
       </section>
 
