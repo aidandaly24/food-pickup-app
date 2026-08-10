@@ -1,7 +1,7 @@
 # Kips Bay / Murray Hill feasibility study
 
 Status: 25-restaurant discovery panel surfaced, first anonymous pass and two signed-in basket comparisons complete; multi-day repetition not started
-Verified: 2026-08-09  
+Verified: 2026-08-10
 Study center: East 34th Street and Third Avenue, New York, NY 10016  
 Boundary: all 25 candidates fit within an OpenStreetMap pedestrian-route estimate of 11 minutes; field calibration remains pending
 
@@ -88,15 +88,19 @@ without creating scheduled orders:
 
 | Restaurant | Verified location | Single-basket target | Channels ready for an open-hours pass | Current constraint |
 | --- | --- | --- | --- | --- |
+| Sarge's Delicatessen & Diner | 548 Third Avenue | One Hot Pastrami Sandwich on seeded rye with no add-ons | Toast showed $27.95, DoorDash pickup showed $30.74, and Uber Eats pickup showed $30.75; all three exposed the same required bread choices and optional add-ons | All channels were closed or schedule-only until 10 AM, so these are exact menu observations rather than final quotes |
 | Bhatti Indian Grill | 100 Lexington Avenue | One Dilli Ka Butter Chicken with every optional add-on unselected | DoorDash-powered storefront and Uber Eats both showed the same item at $23.95 | Both channels were closed; the storefront showed a noon opening |
 | Little Ruby's Murray Hill | 442 Third Avenue | One Classic Cheeseburger with no modifiers | Toast and Uber Eats resolve to the same location; Uber showed the target at $16.50 | Both channels were closed; Toast hides its live menu until Monday at 9 AM |
 
-Bhatti's direct item dialog exposed only optional add-on groups, including naan
-and rice, so the unmodified entrée is a reproducible basket. Little Ruby's Toast
-configuration still needs to be rechecked while open before its Uber basket can
-be declared equivalent. Uber also displayed account-specific and time-limited
-offers during the preflight; those are observations to recapture at checkout,
-not durable basket assumptions.
+Sarge's exposes an identical base item description, required bread group, and
+optional add-on structure across all three channels. Toast also disclosed a 3%
+credit-card surcharge, another reason its lower menu price cannot stand in for a
+final-total winner. Bhatti's direct item dialog exposed only optional add-on
+groups, including naan and rice, so the unmodified entrée is a reproducible
+basket. Little Ruby's Toast configuration still needs to be rechecked while open
+before its Uber basket can be declared equivalent. Uber also displayed
+account-specific and time-limited offers during the preflight; those are
+observations to recapture at checkout, not durable basket assumptions.
 
 ## First qualifying comparison
 

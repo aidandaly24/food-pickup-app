@@ -10,7 +10,7 @@
       "name": "Sarge's Delicatessen & Diner",
       "address": "548 3rd Avenue, New York, NY 10016",
       "cuisine": "Jewish deli",
-      "anchorItem": "Hot pastrami sandwich",
+      "anchorItem": "Hot Pastrami Sandwich; quantity 1; seeded rye; no add-ons",
       "website": "https://sargesdeli.com/",
       "channelsObserved": [
         {
@@ -18,9 +18,26 @@
           "provider": "Toast",
           "relationship": "official_site_link",
           "url": "https://order.toasttab.com/online/sarges-deli-548-3rd-ave"
+        },
+        {
+          "channel": "doordash_marketplace",
+          "provider": "DoorDash",
+          "relationship": "location_matched",
+          "url": "https://www.doordash.com/store/30397/"
+        },
+        {
+          "channel": "uber_eats",
+          "provider": "Uber Eats",
+          "relationship": "location_matched",
+          "url": "https://www.ubereats.com/store/sarges-delicatessen-%26-diner/v9COnSNcS7-VOtGjV_PhDA"
         }
       ],
-      "sources": ["https://sargesdeli.com/"]
+      "sources": [
+        "https://sargesdeli.com/",
+        "https://order.toasttab.com/online/sarges-deli-548-3rd-ave",
+        "https://www.doordash.com/store/30397/",
+        "https://www.ubereats.com/store/sarges-delicatessen-%26-diner/v9COnSNcS7-VOtGjV_PhDA"
+      ]
     },
     {
       "id": "second-avenue-deli",
