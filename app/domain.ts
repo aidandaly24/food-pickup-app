@@ -72,6 +72,7 @@ export interface StudyBasket {
   readonly basketKey: string;
   readonly description: string;
   readonly capturedOn: string;
+  readonly quoteWindowSeconds: number | null;
   readonly observations: readonly PickupObservation[];
 }
 
@@ -89,7 +90,7 @@ export interface StudyRestaurant {
 }
 
 export interface ComparisonOutcome {
-  readonly kind: "winner" | "incomplete";
+  readonly kind: "winner" | "tie" | "incomplete";
   readonly headline: string;
   readonly explanation: string;
   readonly winner?: PickupObservation;
@@ -110,19 +111,40 @@ export class QuoteComparison {
   }
 
   public get outcome(): ComparisonOutcome {
-    const exactCandidates = this.observations.filter(
-      (observation) =>
-        observation.result === "exact_checkout" &&
-        observation.basketComparable &&
-        observation.finalTotalCents !== null &&
-        observation.capturedAt,
+    const exactObservations = this.observations.filter(
+      (observation) => observation.result === "exact_checkout",
     );
-    const exactByChannel = new Map(
-      exactCandidates.map(
-        (observation) => [observation.channel.kind, observation] as const,
-      ),
+
+    if (
+      exactObservations.some(
+        (observation) => !this.totalReconciles(observation),
+      )
+    ) {
+      return {
+        kind: "incomplete",
+        headline: "Checkout total is inconsistent",
+        explanation:
+          "The item subtotal, tax, fees, discount, and tip must reconcile to the captured total.",
+      };
+    }
+
+    const exactCandidates = exactObservations.filter(
+      (observation) => observation.basketComparable && observation.capturedAt,
     );
-    const exactCheckouts = [...exactByChannel.values()].sort(
+
+    if (
+      new Set(exactCandidates.map((observation) => observation.channel.kind))
+        .size !== exactCandidates.length
+    ) {
+      return {
+        kind: "incomplete",
+        headline: "Duplicate channel quotes",
+        explanation:
+          "A comparison run needs one unambiguous checkout per ordering channel.",
+      };
+    }
+
+    const exactCheckouts = [...exactCandidates].sort(
       (left, right) =>
         (left.finalTotalCents ?? Infinity) -
         (right.finalTotalCents ?? Infinity),
@@ -143,15 +165,6 @@ export class QuoteComparison {
         headline: "Quote identity mismatch",
         explanation:
           "Every compared checkout must share one capture run, restaurant, basket, item configuration, and fulfillment mode.",
-      };
-    }
-
-    if (exactCheckouts.some((observation) => !this.totalReconciles(observation))) {
-      return {
-        kind: "incomplete",
-        headline: "Checkout total is inconsistent",
-        explanation:
-          "The item subtotal, tax, fees, discount, and tip must reconcile to the captured total.",
       };
     }
 
@@ -180,6 +193,14 @@ export class QuoteComparison {
     }
 
     const [winner, runnerUp] = exactCheckouts;
+
+    if (winner.finalTotalCents === runnerUp.finalTotalCents) {
+      return {
+        kind: "tie",
+        headline: "Pickup totals are tied",
+        explanation: "Equivalent, time-matched checkout totals are the same.",
+      };
+    }
 
     return {
       kind: "winner",

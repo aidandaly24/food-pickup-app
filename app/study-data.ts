@@ -34,6 +34,7 @@ const RAW_OBSERVATIONS = [
     captureRunId: anonymousCheckoutStudy.captureRunId,
     capturedOn: anonymousCheckoutStudy.capturedOn,
     fulfillment: anonymousCheckoutStudy.fulfillment,
+    quoteWindowSeconds: null,
   })),
   ...signedInCheckoutStudy.observations.map((observation) => ({
     ...observation,
@@ -41,6 +42,7 @@ const RAW_OBSERVATIONS = [
     captureRunId: signedInCheckoutStudy.captureRunId,
     capturedOn: signedInCheckoutStudy.capturedOn,
     fulfillment: signedInCheckoutStudy.fulfillment,
+    quoteWindowSeconds: signedInCheckoutStudy.comparison.quoteWindowSeconds,
   })),
   ...thresholdCheckoutStudy.observations.map((observation) => ({
     ...observation,
@@ -48,6 +50,7 @@ const RAW_OBSERVATIONS = [
     captureRunId: thresholdCheckoutStudy.captureRunId,
     capturedOn: thresholdCheckoutStudy.capturedOn,
     fulfillment: thresholdCheckoutStudy.fulfillment,
+    quoteWindowSeconds: thresholdCheckoutStudy.comparison.quoteWindowSeconds,
   })),
 ];
 
@@ -249,6 +252,7 @@ function basketsFor(
       basketKey: rawObservation.basketKey,
       description: rawObservation.itemSignature,
       capturedOn: rawObservation.capturedOn,
+      quoteWindowSeconds: rawObservation.quoteWindowSeconds,
       observations,
     };
   });
@@ -315,7 +319,7 @@ export const STUDY_SUMMARY = {
       total +
       restaurant.baskets.filter(
         (basket) =>
-          new QuoteComparison(basket.observations).outcome.kind === "winner",
+          new QuoteComparison(basket.observations).outcome.kind !== "incomplete",
       ).length,
     0,
   ),

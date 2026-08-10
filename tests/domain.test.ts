@@ -101,6 +101,10 @@ test("rejects exact checkout totals captured outside ten minutes", () => {
 
 test("requires two distinct channels with valid timestamps", () => {
   const duplicateDirect = observation({ id: "direct-again" });
+  const marketplace = observation({
+    id: "marketplace",
+    channel: DOORDASH_CHANNEL,
+  });
   const invalidTimestamp = observation({
     id: "marketplace",
     channel: DOORDASH_CHANNEL,
@@ -108,8 +112,9 @@ test("requires two distinct channels with valid timestamps", () => {
   });
 
   assert.equal(
-    new QuoteComparison([observation(), duplicateDirect]).outcome.kind,
-    "incomplete",
+    new QuoteComparison([observation(), duplicateDirect, marketplace]).outcome
+      .headline,
+    "Duplicate channel quotes",
   );
   assert.equal(
     new QuoteComparison([observation(), invalidTimestamp]).outcome.headline,
@@ -153,4 +158,35 @@ test("rejects an exact checkout whose components do not reconcile", () => {
     new QuoteComparison([observation(), marketplace]).outcome.headline,
     "Checkout total is inconsistent",
   );
+});
+
+test("validates an inconsistent exact checkout even without a comparison", () => {
+  const inconsistent = observation({
+    basketComparable: false,
+    finalTotalCents: 2_179,
+  });
+
+  assert.equal(
+    new QuoteComparison([inconsistent]).outcome.headline,
+    "Checkout total is inconsistent",
+  );
+
+  assert.equal(
+    new QuoteComparison([observation({ finalTotalCents: null })]).outcome
+      .headline,
+    "Checkout total is inconsistent",
+  );
+});
+
+test("reports equal exact checkout totals as a tie", () => {
+  const marketplace = observation({
+    id: "marketplace",
+    channel: DOORDASH_CHANNEL,
+  });
+  const outcome = new QuoteComparison([observation(), marketplace]).outcome;
+
+  assert.equal(outcome.kind, "tie");
+  assert.equal(outcome.headline, "Pickup totals are tied");
+  assert.equal(outcome.winner, undefined);
+  assert.equal(outcome.savingsCents, undefined);
 });

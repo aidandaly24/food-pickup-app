@@ -78,6 +78,23 @@ $14 Classic Burger, and Bhatti's live Uber Eats item price was $23.95 rather tha
 the previously indexed $24. This is essential menu-version and freshness
 complexity, not evidence that we need a generalized crawler.
 
+## Next open-hours capture targets
+
+A late-evening preflight on August 9 confirmed the next two comparison targets
+without creating scheduled orders:
+
+| Restaurant | Verified location | Single-basket target | Channels ready for an open-hours pass | Current constraint |
+| --- | --- | --- | --- | --- |
+| Bhatti Indian Grill | 100 Lexington Avenue | One Dilli Ka Butter Chicken with every optional add-on unselected | DoorDash-powered storefront and Uber Eats both showed the same item at $23.95 | Both channels were closed; the storefront showed a noon opening |
+| Little Ruby's Murray Hill | 442 Third Avenue | One Classic Cheeseburger with no modifiers | Toast and Uber Eats resolve to the same location; Uber showed the target at $16.50 | Both channels were closed; Toast hides its live menu until Monday at 9 AM |
+
+Bhatti's direct item dialog exposed only optional add-on groups, including naan
+and rice, so the unmodified entrée is a reproducible basket. Little Ruby's Toast
+configuration still needs to be rechecked while open before its Uber basket can
+be declared equivalent. Uber also displayed account-specific and time-limited
+offers during the preflight; those are observations to recapture at checkout,
+not durable basket assumptions.
+
 ## First qualifying comparison
 
 At 11:12 PM local time, Kips Bay Deli was accepting immediate pickup orders on

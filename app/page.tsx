@@ -38,9 +38,15 @@ const DEFAULT_RESTAURANT_ID =
     (restaurant) =>
       restaurant.baskets.some(
         (basket) =>
-          new QuoteComparison(basket.observations).outcome.kind === "winner",
+          new QuoteComparison(basket.observations).outcome.kind !== "incomplete",
       ),
   )?.id ?? STUDY_RESTAURANTS[0].id;
+
+function basketEvidenceScore(basket: StudyBasket): number {
+  const outcome = new QuoteComparison(basket.observations).outcome;
+
+  return outcome.kind === "incomplete" ? -1 : (outcome.savingsCents ?? 0);
+}
 
 function featuredBasket(restaurant: StudyRestaurant): StudyBasket {
   const [firstBasket, ...otherBaskets] = restaurant.baskets;
@@ -50,12 +56,9 @@ function featuredBasket(restaurant: StudyRestaurant): StudyBasket {
   }
 
   return otherBaskets.reduce((best, candidate) => {
-    const bestSavings =
-      new QuoteComparison(best.observations).outcome.savingsCents ?? -1;
-    const candidateSavings =
-      new QuoteComparison(candidate.observations).outcome.savingsCents ?? -1;
-
-    return candidateSavings > bestSavings ? candidate : best;
+    return basketEvidenceScore(candidate) > basketEvidenceScore(best)
+      ? candidate
+      : best;
   }, firstBasket);
 }
 
@@ -520,7 +523,12 @@ export default function Home() {
                       ? "Signed-in pickup"
                       : "Anonymous pickup"}
                   </span>
-                  <span>Observed {selectedBasket.capturedOn}</span>
+                  <span>
+                    Observed {selectedBasket.capturedOn}
+                    {selectedBasket.quoteWindowSeconds !== null
+                      ? ` · ${selectedBasket.quoteWindowSeconds}s window`
+                      : ""}
+                  </span>
                 </div>
               </div>
 

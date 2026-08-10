@@ -133,7 +133,7 @@
       "name": "Little Ruby's Murray Hill",
       "address": "442 3rd Avenue, New York, NY 10016",
       "cuisine": "Australian cafe",
-      "anchorItem": "Bronte burger",
+      "anchorItem": "Classic Cheeseburger; quantity 1; no modifiers",
       "website": "https://www.rubyscafe.com/location/murray-hill/",
       "channelsObserved": [
         {
@@ -146,12 +146,13 @@
           "channel": "uber_eats",
           "provider": "Uber Eats",
           "relationship": "location_matched",
-          "url": "https://www.ubereats.com/brand-city/new-york-city/rubys-cafe"
+          "url": "https://www.ubereats.com/store/rubys-cafe-murray-hill/K9senlVlU5C1O-9ELCnLyw"
         }
       ],
       "sources": [
         "https://www.rubyscafe.com/location/murray-hill/",
-        "https://order.toasttab.com/online/rubysmurrayhill"
+        "https://order.toasttab.com/online/rubysmurrayhill",
+        "https://www.ubereats.com/store/rubys-cafe-murray-hill/K9senlVlU5C1O-9ELCnLyw"
       ]
     },
     {
@@ -231,7 +232,7 @@
       "name": "Bhatti Indian Grill",
       "address": "100 Lexington Avenue, New York, NY 10016",
       "cuisine": "North Indian",
-      "anchorItem": "Dilli Ka Butter Chicken plus garlic naan",
+      "anchorItem": "Dilli Ka Butter Chicken; quantity 1; all optional add-ons unselected",
       "website": "https://www.bhattinyc.com/",
       "channelsObserved": [
         {
