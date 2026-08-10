@@ -66,7 +66,7 @@ export function StudyMap({
           }),
         })
           .bindTooltip(
-            `<strong>${restaurant.name}</strong><br>${restaurant.walkMinutes} min walk`,
+            `<strong>${restaurant.name}</strong><br>${restaurant.walkMinutes} estimated min walk`,
           )
           .on("click", () => onSelectRef.current(restaurant.id))
           .addTo(map);
@@ -108,7 +108,7 @@ export function StudyMap({
       <div className="map-heading">
         <div>
           <span className="section-index">/01</span>
-          <h2 id="map-heading">What’s actually walkable</h2>
+          <h2 id="map-heading">What’s within estimated range</h2>
         </div>
         <p>
           OpenStreetMap pedestrian estimates from {STUDY_CENTER.label}. Select a

@@ -19,10 +19,13 @@ interface RawRestaurant {
 
 interface RawRestaurantStudy {
   readonly walkingLimitMinutes: number;
+  readonly routeStatus: string;
   readonly restaurants: readonly RawRestaurant[];
 }
 
 interface RawRouteStudy {
+  readonly router: string;
+  readonly method: string;
   readonly routes: readonly {
     readonly restaurantId: string;
     readonly latitude: number;
@@ -130,6 +133,10 @@ test("the 25-restaurant catalog and pedestrian routes stay aligned", async () =>
   const routeIds = routeStudy.routes.map((route) => route.restaurantId);
 
   assert.equal(catalog.restaurants.length, 25);
+  assert.match(catalog.routeStatus, /estimate/);
+  assert.match(catalog.routeStatus, /field_calibration_pending/);
+  assert.match(routeStudy.router, /OpenStreetMap/);
+  assert.match(routeStudy.method, /does not include a field-observed pace/);
   assert.equal(new Set(restaurantIds).size, restaurantIds.length);
   assert.equal(new Set(routeIds).size, routeIds.length);
   assert.deepEqual([...routeIds].sort(), [...restaurantIds].sort());

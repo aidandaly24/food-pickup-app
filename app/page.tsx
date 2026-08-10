@@ -78,7 +78,7 @@ function PanelHeader({
       </div>
       <span className="walk-badge">
         {restaurant.walkMinutes}
-        <small>MIN</small>
+        <small>EST MIN</small>
       </span>
     </div>
   );
@@ -394,7 +394,7 @@ export default function Home() {
                     </span>
                     <span className="restaurant-body">
                       <span className="restaurant-meta">
-                        <span>{restaurant.walkMinutes} MIN WALK</span>
+                        <span>{restaurant.walkMinutes} EST MIN WALK</span>
                         <span>
                           {wasAvailable
                             ? "AVAILABLE IN CAPTURE"
@@ -650,9 +650,9 @@ export default function Home() {
                 <span>QUOTE STATUS</span>
                 <strong>No checkout evidence yet</strong>
                 <p>
-                  The location and walking route are real. Known links are
-                  discovery evidence only—not current availability or price
-                  quotes.
+                  The location and pedestrian route are real; the walk time is
+                  an estimate. Known links are discovery evidence only—not
+                  current availability or price quotes.
                 </p>
               </div>
 
@@ -708,7 +708,7 @@ export default function Home() {
 
       <footer>
         <span>SIDEWALK / NYC PICKUP POC</span>
-        <span>OpenStreetMap data · observed ordering evidence</span>
+        <span>OpenStreetMap route estimates · observed ordering evidence</span>
       </footer>
     </main>
   );

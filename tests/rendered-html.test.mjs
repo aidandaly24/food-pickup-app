@@ -67,8 +67,10 @@ test("server-renders the Sidewalk POC", async () => {
   assert.match(html, /single · 11:12 PM/);
   assert.match(html, /single · 12:43 AM/);
   assert.match(html, /single · 1:45 AM/);
-  assert.match(html, /actually walkable/);
-  assert.match(html, /OpenStreetMap/);
+  assert.match(html, /within estimated range/);
+  assert.match(html, /EST MIN WALK/);
+  assert.match(html, /OpenStreetMap route estimates/);
+  assert.doesNotMatch(html, /actually walkable|\d+ MIN WALK/);
   assert.match(html, /Sidewalk hands off to the source/);
   assert.match(html, /All 25 panel restaurants support discovery/);
   assert.doesNotMatch(html, /Miso &amp; Main|seeded demonstration data/);
