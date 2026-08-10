@@ -1,4 +1,5 @@
 import anonymousCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/checkout-observations.json";
+import repeatCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/repeat-checkout-observations.json";
 import restaurantStudy from "../research/phase-0/kips-bay-murray-hill/restaurants.json";
 import routeStudy from "../research/phase-0/kips-bay-murray-hill/routes.json";
 import signedInCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/signed-in-checkout-observations.json";
@@ -17,6 +18,12 @@ import type {
   StudyRestaurant,
 } from "./domain";
 
+const EXACT_CHECKOUT_STUDIES = [
+  signedInCheckoutStudy,
+  thresholdCheckoutStudy,
+  repeatCheckoutStudy,
+] as const;
+
 const RAW_OBSERVATIONS = [
   ...anonymousCheckoutStudy.observations.map((observation) => ({
     ...observation,
@@ -27,22 +34,16 @@ const RAW_OBSERVATIONS = [
     fulfillment: anonymousCheckoutStudy.fulfillment,
     quoteWindowSeconds: null,
   })),
-  ...signedInCheckoutStudy.observations.map((observation) => ({
-    ...observation,
-    basketKind: signedInCheckoutStudy.basketKind,
-    captureRunId: signedInCheckoutStudy.captureRunId,
-    capturedOn: signedInCheckoutStudy.capturedOn,
-    fulfillment: signedInCheckoutStudy.fulfillment,
-    quoteWindowSeconds: signedInCheckoutStudy.comparison.quoteWindowSeconds,
-  })),
-  ...thresholdCheckoutStudy.observations.map((observation) => ({
-    ...observation,
-    basketKind: thresholdCheckoutStudy.basketKind,
-    captureRunId: thresholdCheckoutStudy.captureRunId,
-    capturedOn: thresholdCheckoutStudy.capturedOn,
-    fulfillment: thresholdCheckoutStudy.fulfillment,
-    quoteWindowSeconds: thresholdCheckoutStudy.comparison.quoteWindowSeconds,
-  })),
+  ...EXACT_CHECKOUT_STUDIES.flatMap((study) =>
+    study.observations.map((observation) => ({
+      ...observation,
+      basketKind: study.basketKind,
+      captureRunId: study.captureRunId,
+      capturedOn: study.capturedOn,
+      fulfillment: study.fulfillment,
+      quoteWindowSeconds: study.comparison.quoteWindowSeconds,
+    })),
+  ),
 ];
 
 const ACCOUNT_CONTEXTS = [
@@ -269,6 +270,11 @@ function basketsFor(restaurantId: string): readonly StudyBasket[] {
       basketKey: rawObservation.basketKey,
       description: rawObservation.itemSignature,
       capturedOn: rawObservation.capturedOn,
+      observedAt: observations
+        .flatMap((observation) =>
+          observation.capturedAt ? [observation.capturedAt] : [],
+        )
+        .sort()[0],
       quoteWindowSeconds: rawObservation.quoteWindowSeconds,
       observations,
     };

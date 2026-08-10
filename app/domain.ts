@@ -79,6 +79,7 @@ export interface StudyBasket {
   readonly basketKey: string;
   readonly description: string;
   readonly capturedOn: string;
+  readonly observedAt?: string;
   readonly quoteWindowSeconds: number | null;
   readonly observations: readonly PickupObservation[];
 }

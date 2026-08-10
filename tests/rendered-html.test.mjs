@@ -46,6 +46,7 @@ test("server-renders the Sidewalk POC", async () => {
   assert.match(html, /OBSERVED DATA/);
   assert.match(textHtml, /25 nearby restaurants/);
   assert.match(textHtml, /45 known ordering links/);
+  assert.match(textHtml, /3 basket comparisons/);
   assert.equal(html.match(/data-restaurant-id=/g)?.length, 25);
   assert.match(html, /Sarge/);
   assert.match(html, /Medium Rare Murray Hill/);
@@ -54,12 +55,14 @@ test("server-renders the Sidewalk POC", async () => {
   assert.match(html, /Bhatti Indian Grill/);
   assert.match(html, /Kips Bay Deli/);
   assert.match(html, /Two Reubens/);
-  assert.match(html, />threshold</i);
+  assert.match(html, /threshold · 11:36 PM/i);
   assert.match(html, /Uber Eats is cheapest/);
   assert.match(html, /\$17\.80/);
   assert.match(html, /Save .*\$5\.94/);
   assert.match(html, /Signed-in pickup/);
-  assert.match(html, /Observed August 9, 2026/);
+  assert.match(html, /Observed August 9–10, 2026/);
+  assert.match(html, /single · 11:12 PM/);
+  assert.match(html, /single · 12:43 AM/);
   assert.match(html, /actually walkable/);
   assert.match(html, /OpenStreetMap/);
   assert.match(html, /Sidewalk hands off to the source/);

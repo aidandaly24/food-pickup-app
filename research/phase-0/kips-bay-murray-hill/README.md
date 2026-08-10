@@ -1,6 +1,6 @@
 # Kips Bay / Murray Hill feasibility study
 
-Status: 25-restaurant discovery panel surfaced, first anonymous pass and two signed-in basket comparisons complete; multi-day repetition not started
+Status: 25-restaurant discovery panel surfaced, first anonymous pass and three signed-in comparison runs complete, including one same-night repeat; multi-day repetition not started
 Verified: 2026-08-10
 Study center: East 34th Street and Third Avenue, New York, NY 10016  
 Boundary: all 25 candidates fit within an OpenStreetMap pedestrian-route estimate of 11 minutes; field calibration remains pending
@@ -60,6 +60,8 @@ signed-in-where-available comparison is in
 [`signed-in-checkout-observations.json`](./signed-in-checkout-observations.json).
 The first promotion-threshold comparison is in
 [`threshold-checkout-observations.json`](./threshold-checkout-observations.json).
+The first same-night repeat is in
+[`repeat-checkout-observations.json`](./repeat-checkout-observations.json).
 The live files supersede preliminary rows when they conflict.
 
 ## First anonymous checkout pass
@@ -156,6 +158,21 @@ The two checkouts were rechecked together inside five seconds. Uber was
 This is direct evidence that menu-price comparison alone can select the wrong
 channel and that threshold baskets must remain distinct from single baskets.
 
+## First same-night stability repeat
+
+About 91 minutes after the first single-Reuben comparison, the exact experiment
+was repeated with empty starting carts. Both totals were unchanged: Slice was
+still **$12.87**, Uber Eats was still **$12.18**, and Uber remained **$0.69
+cheaper**. The repeat quotes were captured two seconds apart and immediately
+rechecked. Both carts were cleared afterward and no order was placed.
+
+The repeat also exposed a collection failure mode: the direct channel retained
+a stale two-item cart from the prior threshold experiment. It was detected and
+cleared before the basket was rebuilt. A collector must therefore prove an empty
+starting cart; opening the right restaurant and selecting the right item is not
+enough. This is imported provider/session complexity to contain in the capture
+protocol, not a reason to build a generalized state-recovery framework yet.
+
 ## Complexity assessment
 
 | Class | Complexity in this POC | Treatment now |
@@ -224,6 +241,8 @@ equivalence.
 
 ### Days 6–10: exact quote repetition (next)
 
+- Prove every channel cart is empty before building the basket, then clear it
+  again after capture.
 - Capture final pickup totals within one 10-minute comparison window.
 - Record a timestamp for every channel observation; the first live pass only
   recorded the session date and therefore cannot declare a comparison winner.
@@ -262,10 +281,10 @@ keep, revise, or reject them based on the actual failure distribution.
 | --- | --- | --- |
 | Relevant restaurant discovery | 25 of 25 fixed-panel restaurants appear in the POC; six have checkout research | 100% panel recall passes the POC gate; neighborhood-wide recall remains unproven |
 | Correct physical-location matching | One DoorDash same-name/different-address result was detected and rejected | Identity rule works; sample is too small for a rate |
-| Exact comparison coverage | Two complete comparisons, both for Kips Bay Deli | Proven possible, not broad enough for the 70% gate |
-| Equivalent baskets | 2 of 2 declared comparisons used identical item, size, quantity, and modifiers | 100% in a very small sample |
-| Winner recheck stability | 2 of 2 winners remained unchanged on immediate recheck | 100% in a very small sample |
-| Meaningful savings | $0.69 on the single basket and $5.94 on the threshold basket | Promising; frequency remains unknown |
+| Exact comparison coverage | Three complete comparison runs, all for Kips Bay Deli | Proven repeatable at one restaurant, not broad enough for the 70% gate |
+| Equivalent baskets | 3 of 3 declared comparisons used identical item, size, quantity, and modifiers within each run | 100% in a very small sample |
+| Winner recheck stability | 3 of 3 winners remained unchanged on immediate recheck; the single-basket winner and totals also survived a 91-minute repeat | Promising short-term stability; multi-day freshness remains unknown |
+| Meaningful savings | $0.69 on both single-basket runs and $5.94 on the threshold basket | Promising; cross-restaurant frequency remains unknown |
 | Manual capture time and adapter burden | Capture duration is not yet recorded consistently; no automated adapter exists | Unknown |
 
 ## Keys and access

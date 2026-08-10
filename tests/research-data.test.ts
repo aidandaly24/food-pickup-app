@@ -49,6 +49,7 @@ interface RawObservation {
 
 interface RawCaptureStudy {
   readonly captureRunId: string;
+  readonly repeatOfCaptureRunId?: string;
   readonly basketKind: string;
   readonly fulfillment: string;
   readonly comparison?: {
@@ -194,7 +195,7 @@ test("declared comparisons are derived from equivalent fresh quotes", async () =
   const studies = await readCaptureStudies();
   const comparisons = studies.filter((study) => study.comparison);
 
-  assert.equal(comparisons.length, 2);
+  assert.equal(comparisons.length, 3);
 
   for (const study of comparisons) {
     const { comparison } = study;
@@ -250,6 +251,64 @@ test("declared comparisons are derived from equivalent fresh quotes", async () =
   }
 });
 
+test("repeat captures point to an earlier equivalent comparison", async () => {
+  const studies = await readCaptureStudies();
+  const studiesById = new Map(
+    studies.map((study) => [study.captureRunId, study]),
+  );
+  const repeats = studies.filter((study) => study.repeatOfCaptureRunId);
+
+  assert.equal(repeats.length, 1);
+
+  for (const repeat of repeats) {
+    const original = studiesById.get(repeat.repeatOfCaptureRunId as string);
+    const originalQuotes = original ? exactComparison(original) : [];
+    const repeatQuotes = exactComparison(repeat);
+
+    assert.ok(original, "repeat target must exist");
+    assert.ok(original?.comparison, "repeat target must be a comparison");
+    assert.ok(repeat.comparison, "repeat must be a comparison");
+    assert.deepEqual(
+      repeatQuotes.map((quote) => quote.channel).sort(),
+      originalQuotes.map((quote) => quote.channel).sort(),
+    );
+    assert.deepEqual(
+      [...new Set(repeatQuotes.map((quote) => quote.basketKey))],
+      [...new Set(originalQuotes.map((quote) => quote.basketKey))],
+    );
+    assert.equal(
+      repeat.comparison.winnerChannel,
+      original?.comparison?.winnerChannel,
+    );
+
+    for (const repeatQuote of repeatQuotes) {
+      const originalQuote = originalQuotes.find(
+        (quote) => quote.channel === repeatQuote.channel,
+      );
+
+      assert.ok(originalQuote);
+      assert.equal(repeatQuote.itemSignature, originalQuote?.itemSignature);
+      assert.equal(repeatQuote.finalTotalCents, originalQuote?.finalTotalCents);
+    }
+
+    const originalLatest = Math.max(
+      ...originalQuotes.map((quote) =>
+        new Date(quote.capturedAt as string).getTime(),
+      ),
+    );
+    const repeatEarliest = Math.min(
+      ...repeatQuotes.map((quote) =>
+        new Date(quote.capturedAt as string).getTime(),
+      ),
+    );
+
+    const repeatDelay = repeatEarliest - originalLatest;
+
+    assert.ok(repeatDelay >= 90 * 60 * 1_000);
+    assert.ok(repeatDelay < 92 * 60 * 1_000);
+  }
+});
+
 test("published Phase 0 counts remain reproducible", async () => {
   const [studies, catalog] = await Promise.all([
     readCaptureStudies(),
@@ -265,11 +324,11 @@ test("published Phase 0 counts remain reproducible", async () => {
 
   assert.equal(catalog.restaurants.length, 25);
   assert.equal(observedRestaurants.size, 6);
-  assert.equal(observations.length, 16);
+  assert.equal(observations.length, 18);
   assert.equal(
     observations.filter((observation) => observation.finalTotalCents !== null)
       .length,
-    6,
+    8,
   );
-  assert.deepEqual(savings, [69, 594]);
+  assert.deepEqual(savings.sort((left, right) => left - right), [69, 69, 594]);
 });

@@ -88,6 +88,18 @@ function formatNullableMoney(cents: number | null) {
   return cents === null ? "Not captured" : formatMoney(cents);
 }
 
+const CAPTURE_TIME_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  hour: "numeric",
+  minute: "2-digit",
+  timeZone: "America/New_York",
+});
+
+function basketCaptureLabel(basket: StudyBasket): string {
+  if (!basket.observedAt) return basket.kind;
+
+  return `${basket.kind} · ${CAPTURE_TIME_FORMATTER.format(new Date(basket.observedAt))}`;
+}
+
 function observationPrice(observation: PickupObservation) {
   if (observation.finalTotalCents !== null) {
     return {
@@ -244,7 +256,7 @@ export default function Home() {
       </section>
 
       <section className="study-notice" aria-label="Data freshness">
-        <strong>Observed August 9, 2026</strong>
+        <strong>Observed August 9–10, 2026</strong>
         <span>
           These are dated anonymous and signed-in pickup observations, not live
           prices. Open a channel to confirm its current total before ordering.
@@ -463,7 +475,7 @@ export default function Home() {
                       aria-pressed={basket.id === selectedBasket.id}
                       onClick={() => selectBasket(basket.id)}
                     >
-                      <small>{basket.kind}</small>
+                      <small>{basketCaptureLabel(basket)}</small>
                       <strong>{basket.name}</strong>
                     </button>
                   ))}
