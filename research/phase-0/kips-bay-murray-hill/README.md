@@ -1,6 +1,6 @@
 # Kips Bay / Murray Hill feasibility study
 
-Status: seed pass complete; repeated checkout observations not started  
+Status: seed pass and first anonymous checkout pass complete; repetition not started
 Verified: 2026-08-09  
 Study center: East 34th Street and Third Avenue, New York, NY 10016  
 Boundary: all 25 candidates fit within an OpenStreetMap pedestrian-route estimate of 11 minutes; field calibration remains pending
@@ -47,9 +47,33 @@ offers, and states whether the total is exact or estimated.
   footer, so blindly following or crawling every first-party link would be a
   security and data-quality mistake.
 
-The public menu observations supporting these findings are in
-[`observations.json`](./observations.json). They are deliberately labeled
-`menu_only`; none is an exact checkout quote.
+The preliminary public menu observations are in
+[`observations.json`](./observations.json). The first live anonymous pickup pass
+is in [`checkout-observations.json`](./checkout-observations.json). The live file
+supersedes preliminary rows when they conflict.
+
+## First anonymous checkout pass
+
+The evening pass tested five restaurants without signing in, entering personal
+information, or placing an order:
+
+| Restaurant | Basket | Direct result | Marketplace result | Conclusion |
+| --- | --- | --- | --- | --- |
+| Pio Pio 7 | Whole Juanita's Chicken | $28 menu price; channels closed or not accepting orders | DoorDash $28 menu price; closed | Equivalent menu price, no immediate quote |
+| Tara Rose | Tara Rose Burger | $23 menu price; not accepting orders | Uber Eats $23 menu price; available Monday | Earlier $14 Classic Burger basket is obsolete |
+| Bhatti Indian Grill | Dilli Ka Butter Chicken | Exact checkout: $23.95 + $2.12 tax = **$26.07** with $0 tip and no fee | DoorDash cart: $23.95, final total hidden behind sign-in; Uber Eats stopped at a security challenge | Exact direct quote, no defensible winner |
+| Little Ruby's Murray Hill | Classic Cheeseburger | Active-cart total: $16.50 + $1.46 tax = **$17.96** | Uber Eats cart: $16.50, final total hidden behind sign-in | Exact cart total, no defensible winner |
+| Banc Cafe | The Banker | $23 public menu price; online ordering unavailable | DoorDash $23 menu price; order-for-later only | Equivalent menu price, no immediate quote |
+
+This is a useful negative result. Availability is part of a quote's identity,
+not a decoration, and anonymous marketplace checkout is often intentionally
+incomplete. The POC must say `unavailable` or `sign-in required` instead of
+estimating a winner from menu prices.
+
+The pass also invalidated two seed assumptions: Tara Rose no longer exposes the
+$14 Classic Burger, and Bhatti's live Uber Eats item price was $23.95 rather than
+the previously indexed $24. This is essential menu-version and freshness
+complexity, not evidence that we need a generalized crawler.
 
 ## Complexity assessment
 
@@ -69,12 +93,14 @@ quote, not rendering a restaurant card or inventing an adapter hierarchy.
 
 Every observation gets one of these levels:
 
-1. `exact_checkout`: same fulfillment mode, location, basket, modifiers, account
-   context, and timestamp; final payable total visible immediately before order.
-2. `exact_menu`: exact public item and modifier prices, but no final checkout
+1. `exact_checkout`: same fulfillment mode, location, basket, modifiers, and
+   account context; final payable total visible immediately before order.
+2. `exact_active_cart`: subtotal, tax, and cart total are visible, but the final
+   checkout page was not captured. This remains distinct from checkout.
+3. `exact_menu`: exact public item and modifier prices, but no final checkout
    total. Useful for parity work, never sufficient to declare a winner.
-3. `estimated`: at least one component is inferred, stale, unmatched, or hidden.
-4. `unavailable`: the channel or equivalent basket could not be obtained.
+4. `estimated`: at least one component is inferred, stale, unmatched, or hidden.
+5. `unavailable`: the channel or equivalent basket could not be obtained.
 
 An exact comparison requires all channels to be captured within a 10-minute
 window. Personalized and anonymous/public observations are separate experiments.
@@ -106,7 +132,7 @@ equivalence.
   15 observed minutes or whose storefront identity is wrong.
 - Replace removed candidates to keep approximately 25 restaurants.
 
-### Days 3–5: basket and channel coverage
+### Days 3–5: basket and channel coverage (first five complete)
 
 - Confirm the `single` and `threshold` baskets.
 - Capture anonymous/public menu observations for restaurant direct, DoorDash,
@@ -114,9 +140,11 @@ equivalence.
 - Record unsupported modifiers and channel-specific menu gaps rather than
   forcing a match.
 
-### Days 6–10: exact quote repetition
+### Days 6–10: exact quote repetition (next)
 
 - Capture final pickup totals within one 10-minute comparison window.
+- Record a timestamp for every channel observation; the first live pass only
+  recorded the session date and therefore cannot declare a comparison winner.
 - Repeat at lunch and dinner on at least three nonconsecutive days.
 - Record collection time and every blocked, broken, or ambiguous attempt.
 - Only after the anonymous pass, repeat a small subset in the user's signed-in
@@ -146,6 +174,13 @@ still warrant Mapbox or another supported routing API after manual checks confir
 the boundary. Signed-in Uber Eats and DoorDash observations require
 the user's existing browser sessions and explicit permission; they are not API-key
 work.
+
+## Public-repository boundary
+
+Only stable public source URLs, restaurant/menu facts, sanitized totals, and the
+collection protocol belong in this repository. Do not commit screenshots,
+cookies, browser profiles, checkout or cart identifiers, authentication URLs,
+account details, personal addresses, contact fields, or scratch notes.
 
 ## Primary source examples
 
