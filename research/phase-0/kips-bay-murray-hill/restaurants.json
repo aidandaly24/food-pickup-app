@@ -1,0 +1,532 @@
+{
+  "studyCenter": "East 34th Street and Third Avenue, New York, NY 10016",
+  "walkingLimitMinutes": 15,
+  "verifiedAt": "2026-08-09T16:00:00-04:00",
+  "routeStatus": "openstreetmap_pedestrian_estimate_complete; field_calibration_pending",
+  "channelDiscoveryStatus": "initial_not_exhaustive",
+  "restaurants": [
+    {
+      "id": "sarges-deli",
+      "name": "Sarge's Delicatessen & Diner",
+      "address": "548 3rd Avenue, New York, NY 10016",
+      "cuisine": "Jewish deli",
+      "anchorItem": "Hot pastrami sandwich",
+      "website": "https://sargesdeli.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Toast",
+          "relationship": "official_site_link",
+          "url": "https://order.toasttab.com/online/sarges-deli-548-3rd-ave"
+        }
+      ],
+      "sources": ["https://sargesdeli.com/"]
+    },
+    {
+      "id": "second-avenue-deli",
+      "name": "2nd Ave Deli",
+      "address": "162 East 33rd Street, New York, NY 10016",
+      "cuisine": "Kosher Jewish deli",
+      "anchorItem": "Hot pastrami sandwich",
+      "website": "https://2ndavedeli.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_storefront",
+          "provider": "DoorDash Commerce Platform",
+          "relationship": "storefront_discovered_location_matched",
+          "url": "https://order.online/store/2ndAveDeli-24260/"
+        },
+        {
+          "channel": "doordash_marketplace",
+          "provider": "DoorDash",
+          "relationship": "location_matched",
+          "url": "https://www.doordash.com/en/business/2nd-ave-deli-16528/"
+        }
+      ],
+      "sources": [
+        "https://2ndavedeli.com/contact/",
+        "https://order.online/store/2ndAveDeli-24260/"
+      ]
+    },
+    {
+      "id": "norma-murray-hill",
+      "name": "Norma Gastronomia Siciliana",
+      "address": "438 3rd Avenue, New York, NY 10016",
+      "cuisine": "Sicilian",
+      "anchorItem": "Pasta alla Norma; exact menu name pending",
+      "website": "https://normarestaurant.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Toast",
+          "relationship": "official_site_link",
+          "url": "https://www.toasttab.com/local/order/norma-gastronomia-siciliana-438-3rd-ave"
+        }
+      ],
+      "sources": ["https://normarestaurant.com/"]
+    },
+    {
+      "id": "pio-pio-7",
+      "name": "Pio Pio 7",
+      "address": "210 East 34th Street, New York, NY 10016",
+      "cuisine": "Peruvian",
+      "anchorItem": "Matador Combo",
+      "website": "https://www.piopio.shop/pio-7-kips-bay",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Toast",
+          "relationship": "official_site_link",
+          "url": "https://order.toasttab.com/online/pio-pio-7-kips-bay-210-east-34th-st"
+        },
+        {
+          "channel": "restaurant_storefront",
+          "provider": "DoorDash Commerce Platform",
+          "relationship": "official_site_link",
+          "url": "https://order.online/"
+        },
+        {
+          "channel": "doordash_marketplace",
+          "provider": "DoorDash",
+          "relationship": "official_site_link",
+          "url": "https://www.doordash.com/en-US/store/pio-pio-7-%E2%80%93-kips-bay-new-york-25125237/"
+        }
+      ],
+      "sources": ["https://www.piopio.shop/pio-7-kips-bay"]
+    },
+    {
+      "id": "nom-nam",
+      "name": "Nom Nam",
+      "address": "210 East 34th Street, New York, NY 10016",
+      "cuisine": "Vietnamese",
+      "anchorItem": "Pho plus a side; exact menu names pending",
+      "website": "https://www.nomnamnyc.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Sauce",
+          "relationship": "official_site_link",
+          "url": "https://www.getsauce.com/"
+        }
+      ],
+      "sources": ["https://www.nomnamnyc.com/"]
+    },
+    {
+      "id": "bareburger-murray-hill",
+      "name": "Bareburger Murray Hill",
+      "address": "430 3rd Avenue, New York, NY 10016",
+      "cuisine": "Burgers",
+      "anchorItem": "Burger plus fries; exact menu names pending",
+      "website": "https://www.bareburger.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Unresolved branded storefront",
+          "relationship": "brand_ordering_site",
+          "url": "https://order.bareburger.com/3/"
+        }
+      ],
+      "sources": ["https://order.bareburger.com/3/"]
+    },
+    {
+      "id": "little-rubys-murray-hill",
+      "name": "Little Ruby's Murray Hill",
+      "address": "442 3rd Avenue, New York, NY 10016",
+      "cuisine": "Australian cafe",
+      "anchorItem": "Bronte burger",
+      "website": "https://www.rubyscafe.com/location/murray-hill/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Toast",
+          "relationship": "location_matched_ordering_page",
+          "url": "https://order.toasttab.com/online/rubysmurrayhill"
+        },
+        {
+          "channel": "uber_eats",
+          "provider": "Uber Eats",
+          "relationship": "location_matched",
+          "url": "https://www.ubereats.com/brand-city/new-york-city/rubys-cafe"
+        }
+      ],
+      "sources": [
+        "https://www.rubyscafe.com/location/murray-hill/",
+        "https://order.toasttab.com/online/rubysmurrayhill"
+      ]
+    },
+    {
+      "id": "banc-cafe",
+      "name": "Banc Cafe",
+      "address": "431 3rd Avenue, New York, NY 10016",
+      "cuisine": "American / Irish",
+      "anchorItem": "Burger plus fries; exact menu names pending",
+      "website": "https://www.banccafe.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Toast",
+          "relationship": "official_site_link",
+          "url": "https://order.toasttab.com/"
+        },
+        {
+          "channel": "grubhub",
+          "provider": "Grubhub",
+          "relationship": "official_site_link",
+          "url": "https://www.grubhub.com/"
+        },
+        {
+          "channel": "doordash_marketplace",
+          "provider": "DoorDash",
+          "relationship": "official_site_link",
+          "url": "https://www.doordash.com/"
+        }
+      ],
+      "sources": ["https://www.banccafe.com/delivery-pickup"]
+    },
+    {
+      "id": "momosan-lexington",
+      "name": "Momosan Ramen & Sake",
+      "address": "342 Lexington Avenue, New York, NY 10016",
+      "cuisine": "Japanese ramen",
+      "anchorItem": "Tonkotsu ramen",
+      "website": "https://momosanramen.com/restaurants/lexington/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_storefront",
+          "provider": "DoorDash Commerce Platform",
+          "relationship": "official_site_link",
+          "url": "https://order.online/"
+        }
+      ],
+      "sources": ["https://momosanramen.com/restaurants/lexington/"]
+    },
+    {
+      "id": "makimaki-lexington",
+      "name": "MakiMaki Sushi",
+      "address": "360 Lexington Avenue, New York, NY 10017",
+      "cuisine": "Sushi",
+      "anchorItem": "Standard Combo - Choose 3 Handrolls",
+      "website": "https://makimaki.nyc/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_storefront",
+          "provider": "DoorDash Commerce Platform",
+          "relationship": "storefront_discovered_location_matched",
+          "url": "https://order.online/en-US/store/MakimakiSushi-765903"
+        },
+        {
+          "channel": "doordash_marketplace",
+          "provider": "DoorDash",
+          "relationship": "location_matched",
+          "url": "https://www.doordash.com/business/makimaki-sushi-341094/"
+        }
+      ],
+      "sources": [
+        "https://makimaki.nyc/location/",
+        "https://order.online/en-US/store/MakimakiSushi-765903"
+      ]
+    },
+    {
+      "id": "bhatti-indian-grill",
+      "name": "Bhatti Indian Grill",
+      "address": "100 Lexington Avenue, New York, NY 10016",
+      "cuisine": "North Indian",
+      "anchorItem": "Dilli Ka Butter Chicken plus garlic naan",
+      "website": "https://www.bhattinyc.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_storefront",
+          "provider": "DoorDash Commerce Platform",
+          "relationship": "storefront_discovered_location_matched",
+          "url": "https://order.online/store/bhatti-indian-grill-221684"
+        },
+        {
+          "channel": "grubhub",
+          "provider": "Grubhub",
+          "relationship": "location_matched",
+          "url": "https://www.grubhub.com/restaurant/bhatti-indian-grill-100-lexington-ave-new-york/81752"
+        },
+        {
+          "channel": "uber_eats",
+          "provider": "Uber Eats",
+          "relationship": "location_matched",
+          "url": "https://www.ubereats.com/store/bhatti-indian-grill-kips-bay/Vtkze_NiTO-RY87xT-9U5w"
+        }
+      ],
+      "sources": [
+        "https://www.bhattinyc.com/contact",
+        "https://order.online/store/bhatti-indian-grill-221684"
+      ]
+    },
+    {
+      "id": "curry-in-a-hurry",
+      "name": "Curry In A Hurry",
+      "address": "119 Lexington Avenue, New York, NY 10016",
+      "cuisine": "Indian",
+      "anchorItem": "Chicken Tikka Masala plus naan",
+      "website": "https://www.curryinahurrynewyork.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Grubhub-backed branded site",
+          "relationship": "official_ordering_site",
+          "url": "https://www.curryinahurrynewyork.com/"
+        }
+      ],
+      "sources": ["https://www.curryinahurrynewyork.com/"]
+    },
+    {
+      "id": "ahimsa-murray-hill",
+      "name": "Ahimsa",
+      "address": "204 East 38th Street, New York, NY 10016",
+      "cuisine": "Vegetarian Indian",
+      "anchorItem": "Palak Paneer",
+      "website": "https://www.ahimsaexpress.com/home",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_storefront",
+          "provider": "DoorDash Commerce Platform",
+          "relationship": "storefront_discovered_location_matched",
+          "url": "https://order.online/en/store/152602"
+        }
+      ],
+      "sources": [
+        "https://www.ahimsaexpress.com/home",
+        "https://order.online/en/store/152602"
+      ]
+    },
+    {
+      "id": "el-parador-cafe",
+      "name": "El Parador Cafe",
+      "address": "325 East 34th Street, New York, NY 10016",
+      "cuisine": "Mexican",
+      "anchorItem": "Vinegar-Garlic Marinated Chicken Parador",
+      "website": "https://www.elparadorcafe.com/",
+      "channelsObserved": [],
+      "notes": "Official site verifies the location and menu but exposed no online ordering link in the seed pass.",
+      "sources": [
+        "https://www.elparadorcafe.com/",
+        "https://www.elparadorcafe.com/menus/"
+      ]
+    },
+    {
+      "id": "penelope",
+      "name": "Penelope",
+      "address": "159 Lexington Avenue, New York, NY 10016",
+      "cuisine": "American brunch",
+      "anchorItem": "Brunch entree plus coffee; exact menu names pending",
+      "website": "https://penelopenewyork.com/",
+      "channelsObserved": [],
+      "notes": "The official page verifies current hours and address but contains unrelated spam links in its footer. Do not automatically follow untrusted outbound links.",
+      "sources": ["https://penelopenewyork.com/"]
+    },
+    {
+      "id": "patrizias-manhattan",
+      "name": "Patrizia's Manhattan",
+      "address": "462-466 2nd Avenue, New York, NY 10016",
+      "cuisine": "Italian",
+      "anchorItem": "Margherita pizza; exact size pending",
+      "website": "https://www.patrizias.com/location/patrizias-manhattan/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Toast",
+          "relationship": "official_site_link",
+          "url": "https://order.toasttab.com/online/patrizias-manhattan-462-466-2nd-ave"
+        },
+        {
+          "channel": "restaurant_delivery",
+          "provider": "Sauce",
+          "relationship": "official_site_link",
+          "url": "https://www.getsauce.com/"
+        }
+      ],
+      "sources": ["https://www.patrizias.com/location/patrizias-manhattan/"]
+    },
+    {
+      "id": "coletta",
+      "name": "Coletta",
+      "address": "365 3rd Avenue, New York, NY 10016",
+      "cuisine": "Vegan Italian",
+      "anchorItem": "Margherita pizza",
+      "website": "https://www.colettanyc.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_storefront",
+          "provider": "Unresolved: public pages conflict between Square and DoorDash Commerce Platform",
+          "relationship": "needs_official_link_confirmation",
+          "url": "https://order.online/store/coletta-new-york-22928935"
+        }
+      ],
+      "notes": "Provider identity is intentionally unresolved until the official Order Now handoff is captured directly.",
+      "sources": [
+        "https://www.colettanyc.com/",
+        "https://order.online/store/coletta-new-york-22928935"
+      ]
+    },
+    {
+      "id": "stickys-murray-hill",
+      "name": "Sticky's Murray Hill",
+      "address": "484 3rd Avenue, New York, NY 10016",
+      "cuisine": "Chicken",
+      "anchorItem": "Chicken fingers combo; exact size and sauces pending",
+      "website": "https://stickys.com/locations/new-york/murray-hill-484-3rd-ave-new-york-ny-10016/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Unresolved branded storefront",
+          "relationship": "official_site_order_flow",
+          "url": "https://stickys.com/locations/new-york/murray-hill-484-3rd-ave-new-york-ny-10016/"
+        }
+      ],
+      "sources": ["https://stickys.com/locations/new-york/murray-hill-484-3rd-ave-new-york-ny-10016/"]
+    },
+    {
+      "id": "dig-murray-hill",
+      "name": "DIG Murray Hill",
+      "address": "630 3rd Avenue, New York, NY 10017",
+      "cuisine": "American bowls",
+      "anchorItem": "Classic DIG",
+      "website": "https://catering.diginn.com/locations/ny/new-york/630-3rd-ave/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "DIG branded ordering",
+          "relationship": "official_site_order_flow",
+          "url": "https://catering.diginn.com/locations/ny/new-york/630-3rd-ave/"
+        },
+        {
+          "channel": "restaurant_storefront",
+          "provider": "DoorDash Commerce Platform",
+          "relationship": "storefront_discovered_location_matched",
+          "url": "https://order.online/store/DIG-23104320/"
+        }
+      ],
+      "sources": [
+        "https://catering.diginn.com/locations/ny/new-york/630-3rd-ave/",
+        "https://order.online/store/DIG-23104320/"
+      ]
+    },
+    {
+      "id": "shake-shack-midtown-east",
+      "name": "Shake Shack Midtown East",
+      "address": "600 3rd Avenue, New York, NY 10016",
+      "cuisine": "Burgers",
+      "anchorItem": "ShackBurger plus fries",
+      "website": "https://shakeshack.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Shake Shack web/app",
+          "relationship": "official_brand_order_flow",
+          "url": "https://shakeshack.com/"
+        }
+      ],
+      "sources": ["https://stg.shakeshack.com/location/midtown-east-ny"]
+    },
+    {
+      "id": "kips-bay-deli",
+      "name": "Kips Bay Deli",
+      "address": "545 2nd Avenue, New York, NY 10016",
+      "cuisine": "Deli",
+      "anchorItem": "Reuben on Rye plus curly fries",
+      "website": "https://www.kipsbaydeli.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Slice",
+          "relationship": "official_ordering_site",
+          "url": "https://www.kipsbaydeli.com/"
+        }
+      ],
+      "sources": ["https://www.kipsbaydeli.com/"]
+    },
+    {
+      "id": "vezzo-thin-crust",
+      "name": "Vezzo Thin Crust Pizza",
+      "address": "178 Lexington Avenue, New York, NY 10016",
+      "cuisine": "Pizza",
+      "anchorItem": "9-inch plain pizza",
+      "website": "http://www.vezzothincrust.com/",
+      "channelsObserved": [
+        {
+          "channel": "grubhub",
+          "provider": "Grubhub",
+          "relationship": "location_matched",
+          "url": "https://www.grubhub.com/restaurant/vezzo-nycthincrust-pizza---murray-hill-178-lexington-ave-new-york/915337"
+        }
+      ],
+      "notes": "The restaurant domain and a current marketplace listing need direct storefront confirmation.",
+      "sources": [
+        "https://ny.eater.com/venue/44295/vezzo-thin-crust",
+        "https://www.grubhub.com/restaurant/vezzo-nycthincrust-pizza---murray-hill-178-lexington-ave-new-york/915337"
+      ]
+    },
+    {
+      "id": "tara-rose",
+      "name": "Tara Rose",
+      "address": "384 3rd Avenue, New York, NY 10016",
+      "cuisine": "American / Irish",
+      "anchorItem": "Classic Burger",
+      "website": "https://www.tararosenyc.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Toast",
+          "relationship": "location_matched_ordering_page",
+          "url": "https://order.toasttab.com/online/tara-rose-384-third-ave"
+        },
+        {
+          "channel": "grubhub",
+          "provider": "Grubhub / Seamless",
+          "relationship": "location_matched",
+          "url": "https://www.grubhub.com/restaurant/tara-rose-384-3rd-ave-new-york/1282514"
+        },
+        {
+          "channel": "uber_eats",
+          "provider": "Uber Eats / Postmates",
+          "relationship": "location_matched",
+          "url": "https://postmates.com/store/tara-rose/sCISHchLTNSMGpfvxarcbQ"
+        }
+      ],
+      "sources": [
+        "https://www.tararosenyc.com/our-story/",
+        "https://order.toasttab.com/online/tara-rose-384-third-ave"
+      ]
+    },
+    {
+      "id": "the-flying-cock",
+      "name": "The Flying Cock",
+      "address": "497 3rd Avenue, New York, NY 10016",
+      "cuisine": "American / Irish pub",
+      "anchorItem": "Fried chicken sandwich plus fries",
+      "website": "https://www.theflyingcocknyc.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_direct",
+          "provider": "Grubhub",
+          "relationship": "official_site_order_link",
+          "url": "https://www.grubhub.com/restaurant/the-flying-cock-497-3rd-ave-new-york/6034104"
+        }
+      ],
+      "sources": ["https://www.theflyingcocknyc.com/location/delivery/"]
+    },
+    {
+      "id": "medium-rare-murray-hill",
+      "name": "Medium Rare Murray Hill",
+      "address": "488 3rd Avenue, New York, NY 10016",
+      "cuisine": "Steak frites",
+      "anchorItem": "Signature dinner; exact pickup configuration pending",
+      "website": "https://www.mediumrarerestaurant.com/",
+      "channelsObserved": [
+        {
+          "channel": "restaurant_storefront",
+          "provider": "DoorDash Commerce Platform",
+          "relationship": "location_matched_storefront",
+          "url": "https://sf-classic.order.online/store/medium-rare-31602501/"
+        }
+      ],
+      "sources": ["https://sf-classic.order.online/store/medium-rare-31602501/"]
+    }
+  ]
+}

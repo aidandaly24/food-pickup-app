@@ -32,3 +32,13 @@ npm test
 
 No database, authentication, queue, scraper, or provider framework is included
 until a feasibility experiment demonstrates the need.
+
+## Phase 0 research
+
+The first real-data feasibility study is scoped to Kips Bay and Murray Hill. Its
+25-restaurant seed ledger, evidence rules, complexity assessment, and collection
+protocol live in
+[`research/phase-0/kips-bay-murray-hill`](./research/phase-0/kips-bay-murray-hill/README.md).
+
+Research observations are intentionally separate from `app/demo-data.ts`; public
+menu pages are not trustworthy enough to become live product quotes.

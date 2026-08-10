@@ -1,0 +1,39 @@
+{
+  "retrievedOn": "2026-08-09",
+  "router": "OpenStreetMap routed-foot service",
+  "attribution": "Data © OpenStreetMap contributors, ODbL 1.0",
+  "center": {
+    "label": "East 34th Street and Third Avenue",
+    "geocodedAs": "201 East 34th Street, New York, NY 10016",
+    "latitude": 40.7456728,
+    "longitude": -73.977598
+  },
+  "method": "Pedestrian network route. estimatedMinutes is durationSeconds divided by 60 and rounded up; it does not include a field-observed pace or signal-delay calibration.",
+  "routes": [
+    { "restaurantId": "sarges-deli", "latitude": 40.7473351, "longitude": -73.9771952, "distanceMeters": 236, "durationSeconds": 188.8, "estimatedMinutes": 4 },
+    { "restaurantId": "second-avenue-deli", "latitude": 40.7451119, "longitude": -73.9792384, "distanceMeters": 193.1, "durationSeconds": 154.4, "estimatedMinutes": 3 },
+    { "restaurantId": "norma-murray-hill", "latitude": 40.7435397, "longitude": -73.9800134, "distanceMeters": 356.6, "durationSeconds": 285.1, "estimatedMinutes": 5 },
+    { "restaurantId": "pio-pio-7", "latitude": 40.7452585, "longitude": -73.9776638, "distanceMeters": 74.3, "durationSeconds": 61.5, "estimatedMinutes": 2 },
+    { "restaurantId": "nom-nam", "latitude": 40.7452585, "longitude": -73.9776638, "distanceMeters": 74.3, "durationSeconds": 61.5, "estimatedMinutes": 2 },
+    { "restaurantId": "bareburger-murray-hill", "latitude": 40.7431934, "longitude": -73.9801954, "distanceMeters": 397.8, "durationSeconds": 318.1, "estimatedMinutes": 6 },
+    { "restaurantId": "little-rubys-murray-hill", "latitude": 40.7436106, "longitude": -73.9798874, "distanceMeters": 344.5, "durationSeconds": 275.5, "estimatedMinutes": 5 },
+    { "restaurantId": "banc-cafe", "latitude": 40.7432296, "longitude": -73.9797061, "distanceMeters": 349.1, "durationSeconds": 279.2, "estimatedMinutes": 5 },
+    { "restaurantId": "momosan-lexington", "latitude": 40.7499282, "longitude": -73.9774685, "distanceMeters": 625.7, "durationSeconds": 500.5, "estimatedMinutes": 9 },
+    { "restaurantId": "makimaki-lexington", "latitude": 40.7504859, "longitude": -73.9771542, "distanceMeters": 695.3, "durationSeconds": 556.3, "estimatedMinutes": 10 },
+    { "restaurantId": "bhatti-indian-grill", "latitude": 40.742222, "longitude": -73.98308, "distanceMeters": 777.3, "durationSeconds": 621.6, "estimatedMinutes": 11 },
+    { "restaurantId": "curry-in-a-hurry", "latitude": 40.7426823, "longitude": -73.9822532, "distanceMeters": 662.8, "durationSeconds": 530.2, "estimatedMinutes": 9 },
+    { "restaurantId": "ahimsa-murray-hill", "latitude": 40.7478295, "longitude": -73.9759033, "distanceMeters": 366.9, "durationSeconds": 293.4, "estimatedMinutes": 5 },
+    { "restaurantId": "el-parador-cafe", "latitude": 40.7445573, "longitude": -73.9746512, "distanceMeters": 277.9, "durationSeconds": 222.2, "estimatedMinutes": 4 },
+    { "restaurantId": "penelope", "latitude": 40.7437248, "longitude": -73.9814961, "distanceMeters": 530.4, "durationSeconds": 424.2, "estimatedMinutes": 8 },
+    { "restaurantId": "patrizias-manhattan", "latitude": 40.740277, "longitude": -73.9791891, "distanceMeters": 758.6, "durationSeconds": 606.5, "estimatedMinutes": 11 },
+    { "restaurantId": "coletta", "latitude": 40.7408725, "longitude": -73.9812311, "distanceMeters": 640.5, "durationSeconds": 512.5, "estimatedMinutes": 9 },
+    { "restaurantId": "stickys-murray-hill", "latitude": 40.7450463, "longitude": -73.9788479, "distanceMeters": 162.6, "durationSeconds": 130.1, "estimatedMinutes": 3 },
+    { "restaurantId": "dig-murray-hill", "latitude": 40.7500445, "longitude": -73.9752214, "distanceMeters": 580.9, "durationSeconds": 464.8, "estimatedMinutes": 8 },
+    { "restaurantId": "shake-shack-midtown-east", "latitude": 40.7493233, "longitude": -73.9758905, "distanceMeters": 483.3, "durationSeconds": 386.6, "estimatedMinutes": 7 },
+    { "restaurantId": "kips-bay-deli", "latitude": 40.7425191, "longitude": -73.9778922, "distanceMeters": 499, "durationSeconds": 399.2, "estimatedMinutes": 7 },
+    { "restaurantId": "vezzo-thin-crust", "latitude": 40.7444593, "longitude": -73.9813057, "distanceMeters": 469.6, "durationSeconds": 375.5, "estimatedMinutes": 7 },
+    { "restaurantId": "tara-rose", "latitude": 40.7418311, "longitude": -73.9814019, "distanceMeters": 579.5, "durationSeconds": 463.6, "estimatedMinutes": 8 },
+    { "restaurantId": "the-flying-cock", "latitude": 40.7452908, "longitude": -73.9780784, "distanceMeters": 82.2, "durationSeconds": 65.7, "estimatedMinutes": 2 },
+    { "restaurantId": "medium-rare-murray-hill", "latitude": 40.7453122, "longitude": -73.9787228, "distanceMeters": 132, "durationSeconds": 105.6, "estimatedMinutes": 2 }
+  ]
+}
