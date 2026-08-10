@@ -30,6 +30,18 @@ Commerce Platform storefront: signed-in Uber Eats totaled $24.88 versus $26.07
 direct. Uber's $1.20 membership benefit reversed a one-cent pre-benefit direct
 advantage.
 
+## Browser-side acquisition spike
+
+The next POC now targets sustainable, arbitrary-basket acquisition rather than
+adding more manually curated baskets. [`extension/`](./extension/) contains a
+TypeScript Chrome companion that reads exact pickup totals from an open Uber
+Eats or DoorDash Commerce Platform checkout, normalizes visible cart items and
+modifiers, rejects mismatches, and compares the normalized quotes locally.
+
+The live spike has extracted the Bhatti checkout on both provider families. It
+stores neither raw page text nor checkout/account identifiers and never presses
+the final order action. Automatic basket replication is the next experiment.
+
 ## Run locally
 
 ```bash

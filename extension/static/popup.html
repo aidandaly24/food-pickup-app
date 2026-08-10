@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sidewalk Quote Capture</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">SIDEWALK POC</p>
+      <h1>Compare this cart</h1>
+      <p class="lede">
+        Open a pickup checkout, then capture its exact total. Repeat on the
+        restaurant's other channel.
+      </p>
+      <button id="capture" type="button">Capture current checkout</button>
+      <p id="status" role="status">No checkout captured yet.</p>
+      <section id="quotes" aria-label="Captured quotes"></section>
+      <button class="secondary" id="clear" type="button">Clear captures</button>
+      <small>
+        Raw page text and account credentials are never stored. Sidewalk never
+        presses the final order button.
+      </small>
+    </main>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

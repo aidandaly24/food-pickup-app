@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Sidewalk Quote Capture",
+  "description": "Compare pickup checkout totals without sharing ordering-account credentials.",
+  "version": "0.1.0",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": [
+    "https://www.ubereats.com/*",
+    "https://order.online/*"
+  ],
+  "action": {
+    "default_title": "Capture pickup quote",
+    "default_popup": "popup.html"
+  }
+}
