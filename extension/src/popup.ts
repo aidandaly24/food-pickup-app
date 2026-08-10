@@ -180,7 +180,7 @@ async function render(): Promise<void> {
   }
 }
 
-captureButton.addEventListener("click", async () => {
+async function captureCurrentCheckout(): Promise<void> {
   captureButton.disabled = true;
   status.textContent = "Reading the visible checkout…";
 
@@ -194,6 +194,7 @@ captureButton.addEventListener("click", async () => {
     captures[quote.provider] = quote;
     await chrome.storage.session.set({ [CAPTURE_KEY]: captures });
     status.textContent = `${providerName(quote.provider)} captured. Open the other channel to compare.`;
+    captureButton.textContent = "Recapture current checkout";
     await render();
   } catch (error) {
     status.textContent =
@@ -201,6 +202,10 @@ captureButton.addEventListener("click", async () => {
   } finally {
     captureButton.disabled = false;
   }
+}
+
+captureButton.addEventListener("click", () => {
+  void captureCurrentCheckout();
 });
 
 clearButton.addEventListener("click", async () => {
@@ -210,3 +215,4 @@ clearButton.addEventListener("click", async () => {
 });
 
 await render();
+await captureCurrentCheckout();

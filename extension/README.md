@@ -27,6 +27,8 @@ npm run build:extension
 
 The unpacked extension is emitted to `extension/dist`. In Chrome's extension
 manager, enable developer mode and choose **Load unpacked** to test that folder.
+Opening the extension on a supported checkout captures it immediately; the
+button remains available to retry after the checkout changes.
 
 ## Current boundary
 
