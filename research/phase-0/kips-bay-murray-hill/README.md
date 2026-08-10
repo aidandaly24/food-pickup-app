@@ -33,6 +33,10 @@ offers, and states whether the total is exact or estimated.
 - Forty-five of 47 known ordering links have explicit exact-location evidence.
   Sticky's direct handoff and Patrizia's Sauce page remain unverified and are
   labeled that way in the POC rather than counted as matches.
+- The provider matrix in [`provider-capabilities.json`](./provider-capabilities.json)
+  accounts for all 47 links. DoorDash Commerce Platform leads the fixed panel
+  with nine links, followed by DoorDash Marketplace and Uber Eats with eight
+  each, and Toast with seven. Those four surfaces cover 32 of 47 links.
 - A restaurant-branded ordering link is not a provider. The initial set already
   includes Toast, Square, DoorDash Commerce Platform (`order.online`), Sauce,
   Slice, ChowNow, Grubhub-backed ordering, and brand-owned storefronts.
@@ -224,10 +228,13 @@ need measurement; it still does not justify a generalized recovery framework.
 | Imported | Dynamic provider UIs, sign-in state, anti-automation controls, opaque restaurant/provider handoffs, platform terms, and inconsistent public pages | Isolate through manual/browser-assisted collection; do not pretend it is our domain |
 | Accidental | A generalized crawler, adapter framework, database, queue, cache, accounts, recommendations, or service split before data feasibility is known | Do not build |
 | Transitional | A fixed study center, a curated 25-restaurant ledger, manual route checks, and human-assisted checkout capture | Accept for the one-to-two-week experiment, then delete or replace only if evidence warrants it |
-| Unknown | How often totals change, how much offers personalize, how many baskets are genuinely comparable, and which provider families dominate the neighborhood | Measure before choosing architecture |
+| Unknown | How often totals change, how much offers personalize, how many baskets are genuinely comparable, and whether the fixed-panel provider mix generalizes beyond this neighborhood | Measure before choosing architecture |
 
 Decision: continue Phase 0 and surface the qualifying evidence in the existing
-POC. The essential difficulty remains acquiring a trustworthy equivalent
+POC. DoorDash Commerce Platform is the leading future adapter candidate because
+it has the widest fixed-panel coverage and one anonymous exact checkout, but no
+adapter is justified until cross-restaurant quote coverage and end-to-end timing
+improve. The essential difficulty remains acquiring a trustworthy equivalent
 checkout quote, not inventing an adapter hierarchy.
 
 ## Evidence and quote rules

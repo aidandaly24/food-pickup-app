@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "observedOn": "2026-08-10",
+  "scope": "Fixed 25-restaurant Kips Bay and Murray Hill panel only.",
+  "warning": "A zero means the capability has not been observed in this study; it does not mean the provider cannot support it.",
+  "sourceFiles": [
+    "restaurants.json",
+    "observations.json",
+    "checkout-observations.json",
+    "signed-in-checkout-observations.json",
+    "threshold-checkout-observations.json",
+    "repeat-checkout-observations.json",
+    "cross-midnight-checkout-observations.json"
+  ],
+  "adapterDecision": {
+    "status": "deferred_until_phase_0_gate",
+    "leadingCandidate": "doordash_commerce_platform",
+    "reason": "It is the largest observed provider family at 9 of 47 catalog links, all nine links have exact-location evidence, and one anonymous exact checkout is already proven.",
+    "revisitWhen": [
+      "At least two restaurants on this family have equivalent cross-channel exact checkout comparisons.",
+      "End-to-end capture time is measured for at least three restaurants.",
+      "The Phase 0 exact-quote coverage gate is met or deliberately revised from observed failures."
+    ]
+  },
+  "providers": [
+    {
+      "id": "doordash_commerce_platform",
+      "labels": ["DoorDash Commerce Platform"],
+      "surfaces": ["restaurant_storefront"],
+      "catalogLinkCount": 9,
+      "restaurantCount": 9,
+      "verifiedLocationLinkCount": 9,
+      "exactMenuObservations": 2,
+      "exactCheckoutObservations": 1,
+      "exactActiveCartObservations": 0,
+      "blockedCheckoutAttempts": 0
+    },
+    {
+      "id": "doordash_marketplace",
+      "labels": ["DoorDash"],
+      "surfaces": ["doordash_marketplace"],
+      "catalogLinkCount": 8,
+      "restaurantCount": 8,
+      "verifiedLocationLinkCount": 8,
+      "exactMenuObservations": 1,
+      "exactCheckoutObservations": 0,
+      "exactActiveCartObservations": 0,
+      "blockedCheckoutAttempts": 1
+    },
+    {
+      "id": "uber_eats",
+      "labels": ["Uber Eats"],
+      "surfaces": ["uber_eats"],
+      "catalogLinkCount": 8,
+      "restaurantCount": 8,
+      "verifiedLocationLinkCount": 8,
+      "exactMenuObservations": 1,
+      "exactCheckoutObservations": 4,
+      "exactActiveCartObservations": 0,
+      "blockedCheckoutAttempts": 2
+    },
+    {
+      "id": "toast",
+      "labels": ["Toast"],
+      "surfaces": ["restaurant_direct"],
+      "catalogLinkCount": 7,
+      "restaurantCount": 7,
+      "verifiedLocationLinkCount": 7,
+      "exactMenuObservations": 3,
+      "exactCheckoutObservations": 0,
+      "exactActiveCartObservations": 1,
+      "blockedCheckoutAttempts": 0
+    },
+    {
+      "id": "grubhub_family",
+      "labels": [
+        "Grubhub",
+        "Grubhub / Seamless",
+        "Grubhub-backed branded site"
+      ],
+      "surfaces": ["grubhub", "restaurant_direct"],
+      "catalogLinkCount": 6,
+      "restaurantCount": 6,
+      "verifiedLocationLinkCount": 6,
+      "exactMenuObservations": 1,
+      "exactCheckoutObservations": 0,
+      "exactActiveCartObservations": 0,
+      "blockedCheckoutAttempts": 0
+    },
+    {
+      "id": "sauce",
+      "labels": ["Sauce"],
+      "surfaces": ["restaurant_delivery", "restaurant_direct"],
+      "catalogLinkCount": 2,
+      "restaurantCount": 2,
+      "verifiedLocationLinkCount": 1,
+      "exactMenuObservations": 0,
+      "exactCheckoutObservations": 0,
+      "exactActiveCartObservations": 0,
+      "blockedCheckoutAttempts": 0
+    },
+    {
+      "id": "appfront",
+      "labels": ["Appfront / Just Order"],
+      "surfaces": ["restaurant_direct"],
+      "catalogLinkCount": 1,
+      "restaurantCount": 1,
+      "verifiedLocationLinkCount": 0,
+      "exactMenuObservations": 0,
+      "exactCheckoutObservations": 0,
+      "exactActiveCartObservations": 0,
+      "blockedCheckoutAttempts": 0
+    },
+    {
+      "id": "chownow",
+      "labels": ["ChowNow"],
+      "surfaces": ["restaurant_direct"],
+      "catalogLinkCount": 1,
+      "restaurantCount": 1,
+      "verifiedLocationLinkCount": 1,
+      "exactMenuObservations": 0,
+      "exactCheckoutObservations": 0,
+      "exactActiveCartObservations": 0,
+      "blockedCheckoutAttempts": 0
+    },
+    {
+      "id": "dig_brand",
+      "labels": ["DIG branded ordering"],
+      "surfaces": ["restaurant_direct"],
+      "catalogLinkCount": 1,
+      "restaurantCount": 1,
+      "verifiedLocationLinkCount": 1,
+      "exactMenuObservations": 0,
+      "exactCheckoutObservations": 0,
+      "exactActiveCartObservations": 0,
+      "blockedCheckoutAttempts": 0
+    },
+    {
+      "id": "lunchbox",
+      "labels": ["Lunchbox"],
+      "surfaces": ["restaurant_direct"],
+      "catalogLinkCount": 1,
+      "restaurantCount": 1,
+      "verifiedLocationLinkCount": 1,
+      "exactMenuObservations": 0,
+      "exactCheckoutObservations": 0,
+      "exactActiveCartObservations": 0,
+      "blockedCheckoutAttempts": 0
+    },
+    {
+      "id": "shake_shack_brand",
+      "labels": ["Shake Shack web/app"],
+      "surfaces": ["restaurant_direct"],
+      "catalogLinkCount": 1,
+      "restaurantCount": 1,
+      "verifiedLocationLinkCount": 1,
+      "exactMenuObservations": 0,
+      "exactCheckoutObservations": 0,
+      "exactActiveCartObservations": 0,
+      "blockedCheckoutAttempts": 0
+    },
+    {
+      "id": "slice",
+      "labels": ["Slice"],
+      "surfaces": ["restaurant_direct"],
+      "catalogLinkCount": 1,
+      "restaurantCount": 1,
+      "verifiedLocationLinkCount": 1,
+      "exactMenuObservations": 0,
+      "exactCheckoutObservations": 4,
+      "exactActiveCartObservations": 0,
+      "blockedCheckoutAttempts": 0
+    },
+    {
+      "id": "square",
+      "labels": ["Square"],
+      "surfaces": ["restaurant_direct"],
+      "catalogLinkCount": 1,
+      "restaurantCount": 1,
+      "verifiedLocationLinkCount": 1,
+      "exactMenuObservations": 1,
+      "exactCheckoutObservations": 0,
+      "exactActiveCartObservations": 0,
+      "blockedCheckoutAttempts": 0
+    }
+  ]
+}

@@ -38,6 +38,7 @@ interface RawObservation {
   readonly basketKey: string;
   readonly itemSignature: string;
   readonly channel: string;
+  readonly provider: string;
   readonly result: string;
   readonly itemsSubtotalCents: number;
   readonly taxCents: number | null;
@@ -67,6 +68,32 @@ interface RawCaptureStudy {
     readonly recheckedAt: string;
   };
   readonly observations: readonly RawObservation[];
+}
+
+interface RawMenuStudy {
+  readonly observations: readonly {
+    readonly provider: string;
+    readonly evidenceLevel: string;
+  }[];
+}
+
+interface RawProviderMatrix {
+  readonly adapterDecision: {
+    readonly status: string;
+    readonly leadingCandidate: string;
+  };
+  readonly providers: readonly {
+    readonly id: string;
+    readonly labels: readonly string[];
+    readonly surfaces: readonly string[];
+    readonly catalogLinkCount: number;
+    readonly restaurantCount: number;
+    readonly verifiedLocationLinkCount: number;
+    readonly exactMenuObservations: number;
+    readonly exactCheckoutObservations: number;
+    readonly exactActiveCartObservations: number;
+    readonly blockedCheckoutAttempts: number;
+  }[];
 }
 
 async function readCaptureStudies(): Promise<readonly RawCaptureStudy[]> {
@@ -398,6 +425,116 @@ test("timed collection metadata reconciles", async () => {
     );
     assert.equal(study.comparison?.recheckedAt, collection.completedAt);
   }
+});
+
+test("the provider matrix partitions the catalog and matches observed evidence", async () => {
+  const [matrix, catalog, menuStudy, checkoutStudies] = await Promise.all([
+    readJson<RawProviderMatrix>("provider-capabilities.json"),
+    readJson<RawRestaurantStudy>("restaurants.json"),
+    readJson<RawMenuStudy>("observations.json"),
+    readCaptureStudies(),
+  ]);
+  const providerIds = matrix.providers.map((provider) => provider.id);
+  const labelOwners = new Map<string, string>();
+
+  assert.equal(new Set(providerIds).size, providerIds.length);
+
+  for (const provider of matrix.providers) {
+    assert.ok(provider.labels.length > 0);
+    for (const label of provider.labels) {
+      assert.ok(!labelOwners.has(label), `duplicate provider label ${label}`);
+      labelOwners.set(label, provider.id);
+    }
+  }
+
+  const catalogChannels = catalog.restaurants.flatMap((restaurant) =>
+    restaurant.channelsObserved.map((channel) => ({
+      restaurantId: restaurant.id,
+      ...channel,
+    })),
+  );
+  const checkoutObservations = checkoutStudies.flatMap(
+    (study) => study.observations,
+  );
+
+  assert.equal(catalogChannels.length, 47);
+  assert.ok(
+    catalogChannels.every((channel) => labelOwners.has(channel.provider)),
+  );
+  assert.deepEqual(
+    [...labelOwners.keys()].sort(),
+    [...new Set(catalogChannels.map((channel) => channel.provider))].sort(),
+  );
+  assert.equal(
+    [...matrix.providers]
+      .sort((left, right) => right.catalogLinkCount - left.catalogLinkCount)
+      .slice(0, 4)
+      .reduce((total, provider) => total + provider.catalogLinkCount, 0),
+    32,
+  );
+
+  for (const provider of matrix.providers) {
+    const channels = catalogChannels.filter((channel) =>
+      provider.labels.includes(channel.provider),
+    );
+    const exactMenuObservations = menuStudy.observations.filter(
+      (observation) =>
+        provider.labels.includes(observation.provider) &&
+        observation.evidenceLevel === "exact_menu",
+    );
+    const providerCheckouts = checkoutObservations.filter((observation) =>
+      provider.labels.includes(observation.provider),
+    );
+
+    assert.equal(provider.catalogLinkCount, channels.length);
+    assert.equal(
+      provider.restaurantCount,
+      new Set(channels.map((channel) => channel.restaurantId)).size,
+    );
+    assert.equal(
+      provider.verifiedLocationLinkCount,
+      channels.filter((channel) => channel.locationMatch === "verified_exact")
+        .length,
+    );
+    assert.deepEqual(
+      [...provider.surfaces].sort(),
+      [...new Set(channels.map((channel) => channel.channel))].sort(),
+    );
+    assert.equal(provider.exactMenuObservations, exactMenuObservations.length);
+    assert.equal(
+      provider.exactCheckoutObservations,
+      providerCheckouts.filter(
+        (observation) => observation.result === "exact_checkout",
+      ).length,
+    );
+    assert.equal(
+      provider.exactActiveCartObservations,
+      providerCheckouts.filter(
+        (observation) => observation.result === "exact_active_cart",
+      ).length,
+    );
+    assert.equal(
+      provider.blockedCheckoutAttempts,
+      providerCheckouts.filter((observation) =>
+        [
+          "checkout_blocked_by_sign_in",
+          "challenge_blocked_before_cart",
+        ].includes(observation.result),
+      ).length,
+    );
+  }
+
+  const leader = matrix.providers.find(
+    (provider) => provider.id === matrix.adapterDecision.leadingCandidate,
+  );
+
+  assert.equal(matrix.adapterDecision.status, "deferred_until_phase_0_gate");
+  assert.ok(leader);
+  assert.equal(
+    leader?.catalogLinkCount,
+    Math.max(...matrix.providers.map((provider) => provider.catalogLinkCount)),
+  );
+  assert.ok((leader?.exactCheckoutObservations ?? 0) > 0);
 });
 
 test("published Phase 0 counts remain reproducible", async () => {
