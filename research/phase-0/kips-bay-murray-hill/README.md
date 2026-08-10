@@ -45,6 +45,11 @@ offers, and states whether the total is exact or estimated.
   both resolve to 431 Third Avenue. Toast is pickup-only but currently reports
   online ordering unavailable, while Grubhub requires a session-level pickup
   switch that the URL does not preserve.
+- Even a location-specific restaurant page may hand off to a provider's brand
+  chooser. Momosan's Lexington page does this; the exact 342 Lexington store
+  required a second resolution step. Nom Nam links directly to its exact Sauce
+  menu, while Patrizia's exact Sauce page is currently unavailable and does not
+  prove pickup capability.
 - Menu parity cannot be assumed. Little Ruby's Bronte description differs between
   currently indexed sources even when the item name is the same.
 - Public list-price differences exist, but not for every restaurant. Pio Pio's

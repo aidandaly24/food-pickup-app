@@ -1,7 +1,7 @@
 {
   "studyCenter": "East 34th Street and Third Avenue, New York, NY 10016",
   "walkingLimitMinutes": 15,
-  "verifiedAt": "2026-08-10T01:14:55-04:00",
+  "verifiedAt": "2026-08-10T01:19:31-04:00",
   "routeStatus": "openstreetmap_pedestrian_estimate_complete; field_calibration_pending",
   "channelDiscoveryStatus": "initial_not_exhaustive",
   "restaurants": [
@@ -127,10 +127,14 @@
           "channel": "restaurant_direct",
           "provider": "Sauce",
           "relationship": "official_site_link",
-          "url": "https://www.getsauce.com/"
+          "url": "https://www.getsauce.com/order/nom-nam-vietnamese-kitchen/menu"
         }
       ],
-      "sources": ["https://www.nomnamnyc.com/"]
+      "notes": "The official Order Online button resolves directly to the exact 210 East 34th Street Sauce menu, which exposes both pickup and delivery and showed an 11:30 AM opening during verification.",
+      "sources": [
+        "https://www.nomnamnyc.com/",
+        "https://www.getsauce.com/order/nom-nam-vietnamese-kitchen/menu"
+      ]
     },
     {
       "id": "bareburger-murray-hill",
@@ -222,11 +226,16 @@
         {
           "channel": "restaurant_storefront",
           "provider": "DoorDash Commerce Platform",
-          "relationship": "official_site_link",
-          "url": "https://order.online/"
+          "relationship": "storefront_discovered_location_matched",
+          "url": "https://order.online/en-US/store/momosan-ramen-sake-new-york-26306693"
         }
       ],
-      "sources": ["https://momosanramen.com/restaurants/lexington/"]
+      "notes": "The official Lexington page links to a brand-level DoorDash storefront rather than the location. The resolved store page matches 342 Lexington Avenue, supports pickup, and listed Tonkotsu at $21.00; final basket configuration and checkout remain unverified.",
+      "sources": [
+        "https://momosanramen.com/restaurants/lexington/",
+        "https://order.online/business/momosan-ramen--sake-77020",
+        "https://order.online/en-US/store/momosan-ramen-sake-new-york-26306693"
+      ]
     },
     {
       "id": "makimaki-lexington",
@@ -392,10 +401,15 @@
           "channel": "restaurant_delivery",
           "provider": "Sauce",
           "relationship": "official_site_link",
-          "url": "https://www.getsauce.com/"
+          "url": "https://www.getsauce.com/order/patrizias-of-manhattan/menu"
         }
       ],
-      "sources": ["https://www.patrizias.com/location/patrizias-manhattan/"]
+      "notes": "The official Manhattan location page labels Sauce as Delivery and links to the Patrizias Of Manhattan page. Sauce reported that it was not accepting orders and exposed neither an address nor a pickup selector during verification, so pickup capability remains unverified.",
+      "sources": [
+        "https://www.patrizias.com/location/patrizias-manhattan/",
+        "https://order.toasttab.com/online/patrizias-manhattan-462-466-2nd-ave",
+        "https://www.getsauce.com/order/patrizias-of-manhattan/menu"
+      ]
     },
     {
       "id": "coletta",

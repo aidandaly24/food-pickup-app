@@ -107,6 +107,8 @@ test("the 25-restaurant catalog and pedestrian routes stay aligned", async () =>
       assert.match(channel.url, /^https?:\/\//);
       assert.notEqual(channel.url, "https://order.toasttab.com/");
       assert.notEqual(channel.url, "https://www.grubhub.com/");
+      assert.notEqual(channel.url, "https://order.online/");
+      assert.notEqual(channel.url, "https://www.getsauce.com/");
     }
   }
 
