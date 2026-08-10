@@ -1019,6 +1019,7 @@ a:focus-visible {
 }
 
 .confidence--checkout_blocked_by_sign_in,
+.confidence--checkout_payment_method_unresolved,
 .confidence--challenge_blocked_before_cart {
   color: #765413;
   background: #f5e6b8;

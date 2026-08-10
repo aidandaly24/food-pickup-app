@@ -71,6 +71,8 @@ interface RawObservation {
   readonly tipCents: number | null;
   readonly finalTotalCents: number | null;
   readonly capturedAt?: string;
+  readonly pickupWindowStart?: string;
+  readonly pickupWindowEnd?: string;
   readonly source: string;
 }
 
@@ -90,6 +92,8 @@ interface RawCaptureStudy {
     readonly savingsCents: number;
     readonly quoteWindowSeconds: number;
     readonly recheckedAt: string;
+    readonly pickupWindowStart?: string;
+    readonly pickupWindowEnd?: string;
   };
   readonly observations: readonly RawObservation[];
 }
@@ -389,7 +393,7 @@ test("declared comparisons are derived from equivalent fresh quotes", async () =
   const studies = await readCaptureStudies();
   const comparisons = studies.filter((study) => study.comparison);
 
-  assert.equal(comparisons.length, 4);
+  assert.equal(comparisons.length, 5);
 
   for (const study of comparisons) {
     const { comparison } = study;
@@ -442,6 +446,48 @@ test("declared comparisons are derived from equivalent fresh quotes", async () =
     );
     assert.equal(comparison.quoteWindowSeconds, quoteWindowSeconds);
     assert.ok(quoteWindowSeconds <= 10 * 60);
+
+    const windowedCheckouts = exactCheckouts.filter(
+      (observation) =>
+        observation.pickupWindowStart !== undefined ||
+        observation.pickupWindowEnd !== undefined,
+    );
+
+    assert.ok(
+      windowedCheckouts.length === 0 ||
+        windowedCheckouts.length === exactCheckouts.length,
+      `${study.captureRunId} mixes ASAP and scheduled quotes`,
+    );
+
+    if (windowedCheckouts.length === exactCheckouts.length) {
+      const starts = windowedCheckouts.map((observation) =>
+        new Date(observation.pickupWindowStart as string).getTime(),
+      );
+      const ends = windowedCheckouts.map((observation) =>
+        new Date(observation.pickupWindowEnd as string).getTime(),
+      );
+      const intersectionStart = Math.max(...starts);
+      const intersectionEnd = Math.min(...ends);
+
+      assert.ok(starts.every(Number.isFinite));
+      assert.ok(ends.every(Number.isFinite));
+      assert.ok(starts.every((start, index) => start <= ends[index]));
+      assert.ok(
+        intersectionStart <= intersectionEnd,
+        `${study.captureRunId} has no shared pickup time`,
+      );
+      assert.equal(
+        new Date(comparison.pickupWindowStart as string).getTime(),
+        intersectionStart,
+      );
+      assert.equal(
+        new Date(comparison.pickupWindowEnd as string).getTime(),
+        intersectionEnd,
+      );
+    } else {
+      assert.equal(comparison.pickupWindowStart, undefined);
+      assert.equal(comparison.pickupWindowEnd, undefined);
+    }
   }
 });
 
@@ -613,6 +659,7 @@ test("the provider matrix partitions the catalog and matches observed evidence",
         [
           "checkout_blocked_by_sign_in",
           "challenge_blocked_before_cart",
+          "checkout_payment_method_unresolved",
         ].includes(observation.result),
       ).length,
     );
@@ -645,17 +692,18 @@ test("published Phase 0 counts remain reproducible", async () => {
   );
 
   assert.equal(catalog.restaurants.length, 25);
-  assert.equal(observedRestaurants.size, 6);
-  assert.equal(observations.length, 20);
+  assert.equal(observedRestaurants.size, 7);
+  assert.equal(observations.length, 23);
   assert.equal(
     observations.filter((observation) => observation.finalTotalCents !== null)
       .length,
-    10,
+    12,
   );
   assert.deepEqual(savings.sort((left, right) => left - right), [
     69,
     69,
     69,
+    153,
     594,
   ]);
 });

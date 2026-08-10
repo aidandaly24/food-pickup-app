@@ -6,10 +6,10 @@ Eats.
 
 The current build discovers all 25 real restaurants in a routed Kips Bay and
 Murray Hill evaluation panel. The five farthest route estimates have an
-independent provider cross-check, while field walks remain pending. Six
+independent provider cross-check, while field walks remain pending. Seven
 restaurants currently have dated checkout research. The POC does not claim
 those observations are live or name a cheapest channel without two equivalent,
-time-matched checkout totals.
+time-matched checkout totals for the same pickup opportunity.
 
 The first qualifying comparison found Uber Eats $0.69 cheaper than Kips Bay
 Deli's direct checkout for one equivalent pickup basket. That is a dated
@@ -19,6 +19,11 @@ A second, promotion-threshold basket made the reason to model deals explicit:
 two matching Reubens totaled $23.74 direct and $17.80 on signed-in Uber Eats
 after $6.12 in applied savings. The POC exposes both baskets separately rather
 than mixing their quotes.
+
+A scheduled Sarge's comparison added a second restaurant: signed-in Uber Eats
+totaled $31.94 versus $33.47 on DoorDash for overlapping pickup windows. Toast's
+lower displayed amount remains incomplete because its disclosed card surcharge
+was unresolved without a payment method.
 
 ## Run locally
 

@@ -25,6 +25,7 @@ export type LocationMatch = "verified_exact" | "unverified";
 export type ObservationResult =
   | "exact_checkout"
   | "exact_active_cart"
+  | "checkout_payment_method_unresolved"
   | "checkout_blocked_by_sign_in"
   | "challenge_blocked_before_cart"
   | "availability_blocked";
@@ -70,6 +71,8 @@ export interface PickupObservation {
   readonly finalTotalCents: number | null;
   readonly basketComparable: boolean;
   readonly capturedAt?: string;
+  readonly pickupWindowStart?: string;
+  readonly pickupWindowEnd?: string;
   readonly promotions: readonly PromotionObservation[];
   readonly notes?: string;
   readonly sourceUrl: string;
@@ -204,6 +207,55 @@ export class QuoteComparison {
         explanation:
           "Exact checkout totals must be captured within one ten-minute window.",
       };
+    }
+
+    const scheduledCheckouts = exactCheckouts.filter(
+      (observation) =>
+        observation.pickupWindowStart !== undefined ||
+        observation.pickupWindowEnd !== undefined,
+    );
+
+    if (
+      scheduledCheckouts.length > 0 &&
+      scheduledCheckouts.length !== exactCheckouts.length
+    ) {
+      return {
+        kind: "incomplete",
+        headline: "Pickup timing mismatch",
+        explanation:
+          "Scheduled and ASAP pickup quotes cannot be compared as the same opportunity.",
+      };
+    }
+
+    if (scheduledCheckouts.length === exactCheckouts.length) {
+      const starts = scheduledCheckouts.map((observation) =>
+        new Date(observation.pickupWindowStart as string).getTime(),
+      );
+      const ends = scheduledCheckouts.map((observation) =>
+        new Date(observation.pickupWindowEnd as string).getTime(),
+      );
+
+      if (
+        starts.some((timestamp) => !Number.isFinite(timestamp)) ||
+        ends.some((timestamp) => !Number.isFinite(timestamp)) ||
+        starts.some((start, index) => start > ends[index])
+      ) {
+        return {
+          kind: "incomplete",
+          headline: "Pickup timing is invalid",
+          explanation:
+            "Every scheduled quote needs a valid pickup window whose end is not before its start.",
+        };
+      }
+
+      if (Math.max(...starts) > Math.min(...ends)) {
+        return {
+          kind: "incomplete",
+          headline: "Pickup windows do not overlap",
+          explanation:
+            "Scheduled checkout totals must be available for at least one shared pickup time.",
+        };
+      }
     }
 
     const [winner, runnerUp] = exactCheckouts;

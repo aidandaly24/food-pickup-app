@@ -1,6 +1,6 @@
 # Kips Bay / Murray Hill feasibility study
 
-Status: 25-restaurant discovery panel surfaced, first anonymous pass and four signed-in comparison runs complete, including two same-night repeats; nonconsecutive multi-day repetition not started
+Status: 25-restaurant discovery panel surfaced, first anonymous pass and five comparisons using signed-in marketplace channels complete across two restaurants, including two same-night repeats and one scheduled-pickup run; nonconsecutive multi-day repetition not started
 Verified: 2026-08-10
 Study center: East 34th Street and Third Avenue, New York, NY 10016  
 Boundary: all 25 candidates fit within an OpenStreetMap pedestrian-route estimate of 11 minutes; the five farthest also fit within an independent 8–11-minute Google Maps estimate; field calibration remains pending
@@ -14,7 +14,7 @@ For one person at one saved Manhattan location, can Sidewalk reliably answer:
 
 > Which real restaurants are within a true 15-minute walk, which ordering
 > channels serve the same pickup basket, and which channel has the lowest final
-> payable total right now?
+> payable total for the same pickup opportunity?
 
 A result is useful only when it identifies the correct physical location,
 compares equivalent items and modifiers, distinguishes public from personalized
@@ -25,7 +25,7 @@ offers, and states whether the total is exact or estimated.
 - The seed catalog contains 25 real restaurants with street addresses and source
   URLs in [`restaurants.json`](./restaurants.json).
 - All 25 catalog entries now appear in the POC even when checkout evidence is
-  absent. Six currently have captured baskets; catalog-only entries never receive
+  absent. Seven currently have captured baskets; catalog-only entries never receive
   synthetic availability, prices, or totals.
 - All 25 candidates resolved to pedestrian routes of 2–11 estimated minutes from
   the study center. The five farthest OSM routes were independently estimated at
@@ -90,6 +90,10 @@ The first promotion-threshold comparison is in
 [`threshold-checkout-observations.json`](./threshold-checkout-observations.json).
 The first same-night repeat is in
 [`repeat-checkout-observations.json`](./repeat-checkout-observations.json).
+The cross-midnight repeat is in
+[`cross-midnight-checkout-observations.json`](./cross-midnight-checkout-observations.json),
+and the first scheduled cross-restaurant comparison is in
+[`sarges-scheduled-checkout-observations.json`](./sarges-scheduled-checkout-observations.json).
 The live files supersede preliminary rows when they conflict.
 
 ## First anonymous checkout pass
@@ -133,8 +137,10 @@ without creating scheduled orders:
 Sarge's exposes an identical base item description, required bread group, and
 optional add-on structure across all three channels. Toast also disclosed a 3%
 credit-card surcharge, another reason its lower menu price cannot stand in for a
-final-total winner. 2nd Ave Deli's two surfaces share a provider family and menu
-structure; this is still useful for measuring whether storefront and marketplace
+final-total winner. A later scheduled-pickup run produced exact Uber Eats and
+DoorDash totals while preserving Toast as an incomplete checkout. 2nd Ave Deli's
+two surfaces share a provider family and menu structure; this is still useful
+for measuring whether storefront and marketplace
 checkout policies diverge, but it cannot establish independent adapter coverage.
 Bhatti's direct item dialog exposed only optional add-on groups, including naan
 and rice, so the unmodified entrée is a reproducible basket. Little Ruby's Toast
@@ -223,15 +229,45 @@ promotion but applied no discount and did not expose verified conditions in the
 captured flow. This is evidence that empty-cart proof and offer visibility both
 need measurement; it still does not justify a generalized recovery framework.
 
+## First scheduled cross-restaurant comparison
+
+At 2:32–2:41 AM, Sarge's was closed for immediate ordering but all three
+channels accepted scheduled pickup. The basket was one Hot Pastrami Sandwich on
+seeded rye, quantity one, with no add-ons, sauces, cheese, or note:
+
+| Channel | Account context | Pickup window | Item | Discount | Tax | Fee | Final total |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Restaurant direct (Toast) | Anonymous | 10:30 AM | $27.95 | $0 | $2.48 | Unresolved | Not exact |
+| DoorDash | Signed in | 10:30–10:50 AM | $30.74 | $0 | $2.73 | $0 | **$33.47** |
+| Uber Eats | Signed in | 10:30–11:00 AM | $30.75 | $1.54 | $2.73 | $0 | **$31.94** |
+
+The two exact pickup windows overlapped from 10:30 through 10:50 AM. Their
+quotes were captured 520 seconds apart and immediately rechecked. Uber Eats was
+**$1.53 cheaper**. Before the signed-in membership benefit, DoorDash's item was
+one cent cheaper; Uber's explicit $1.54 Uber One benefit reversed the winner.
+This is direct evidence that account personalization can change the cheapest
+channel, although its prevalence remains unknown.
+
+Toast displayed $30.43 after tax, but it also disclosed a 3% credit-card
+surcharge that remained $0.00 before a payment method was selected. No personal
+or payment information was entered, so the displayed amount is preserved as
+incomplete evidence and does not participate in the winner.
+
+The end-to-end capture took 838 seconds, including source navigation,
+first-time scheduled-pickup workflow discovery, the incomplete Toast checkout,
+and correcting DoorDash from delivery to pickup before accepting its quote.
+That exceeds the five-minute gate. It is a useful first timing observation, not
+a median. All temporary carts were cleared and no order was placed.
+
 ## Complexity assessment
 
 | Class | Complexity in this POC | Treatment now |
 | --- | --- | --- |
-| Essential | Physical-location identity, pedestrian reachability, equivalent baskets and modifiers, conditional promotions, account personalization, freshness, and final payable total | Model explicitly in the observation protocol |
-| Imported | Dynamic provider UIs, sign-in state, anti-automation controls, opaque restaurant/provider handoffs, platform terms, and inconsistent public pages | Isolate through manual/browser-assisted collection; do not pretend it is our domain |
+| Essential | Physical-location identity, pedestrian reachability, equivalent baskets and modifiers, overlapping pickup windows, conditional promotions, account personalization, freshness, and final payable total | Model explicitly in the observation protocol |
+| Imported | Dynamic provider UIs, sign-in state, payment-method-dependent surcharges, anti-automation controls, opaque restaurant/provider handoffs, platform terms, and inconsistent public pages | Isolate through manual/browser-assisted collection; do not pretend it is our domain |
 | Accidental | A generalized crawler, adapter framework, database, queue, cache, accounts, recommendations, or service split before data feasibility is known | Do not build |
 | Transitional | A fixed study center, a curated 25-restaurant ledger, a five-route cross-provider check, and human-assisted checkout capture | Accept for the one-to-two-week experiment, then delete or replace only if evidence warrants it |
-| Unknown | Field-observed walking pace and signal delay, how often totals change, how much offers personalize, how many baskets are genuinely comparable, and whether the fixed-panel provider mix generalizes beyond this neighborhood | Measure before choosing architecture |
+| Unknown | Field-observed walking pace and signal delay, how often totals change, how often personalization changes the winner, how many baskets are genuinely comparable, and whether the fixed-panel provider mix generalizes beyond this neighborhood | Measure before choosing architecture |
 
 Decision: continue Phase 0 and surface the qualifying evidence in the existing
 POC. DoorDash Commerce Platform is the leading future adapter candidate because
@@ -247,18 +283,23 @@ Every observation gets one of these levels:
 1. `exact_checkout`: same fulfillment mode, location, basket, and modifiers;
    each channel's account context is recorded, and the final payable total is
    visible immediately before order.
-2. `exact_active_cart`: subtotal, tax, and cart total are visible, but the final
+2. `checkout_payment_method_unresolved`: checkout displays a provisional total,
+   but a disclosed payment-method-dependent component is still unknown. This is
+   useful evidence, never a winner.
+3. `exact_active_cart`: subtotal, tax, and cart total are visible, but the final
    checkout page was not captured. This remains distinct from checkout.
-3. `exact_menu`: exact public item and modifier prices, but no final checkout
+4. `exact_menu`: exact public item and modifier prices, but no final checkout
    total. Useful for parity work, never sufficient to declare a winner.
-4. `estimated`: at least one component is inferred, stale, unmatched, or hidden.
-5. `unavailable`: the channel or equivalent basket could not be obtained.
+5. `estimated`: at least one component is inferred, stale, unmatched, or hidden.
+6. `unavailable`: the channel or equivalent basket could not be obtained.
 
 An exact comparison requires all channels to be captured within a 10-minute
-window. Account context is explicit for every quote so personalization can be
-measured rather than hidden. Pickup and delivery are never mixed. A promotion
-is recorded with minimum spend, maximum discount, eligible items, membership
-requirement, expiration, and whether it was automatically applied.
+window. Scheduled quotes must also expose pickup windows with at least one
+shared pickup time; scheduled and ASAP quotes are never mixed. Account context
+is explicit for every quote so personalization can be measured rather than
+hidden. Pickup and delivery are never mixed. A promotion is recorded with
+minimum spend, maximum discount, eligible items, membership requirement,
+expiration, and whether it was automatically applied.
 
 ## Representative baskets
 
@@ -298,6 +339,8 @@ equivalence.
 - Prove every channel cart is empty before building the basket, then clear it
   again after capture.
 - Capture final pickup totals within one 10-minute comparison window.
+- For scheduled orders, record each promised pickup window and compare only
+  quotes with an overlapping time.
 - Record a timestamp for every channel observation; the first live pass only
   recorded the session date and therefore cannot declare a comparison winner.
 - Repeat at lunch and dinner on at least three nonconsecutive days.
@@ -333,14 +376,14 @@ keep, revise, or reject them based on the actual failure distribution.
 
 | Gate signal | Evidence so far | Judgment |
 | --- | --- | --- |
-| Relevant restaurant discovery | 25 of 25 fixed-panel restaurants appear in the POC; six have checkout research | 100% panel recall passes the POC gate; neighborhood-wide recall remains unproven |
+| Relevant restaurant discovery | 25 of 25 fixed-panel restaurants appear in the POC; seven have checkout research | 100% panel recall passes the POC gate; neighborhood-wide recall remains unproven |
 | Walking boundary | The five longest OSM estimates are 9–11 minutes; independent Google Maps estimates are 8–11 minutes | Fixed-panel routing is supported by two providers with at least four minutes of estimate margin; field observation remains pending |
 | Correct physical-location matching | 45 of 47 known links have explicit exact-location evidence; Sticky's direct handoff and Patrizia's Sauce page remain unverified | 95.7% passes the fixed-panel 95% gate; link freshness still requires ongoing checks |
-| Exact comparison coverage | Four complete comparison runs, all for Kips Bay Deli | Proven repeatable at one restaurant, not broad enough for the 70% gate |
-| Equivalent baskets | 4 of 4 declared comparisons used identical item, size, quantity, and modifiers within each run | 100% in a very small sample |
-| Winner recheck stability | 4 of 4 winners remained unchanged on immediate recheck; the single-basket totals also survived a 2.5-hour cross-midnight span | Promising short-term stability; nonconsecutive multi-day freshness remains unknown |
-| Meaningful savings | $0.69 on all three single-basket runs and $5.94 on the threshold basket | Promising; cross-restaurant frequency remains unknown |
-| Manual capture time and adapter burden | One post-assembly quote/recheck took 310 seconds; end-to-end capture time is still unmeasured | Gate remains unknown, and stale-cart recovery is an observed burden |
+| Exact comparison coverage | Five complete comparison runs across Kips Bay Deli and Sarge's | Proven repeatable at one restaurant and feasible at a second, not broad enough for the 70% gate |
+| Equivalent baskets | 5 of 5 declared comparisons used identical item, size, quantity, and modifiers within each run; the scheduled run also had overlapping pickup windows | 100% in a very small sample |
+| Winner recheck stability | 5 of 5 winners remained unchanged on immediate recheck; the Kips Bay single-basket totals also survived a 2.5-hour cross-midnight span | Promising short-term stability; nonconsecutive multi-day freshness remains unknown |
+| Meaningful savings | $0.69 on all three Kips Bay single-basket runs, $5.94 on its threshold basket, and $1.53 at Sarge's after an account benefit reversed the pre-benefit result | Promising; cross-restaurant frequency remains unknown |
+| Manual capture time and adapter burden | One post-assembly quote/recheck took 310 seconds; the first end-to-end scheduled capture took 838 seconds | The end-to-end observation fails the five-minute gate; the sample is too small for a median, and stale-cart, fulfillment-mode, and surcharge interpretation remain observed burdens |
 
 ## Keys and access
 

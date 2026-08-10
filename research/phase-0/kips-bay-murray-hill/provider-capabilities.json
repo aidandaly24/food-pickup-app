@@ -10,7 +10,8 @@
     "signed-in-checkout-observations.json",
     "threshold-checkout-observations.json",
     "repeat-checkout-observations.json",
-    "cross-midnight-checkout-observations.json"
+    "cross-midnight-checkout-observations.json",
+    "sarges-scheduled-checkout-observations.json"
   ],
   "adapterDecision": {
     "status": "deferred_until_phase_0_gate",
@@ -43,7 +44,7 @@
       "restaurantCount": 8,
       "verifiedLocationLinkCount": 8,
       "exactMenuObservations": 1,
-      "exactCheckoutObservations": 0,
+      "exactCheckoutObservations": 1,
       "exactActiveCartObservations": 0,
       "blockedCheckoutAttempts": 1
     },
@@ -55,7 +56,7 @@
       "restaurantCount": 8,
       "verifiedLocationLinkCount": 8,
       "exactMenuObservations": 1,
-      "exactCheckoutObservations": 4,
+      "exactCheckoutObservations": 5,
       "exactActiveCartObservations": 0,
       "blockedCheckoutAttempts": 2
     },
@@ -69,7 +70,7 @@
       "exactMenuObservations": 3,
       "exactCheckoutObservations": 0,
       "exactActiveCartObservations": 1,
-      "blockedCheckoutAttempts": 0
+      "blockedCheckoutAttempts": 1
     },
     {
       "id": "grubhub_family",

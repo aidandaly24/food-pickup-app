@@ -99,6 +99,75 @@ test("rejects exact checkout totals captured outside ten minutes", () => {
   assert.equal(outcome.headline, "Quotes are too far apart");
 });
 
+test("compares scheduled quotes only when pickup windows overlap", () => {
+  const direct = observation({
+    pickupWindowStart: "2026-08-10T13:30:00-04:00",
+    pickupWindowEnd: "2026-08-10T14:00:00-04:00",
+  });
+  const marketplace = observation({
+    id: "marketplace",
+    channel: DOORDASH_CHANNEL,
+    feesCents: 172,
+    finalTotalCents: 2_350,
+    pickupWindowStart: "2026-08-10T13:30:00-04:00",
+    pickupWindowEnd: "2026-08-10T13:50:00-04:00",
+  });
+
+  const outcome = new QuoteComparison([direct, marketplace]).outcome;
+
+  assert.equal(outcome.kind, "winner");
+  assert.equal(outcome.winner?.id, "direct");
+});
+
+test("rejects scheduled quotes whose pickup windows do not overlap", () => {
+  const direct = observation({
+    pickupWindowStart: "2026-08-10T13:30:00-04:00",
+    pickupWindowEnd: "2026-08-10T13:50:00-04:00",
+  });
+  const marketplace = observation({
+    id: "marketplace",
+    channel: DOORDASH_CHANNEL,
+    pickupWindowStart: "2026-08-10T14:00:00-04:00",
+    pickupWindowEnd: "2026-08-10T14:20:00-04:00",
+  });
+
+  assert.equal(
+    new QuoteComparison([direct, marketplace]).outcome.headline,
+    "Pickup windows do not overlap",
+  );
+});
+
+test("rejects a scheduled quote mixed with an ASAP quote", () => {
+  const scheduled = observation({
+    id: "marketplace",
+    channel: DOORDASH_CHANNEL,
+    pickupWindowStart: "2026-08-10T13:30:00-04:00",
+    pickupWindowEnd: "2026-08-10T13:50:00-04:00",
+  });
+
+  assert.equal(
+    new QuoteComparison([observation(), scheduled]).outcome.headline,
+    "Pickup timing mismatch",
+  );
+});
+
+test("rejects an incomplete scheduled pickup window", () => {
+  const direct = observation({
+    pickupWindowStart: "2026-08-10T13:30:00-04:00",
+    pickupWindowEnd: "2026-08-10T14:00:00-04:00",
+  });
+  const marketplace = observation({
+    id: "marketplace",
+    channel: DOORDASH_CHANNEL,
+    pickupWindowStart: "2026-08-10T13:30:00-04:00",
+  });
+
+  assert.equal(
+    new QuoteComparison([direct, marketplace]).outcome.headline,
+    "Pickup timing is invalid",
+  );
+});
+
 test("requires two distinct channels with valid timestamps", () => {
   const duplicateDirect = observation({ id: "direct-again" });
   const marketplace = observation({

@@ -28,6 +28,7 @@ const AVAILABILITY_LABELS = {
 const RESULT_LABELS = {
   exact_checkout: "Exact checkout",
   exact_active_cart: "Exact active cart",
+  checkout_payment_method_unresolved: "Payment method unresolved",
   checkout_blocked_by_sign_in: "Sign-in required",
   challenge_blocked_before_cart: "Security check blocked",
   availability_blocked: "Availability blocked",
@@ -93,6 +94,23 @@ const CAPTURE_TIME_FORMATTER = new Intl.DateTimeFormat("en-US", {
   minute: "2-digit",
   timeZone: "America/New_York",
 });
+
+function pickupTimingLabel(observation: PickupObservation): string {
+  if (!observation.pickupWindowStart || !observation.pickupWindowEnd) {
+    return "ASAP pickup";
+  }
+
+  const start = CAPTURE_TIME_FORMATTER.format(
+    new Date(observation.pickupWindowStart),
+  );
+  const end = CAPTURE_TIME_FORMATTER.format(
+    new Date(observation.pickupWindowEnd),
+  );
+
+  return start === end
+    ? `Scheduled pickup · ${start}`
+    : `Scheduled pickup · ${start}–${end}`;
+}
 
 function basketCaptureLabel(basket: StudyBasket): string {
   if (!basket.observedAt) return basket.kind;
@@ -370,6 +388,12 @@ export default function Home() {
                       observation.availability === "available_now",
                   ),
                 );
+                const hasScheduledCapture = restaurant.baskets.some(
+                  (candidate) =>
+                    candidate.observations.some(
+                      (observation) => observation.pickupWindowStart,
+                    ),
+                );
 
                 return (
                   <button
@@ -398,6 +422,8 @@ export default function Home() {
                         <span>
                           {wasAvailable
                             ? "AVAILABLE IN CAPTURE"
+                            : hasScheduledCapture
+                              ? "SCHEDULED CAPTURE"
                             : basket
                               ? "CAPTURED"
                               : "CATALOG"}
@@ -510,7 +536,8 @@ export default function Home() {
                   </span>
                 </div>
                 <p className="availability-line">
-                  {AVAILABILITY_LABELS[activeObservation.availability]}
+                  {AVAILABILITY_LABELS[activeObservation.availability]} ·{" "}
+                  {pickupTimingLabel(activeObservation)}
                 </p>
                 <dl>
                   <div>

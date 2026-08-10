@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "captureRunId": "2026-08-10-sarges-single-scheduled-1030",
+  "basketKind": "single",
+  "capturedOn": "2026-08-10",
+  "timeZone": "America/New_York",
+  "fulfillment": "pickup",
+  "pickupTiming": "scheduled",
+  "experimentContext": "Compare the user's normal signed-in marketplace contexts with the anonymous restaurant-direct flow for one overlapping scheduled pickup window.",
+  "tipPolicy": "Set optional pickup tips to $0 before recording a final checkout total.",
+  "comparisonStatus": "Uber Eats was $1.53 cheaper than DoorDash for one equivalent Sarge's basket. Toast displayed a lower provisional total but was excluded because its disclosed card surcharge remained unresolved without a payment method.",
+  "collection": {
+    "scope": "end_to_end_scheduled_pickup_comparison_including_incomplete_direct_checkout",
+    "startedAt": "2026-08-10T02:27:32-04:00",
+    "completedAt": "2026-08-10T02:41:30-04:00",
+    "durationSeconds": 838
+  },
+  "comparison": {
+    "winnerChannel": "uber_eats",
+    "savingsCents": 153,
+    "quoteWindowSeconds": 520,
+    "recheckedAt": "2026-08-10T02:41:30-04:00",
+    "pickupWindowStart": "2026-08-10T10:30:00-04:00",
+    "pickupWindowEnd": "2026-08-10T10:50:00-04:00"
+  },
+  "limitations": [
+    "The restaurant was closed for immediate online ordering, so every channel was configured for a scheduled pickup. The two exact marketplace windows overlapped from 10:30 AM through 10:50 AM.",
+    "This is one basket at one restaurant on one date, not evidence of a persistent cheapest channel.",
+    "Uber Eats and DoorDash were signed in while Toast was anonymous because those were the user's normal available paths; account context is recorded per observation.",
+    "Toast disclosed a 3% credit-card surcharge but showed it as $0.00 before a payment method was selected. Its $30.43 displayed total is therefore not a final payable quote and was excluded from the winner.",
+    "The 838-second end-to-end time includes source navigation, first-time scheduled-pickup workflow discovery, the incomplete Toast investigation, and correcting DoorDash from delivery to pickup before the accepted quote.",
+    "Both exact totals and their pickup windows were immediately rechecked. All temporary carts were cleared and no order was placed."
+  ],
+  "observations": [
+    {
+      "restaurantId": "sarges-deli",
+      "basketKey": "hot-pastrami-seeded-rye",
+      "itemSignature": "Hot Pastrami Sandwich; Rye (Seeded); quantity 1; no add-ons, sauces, cheese, or note",
+      "channel": "restaurant_direct",
+      "provider": "Toast",
+      "accountContext": "anonymous",
+      "availability": "closed_order_for_later",
+      "captureStage": "checkout",
+      "itemsSubtotalCents": 2795,
+      "taxCents": 248,
+      "feesCents": null,
+      "discountCents": 0,
+      "tipCents": 0,
+      "finalTotalCents": null,
+      "result": "checkout_payment_method_unresolved",
+      "basketComparable": true,
+      "pickupWindowStart": "2026-08-10T10:30:00-04:00",
+      "pickupWindowEnd": "2026-08-10T10:30:00-04:00",
+      "promotionsObserved": [],
+      "notes": "Toast displayed $30.43 after $2.48 tax, but its disclosed 3% credit-card surcharge remained $0.00 until a payment method was selected. No contact or payment information was entered, so the final payable total is intentionally null.",
+      "source": "https://order.toasttab.com/online/sarges-deli-548-3rd-ave"
+    },
+    {
+      "restaurantId": "sarges-deli",
+      "basketKey": "hot-pastrami-seeded-rye",
+      "itemSignature": "Hot Pastrami Sandwich; Rye (Seeded); quantity 1; no add-ons, sauces, cheese, or note",
+      "channel": "doordash_marketplace",
+      "provider": "DoorDash",
+      "accountContext": "signed_in",
+      "availability": "closed_order_for_later",
+      "captureStage": "checkout",
+      "itemsSubtotalCents": 3074,
+      "taxCents": 273,
+      "feesCents": 0,
+      "discountCents": 0,
+      "tipCents": 0,
+      "finalTotalCents": 3347,
+      "result": "exact_checkout",
+      "basketComparable": true,
+      "capturedAt": "2026-08-10T02:40:57-04:00",
+      "pickupWindowStart": "2026-08-10T10:30:00-04:00",
+      "pickupWindowEnd": "2026-08-10T10:50:00-04:00",
+      "promotionsObserved": [],
+      "notes": "Pickup fulfillment, the $33.47 total, and the 10:30–10:50 AM window were immediately rechecked before the temporary cart was cleared.",
+      "source": "https://www.doordash.com/store/30397/"
+    },
+    {
+      "restaurantId": "sarges-deli",
+      "basketKey": "hot-pastrami-seeded-rye",
+      "itemSignature": "Hot Pastrami Sandwich; Rye (Seeded); quantity 1; no add-ons, sauces, cheese, or note",
+      "channel": "uber_eats",
+      "provider": "Uber Eats",
+      "accountContext": "signed_in",
+      "availability": "closed_order_for_later",
+      "captureStage": "checkout",
+      "itemsSubtotalCents": 3075,
+      "taxCents": 273,
+      "feesCents": 0,
+      "discountCents": 154,
+      "tipCents": 0,
+      "finalTotalCents": 3194,
+      "result": "exact_checkout",
+      "basketComparable": true,
+      "capturedAt": "2026-08-10T02:32:17-04:00",
+      "pickupWindowStart": "2026-08-10T10:30:00-04:00",
+      "pickupWindowEnd": "2026-08-10T11:00:00-04:00",
+      "promotionsObserved": [
+        {
+          "label": "Uber One Membership Benefit ($1.54)",
+          "applied": true,
+          "conditionsVerified": true
+        }
+      ],
+      "notes": "The signed-in checkout explicitly attributed $1.54 in savings to Uber One. The $31.94 total and 10:30–11:00 AM window were immediately rechecked before the temporary cart was cleared.",
+      "source": "https://www.ubereats.com/store/sarges-delicatessen-%26-diner/v9COnSNcS7-VOtGjV_PhDA"
+    }
+  ]
+}

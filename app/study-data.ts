@@ -3,6 +3,7 @@ import crossMidnightCheckoutStudy from "../research/phase-0/kips-bay-murray-hill
 import repeatCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/repeat-checkout-observations.json";
 import restaurantStudy from "../research/phase-0/kips-bay-murray-hill/restaurants.json";
 import routeStudy from "../research/phase-0/kips-bay-murray-hill/routes.json";
+import sargesScheduledCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/sarges-scheduled-checkout-observations.json";
 import signedInCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/signed-in-checkout-observations.json";
 import thresholdCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/threshold-checkout-observations.json";
 import { QuoteComparison } from "./domain";
@@ -25,6 +26,7 @@ const EXACT_CHECKOUT_STUDIES = [
   thresholdCheckoutStudy,
   repeatCheckoutStudy,
   crossMidnightCheckoutStudy,
+  sargesScheduledCheckoutStudy,
 ] as const;
 
 const RAW_OBSERVATIONS = [
@@ -85,6 +87,7 @@ const CAPTURE_STAGES = [
 const OBSERVATION_RESULTS = [
   "exact_checkout",
   "exact_active_cart",
+  "checkout_payment_method_unresolved",
   "checkout_blocked_by_sign_in",
   "challenge_blocked_before_cart",
   "availability_blocked",
@@ -111,6 +114,7 @@ const BASKET_NAMES: Readonly<
     single: "Reuben on Rye",
     threshold: "Two Reubens",
   },
+  "sarges-deli": { single: "Hot pastrami on seeded rye" },
 };
 
 function parseOneOf<T extends string>(
@@ -230,6 +234,16 @@ function observationsFor(
           "capturedAt" in observation &&
           typeof observation.capturedAt === "string"
             ? observation.capturedAt
+            : undefined,
+        pickupWindowStart:
+          "pickupWindowStart" in observation &&
+          typeof observation.pickupWindowStart === "string"
+            ? observation.pickupWindowStart
+            : undefined,
+        pickupWindowEnd:
+          "pickupWindowEnd" in observation &&
+          typeof observation.pickupWindowEnd === "string"
+            ? observation.pickupWindowEnd
             : undefined,
         promotions:
           "promotionsObserved" in observation
