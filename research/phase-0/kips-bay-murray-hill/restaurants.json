@@ -1,7 +1,7 @@
 {
   "studyCenter": "East 34th Street and Third Avenue, New York, NY 10016",
   "walkingLimitMinutes": 15,
-  "verifiedAt": "2026-08-10T01:02:49-04:00",
+  "verifiedAt": "2026-08-10T01:08:51-04:00",
   "routeStatus": "openstreetmap_pedestrian_estimate_complete; field_calibration_pending",
   "channelDiscoveryStatus": "initial_not_exhaustive",
   "restaurants": [
@@ -403,15 +403,22 @@
       "website": "https://www.colettanyc.com/",
       "channelsObserved": [
         {
+          "channel": "restaurant_direct",
+          "provider": "Square",
+          "relationship": "official_site_link",
+          "url": "https://colettanyc.square.site/"
+        },
+        {
           "channel": "restaurant_storefront",
-          "provider": "Unresolved: public pages conflict between Square and DoorDash Commerce Platform",
-          "relationship": "needs_official_link_confirmation",
+          "provider": "DoorDash Commerce Platform",
+          "relationship": "location_matched_storefront",
           "url": "https://order.online/store/coletta-new-york-22928935"
         }
       ],
-      "notes": "Provider identity is intentionally unresolved until the official Order Now handoff is captured directly.",
+      "notes": "The official site hands Order Online to Square for pickup at 365 Third Avenue. A separate DoorDash Commerce Platform storefront also matches the address. Both listed the Margherita Pizza at $24.00 before Coletta's 4:30 PM opening; final-total comparison remains pending.",
       "sources": [
         "https://www.colettanyc.com/",
+        "https://colettanyc.square.site/",
         "https://order.online/store/coletta-new-york-22928935"
       ]
     },

@@ -31,11 +31,15 @@ offers, and states whether the total is exact or estimated.
   the study center. The route evidence is in [`routes.json`](./routes.json); it
   still needs spot-calibration for walking pace and signal delay.
 - A restaurant-branded ordering link is not a provider. The initial set already
-  includes Toast, DoorDash Commerce Platform (`order.online`), Sauce, Slice,
-  ChowNow, Grubhub-backed ordering, and brand-owned or unresolved storefronts.
+  includes Toast, Square, DoorDash Commerce Platform (`order.online`), Sauce,
+  Slice, ChowNow, Grubhub-backed ordering, and brand-owned storefronts.
 - A single restaurant may expose multiple nominally "direct" choices. Pio Pio 7,
   for example, links to Toast, DoorDash Storefront, and DoorDash Marketplace from
   its own location page.
+- Conflicting provider evidence can represent two real channels rather than one
+  bad label. Coletta's official Order Online link resolves to Square, while its
+  separately discovered DoorDash storefront matches the same 365 Third Avenue
+  location. Both listed the same Margherita Pizza at $24 before opening.
 - Menu parity cannot be assumed. Little Ruby's Bronte description differs between
   currently indexed sources even when the item name is the same.
 - Public list-price differences exist, but not for every restaurant. Pio Pio's

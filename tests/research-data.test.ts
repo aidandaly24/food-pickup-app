@@ -11,6 +11,7 @@ interface RawRestaurant {
   readonly website: string;
   readonly channelsObserved: readonly {
     readonly channel: string;
+    readonly provider: string;
     readonly url: string;
   }[];
 }
@@ -115,6 +116,23 @@ test("the 25-restaurant catalog and pedestrian routes stay aligned", async () =>
     assert.equal(route.estimatedMinutes, Math.ceil(route.durationSeconds / 60));
     assert.ok(route.estimatedMinutes <= catalog.walkingLimitMinutes);
   }
+
+  const coletta = catalog.restaurants.find(
+    (restaurant) => restaurant.id === "coletta",
+  );
+  assert.deepEqual(
+    coletta?.channelsObserved.map(({ channel, provider }) => ({
+      channel,
+      provider,
+    })),
+    [
+      { channel: "restaurant_direct", provider: "Square" },
+      {
+        channel: "restaurant_storefront",
+        provider: "DoorDash Commerce Platform",
+      },
+    ],
+  );
 });
 
 test("every captured exact total reconciles and uses a public source", async () => {

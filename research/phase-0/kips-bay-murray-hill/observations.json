@@ -166,6 +166,38 @@
       "basketComparable": false,
       "notes": "Brand-level indexed result matched the Murray Hill location but requires a live location-specific cart check.",
       "source": "https://www.ubereats.com/brand-city/new-york-city/rubys-cafe"
+    },
+    {
+      "restaurantId": "coletta",
+      "basketKey": "margherita-pizza",
+      "itemSignature": "Margherita Pizza: tomato sauce, basil, mozzarella, roma tomatoes, and olive oil",
+      "channel": "restaurant_direct",
+      "provider": "Square",
+      "itemsSubtotalCents": 2400,
+      "feesCents": null,
+      "taxCents": null,
+      "discountCents": null,
+      "finalTotalCents": null,
+      "evidenceLevel": "exact_menu",
+      "basketComparable": false,
+      "notes": "Official-site handoff and location verified. Modifier parity and final checkout remain unverified.",
+      "source": "https://colettanyc.square.site/"
+    },
+    {
+      "restaurantId": "coletta",
+      "basketKey": "margherita-pizza",
+      "itemSignature": "Margherita Pizza: tomato sauce, basil, mozzarella, roma tomatoes, and olive oil",
+      "channel": "restaurant_storefront",
+      "provider": "DoorDash Commerce Platform",
+      "itemsSubtotalCents": 2400,
+      "feesCents": null,
+      "taxCents": null,
+      "discountCents": null,
+      "finalTotalCents": null,
+      "evidenceLevel": "exact_menu",
+      "basketComparable": false,
+      "notes": "Exact location verified. Modifier parity and final checkout remain unverified.",
+      "source": "https://order.online/store/coletta-new-york-22928935"
     }
   ]
 }
