@@ -402,17 +402,28 @@
       "name": "Sticky's Murray Hill",
       "address": "484 3rd Avenue, New York, NY 10016",
       "cuisine": "Chicken",
-      "anchorItem": "Chicken fingers combo; exact size and sauces pending",
+      "anchorItem": "Crunchy Chicken Finger Combo; exact size, sauce, fries, and drink pending direct-menu parity",
       "website": "https://stickys.com/locations/new-york/murray-hill-484-3rd-ave-new-york-ny-10016/",
       "channelsObserved": [
         {
           "channel": "restaurant_direct",
-          "provider": "Unresolved branded storefront",
-          "relationship": "official_site_order_flow",
-          "url": "https://stickys.com/locations/new-york/murray-hill-484-3rd-ave-new-york-ny-10016/"
+          "provider": "Appfront / Just Order",
+          "relationship": "official_site_link",
+          "url": "https://order.stickys.com/"
+        },
+        {
+          "channel": "uber_eats",
+          "provider": "Uber Eats",
+          "relationship": "location_matched",
+          "url": "https://www.ubereats.com/store/stickys-murray-hill-2/rM22eOEgSwCkcyOTeaMQnw"
         }
       ],
-      "sources": ["https://stickys.com/locations/new-york/murray-hill-484-3rd-ave-new-york-ny-10016/"]
+      "notes": "The official Appfront flow did not return any pickup location after selecting the exact 484 Third Avenue address. Uber Eats resolved correctly; DoorDash returned no matching restaurant.",
+      "sources": [
+        "https://stickys.com/locations/new-york/murray-hill-484-3rd-ave-new-york-ny-10016/",
+        "https://order.stickys.com/",
+        "https://www.ubereats.com/store/stickys-murray-hill-2/rM22eOEgSwCkcyOTeaMQnw"
+      ]
     },
     {
       "id": "dig-murray-hill",
@@ -542,7 +553,7 @@
       "name": "The Flying Cock",
       "address": "497 3rd Avenue, New York, NY 10016",
       "cuisine": "American / Irish pub",
-      "anchorItem": "Fried chicken sandwich plus fries",
+      "anchorItem": "The Famous Crispy Chicken Sandwich; quantity 1; modifier and included-side parity pending",
       "website": "https://www.theflyingcocknyc.com/",
       "channelsObserved": [
         {
@@ -550,9 +561,27 @@
           "provider": "Grubhub",
           "relationship": "official_site_order_link",
           "url": "https://www.grubhub.com/restaurant/the-flying-cock-497-3rd-ave-new-york/6034104"
+        },
+        {
+          "channel": "doordash_marketplace",
+          "provider": "DoorDash",
+          "relationship": "location_matched",
+          "url": "https://www.doordash.com/store/866991/"
+        },
+        {
+          "channel": "uber_eats",
+          "provider": "Uber Eats",
+          "relationship": "location_matched",
+          "url": "https://www.ubereats.com/store/the-flying-cock/7dZjE5B2XwKgfyjDg4KoMw"
         }
       ],
-      "sources": ["https://www.theflyingcocknyc.com/location/delivery/"]
+      "notes": "All three channels matched 497 Third Avenue and showed a 3 PM pickup opening. While closed, Uber Eats listed the candidate sandwich at $20.00 and DoorDash at $21.50; Grubhub did not expose a current pickup price.",
+      "sources": [
+        "https://www.theflyingcocknyc.com/location/delivery/",
+        "https://www.grubhub.com/restaurant/the-flying-cock-497-3rd-ave-new-york/6034104",
+        "https://www.doordash.com/store/866991/",
+        "https://www.ubereats.com/store/the-flying-cock/7dZjE5B2XwKgfyjDg4KoMw"
+      ]
     },
     {
       "id": "medium-rare-murray-hill",

@@ -45,7 +45,7 @@ test("server-renders the Sidewalk POC", async () => {
   assert.match(html, /Honest totals\./);
   assert.match(html, /OBSERVED DATA/);
   assert.match(textHtml, /25 nearby restaurants/);
-  assert.match(textHtml, /40 known ordering links/);
+  assert.match(textHtml, /43 known ordering links/);
   assert.equal(html.match(/data-restaurant-id=/g)?.length, 25);
   assert.match(html, /Sarge/);
   assert.match(html, /Medium Rare Murray Hill/);
