@@ -8,6 +8,7 @@ const studyRoot = new URL(
 );
 interface RawRestaurant {
   readonly id: string;
+  readonly address: string;
   readonly website: string;
   readonly channelsObserved: readonly {
     readonly channel: string;
@@ -18,6 +19,7 @@ interface RawRestaurant {
 }
 
 interface RawRestaurantStudy {
+  readonly studyCenter: string;
   readonly walkingLimitMinutes: number;
   readonly routeStatus: string;
   readonly restaurants: readonly RawRestaurant[];
@@ -33,6 +35,25 @@ interface RawRouteStudy {
     readonly distanceMeters: number;
     readonly durationSeconds: number;
     readonly estimatedMinutes: number;
+  }[];
+}
+
+interface RawRouteCrossCheckStudy {
+  readonly source: string;
+  readonly evidenceClass: string;
+  readonly fieldObservationStatus: string;
+  readonly studyCenter: string;
+  readonly walkingLimitMinutes: number;
+  readonly sampleSelection: string;
+  readonly method: string;
+  readonly routes: readonly {
+    readonly restaurantId: string;
+    readonly destinationAddress: string;
+    readonly osmEstimatedMinutes: number;
+    readonly googleEstimatedMinutes: number;
+    readonly googleDistanceMiles: number;
+    readonly differenceMinutes: number;
+    readonly sourceUrl: string;
   }[];
 }
 
@@ -222,6 +243,72 @@ test("the 25-restaurant catalog and pedestrian routes stay aligned", async () =>
     "https://shakeshack.com/location/midtown-east-ny",
   );
   assert.equal(shakeShack?.channelsObserved[0]?.url, shakeShack?.website);
+});
+
+test("the boundary-risk route sample remains independently reproducible", async () => {
+  const [catalog, routeStudy, crossCheck] = await Promise.all([
+    readJson<RawRestaurantStudy>("restaurants.json"),
+    readJson<RawRouteStudy>("routes.json"),
+    readJson<RawRouteCrossCheckStudy>("route-cross-checks.json"),
+  ]);
+  const catalogById = new Map(
+    catalog.restaurants.map((restaurant) => [restaurant.id, restaurant]),
+  );
+  const routesById = new Map(
+    routeStudy.routes.map((route) => [route.restaurantId, route]),
+  );
+  const boundaryRiskIds = [...routeStudy.routes]
+    .sort((left, right) => right.durationSeconds - left.durationSeconds)
+    .slice(0, 5)
+    .map((route) => route.restaurantId)
+    .sort();
+
+  assert.match(crossCheck.source, /Google Maps/);
+  assert.equal(crossCheck.evidenceClass, "cross_provider_estimate");
+  assert.equal(crossCheck.fieldObservationStatus, "pending");
+  assert.equal(crossCheck.studyCenter, catalog.studyCenter);
+  assert.equal(crossCheck.walkingLimitMinutes, catalog.walkingLimitMinutes);
+  assert.match(crossCheck.sampleSelection, /five routes/);
+  assert.match(crossCheck.method, /not field-observed walks/);
+  assert.equal(crossCheck.routes.length, 5);
+  assert.equal(
+    new Set(crossCheck.routes.map((route) => route.restaurantId)).size,
+    crossCheck.routes.length,
+  );
+  assert.deepEqual(
+    crossCheck.routes.map((route) => route.restaurantId).sort(),
+    boundaryRiskIds,
+  );
+
+  for (const route of crossCheck.routes) {
+    const catalogRestaurant = catalogById.get(route.restaurantId);
+    const osmRoute = routesById.get(route.restaurantId);
+    const sourceUrl = new URL(route.sourceUrl);
+
+    assert.ok(catalogRestaurant);
+    assert.ok(osmRoute);
+    assert.equal(route.destinationAddress, catalogRestaurant?.address);
+    assert.equal(route.osmEstimatedMinutes, osmRoute?.estimatedMinutes);
+    assert.equal(
+      route.differenceMinutes,
+      route.googleEstimatedMinutes - route.osmEstimatedMinutes,
+    );
+    assert.ok(route.googleDistanceMiles > 0);
+    assert.ok(route.googleEstimatedMinutes <= crossCheck.walkingLimitMinutes);
+    assert.ok(
+      crossCheck.walkingLimitMinutes -
+        Math.max(route.osmEstimatedMinutes, route.googleEstimatedMinutes) >=
+        4,
+    );
+    assert.equal(sourceUrl.origin, "https://www.google.com");
+    assert.equal(sourceUrl.pathname, "/maps/dir/");
+    assert.equal(sourceUrl.searchParams.get("origin"), crossCheck.studyCenter);
+    assert.equal(
+      sourceUrl.searchParams.get("destination"),
+      route.destinationAddress,
+    );
+    assert.equal(sourceUrl.searchParams.get("travelmode"), "walking");
+  }
 });
 
 test("every captured exact total reconciles and uses a public source", async () => {

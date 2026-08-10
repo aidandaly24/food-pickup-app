@@ -3,7 +3,7 @@
 Status: 25-restaurant discovery panel surfaced, first anonymous pass and four signed-in comparison runs complete, including two same-night repeats; nonconsecutive multi-day repetition not started
 Verified: 2026-08-10
 Study center: East 34th Street and Third Avenue, New York, NY 10016  
-Boundary: all 25 candidates fit within an OpenStreetMap pedestrian-route estimate of 11 minutes; field calibration remains pending
+Boundary: all 25 candidates fit within an OpenStreetMap pedestrian-route estimate of 11 minutes; the five farthest also fit within an independent 8–11-minute Google Maps estimate; field calibration remains pending
 
 This is dated research evidence, not live Sidewalk pricing. The POC renders only
 captured facts and labels them with their observation date.
@@ -28,8 +28,11 @@ offers, and states whether the total is exact or estimated.
   absent. Six currently have captured baskets; catalog-only entries never receive
   synthetic availability, prices, or totals.
 - All 25 candidates resolved to pedestrian routes of 2–11 estimated minutes from
-  the study center. The route evidence is in [`routes.json`](./routes.json); it
-  still needs spot-calibration for walking pace and signal delay.
+  the study center. The five farthest OSM routes were independently estimated at
+  8–11 minutes by Google Maps, leaving at least four minutes of provider-estimate
+  margin below the cutoff. The source evidence is in [`routes.json`](./routes.json)
+  and [`route-cross-checks.json`](./route-cross-checks.json); field observation
+  is still required for walking pace and signal delay.
 - Forty-five of 47 known ordering links have explicit exact-location evidence.
   Sticky's direct handoff and Patrizia's Sauce page remain unverified and are
   labeled that way in the POC rather than counted as matches.
@@ -227,8 +230,8 @@ need measurement; it still does not justify a generalized recovery framework.
 | Essential | Physical-location identity, pedestrian reachability, equivalent baskets and modifiers, conditional promotions, account personalization, freshness, and final payable total | Model explicitly in the observation protocol |
 | Imported | Dynamic provider UIs, sign-in state, anti-automation controls, opaque restaurant/provider handoffs, platform terms, and inconsistent public pages | Isolate through manual/browser-assisted collection; do not pretend it is our domain |
 | Accidental | A generalized crawler, adapter framework, database, queue, cache, accounts, recommendations, or service split before data feasibility is known | Do not build |
-| Transitional | A fixed study center, a curated 25-restaurant ledger, manual route checks, and human-assisted checkout capture | Accept for the one-to-two-week experiment, then delete or replace only if evidence warrants it |
-| Unknown | How often totals change, how much offers personalize, how many baskets are genuinely comparable, and whether the fixed-panel provider mix generalizes beyond this neighborhood | Measure before choosing architecture |
+| Transitional | A fixed study center, a curated 25-restaurant ledger, a five-route cross-provider check, and human-assisted checkout capture | Accept for the one-to-two-week experiment, then delete or replace only if evidence warrants it |
+| Unknown | Field-observed walking pace and signal delay, how often totals change, how much offers personalize, how many baskets are genuinely comparable, and whether the fixed-panel provider mix generalizes beyond this neighborhood | Measure before choosing architecture |
 
 Decision: continue Phase 0 and surface the qualifying evidence in the existing
 POC. DoorDash Commerce Platform is the leading future adapter candidate because
@@ -273,12 +276,13 @@ equivalence.
 
 ## Collection schedule
 
-### Days 1–2: identity and walking coverage (routing seed complete)
+### Days 1–2: identity and walking coverage (routing and cross-provider seed complete)
 
 - Confirm the storefront is open and the address identifies the same kitchen on
   every channel.
-- Spot-check the pedestrian routes from the study center; remove candidates over
-  15 observed minutes or whose storefront identity is wrong.
+- Field-check the pedestrian routes from the study center; remove candidates over
+  15 observed minutes or whose storefront identity is wrong. The five farthest
+  provider estimates have already been cross-checked, but that is not a field walk.
 - Replace removed candidates to keep approximately 25 restaurants.
 
 ### Days 3–5: basket and channel coverage (first five complete)
@@ -330,6 +334,7 @@ keep, revise, or reject them based on the actual failure distribution.
 | Gate signal | Evidence so far | Judgment |
 | --- | --- | --- |
 | Relevant restaurant discovery | 25 of 25 fixed-panel restaurants appear in the POC; six have checkout research | 100% panel recall passes the POC gate; neighborhood-wide recall remains unproven |
+| Walking boundary | The five longest OSM estimates are 9–11 minutes; independent Google Maps estimates are 8–11 minutes | Fixed-panel routing is supported by two providers with at least four minutes of estimate margin; field observation remains pending |
 | Correct physical-location matching | 45 of 47 known links have explicit exact-location evidence; Sticky's direct handoff and Patrizia's Sauce page remain unverified | 95.7% passes the fixed-panel 95% gate; link freshness still requires ongoing checks |
 | Exact comparison coverage | Four complete comparison runs, all for Kips Bay Deli | Proven repeatable at one restaurant, not broad enough for the 70% gate |
 | Equivalent baskets | 4 of 4 declared comparisons used identical item, size, quantity, and modifiers within each run | 100% in a very small sample |

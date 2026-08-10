@@ -1,0 +1,62 @@
+{
+  "retrievedOn": "2026-08-10",
+  "source": "Google Maps walking directions",
+  "evidenceClass": "cross_provider_estimate",
+  "fieldObservationStatus": "pending",
+  "studyCenter": "East 34th Street and Third Avenue, New York, NY 10016",
+  "walkingLimitMinutes": 15,
+  "sampleSelection": "The five routes with the highest durationSeconds in routes.json.",
+  "method": "Record the shortest visible Google Maps walking route to each exact destination address. These are independent provider estimates, not field-observed walks.",
+  "routes": [
+    {
+      "restaurantId": "bhatti-indian-grill",
+      "destinationAddress": "100 Lexington Avenue, New York, NY 10016",
+      "osmEstimatedMinutes": 11,
+      "googleEstimatedMinutes": 10,
+      "googleDistanceMiles": 0.4,
+      "googleRouteSummary": "Lexington Avenue",
+      "differenceMinutes": -1,
+      "sourceUrl": "https://www.google.com/maps/dir/?api=1&origin=East%2034th%20Street%20and%20Third%20Avenue%2C%20New%20York%2C%20NY%2010016&destination=100%20Lexington%20Avenue%2C%20New%20York%2C%20NY%2010016&travelmode=walking"
+    },
+    {
+      "restaurantId": "patrizias-manhattan",
+      "destinationAddress": "462-466 2nd Avenue, New York, NY 10016",
+      "osmEstimatedMinutes": 11,
+      "googleEstimatedMinutes": 11,
+      "googleDistanceMiles": 0.5,
+      "googleRouteSummary": "East 34th Street and Second Avenue",
+      "differenceMinutes": 0,
+      "sourceUrl": "https://www.google.com/maps/dir/?api=1&origin=East%2034th%20Street%20and%20Third%20Avenue%2C%20New%20York%2C%20NY%2010016&destination=462-466%202nd%20Avenue%2C%20New%20York%2C%20NY%2010016&travelmode=walking"
+    },
+    {
+      "restaurantId": "makimaki-lexington",
+      "destinationAddress": "360 Lexington Avenue, New York, NY 10017",
+      "osmEstimatedMinutes": 10,
+      "googleEstimatedMinutes": 10,
+      "googleDistanceMiles": 0.4,
+      "googleRouteSummary": "Lexington Avenue",
+      "differenceMinutes": 0,
+      "sourceUrl": "https://www.google.com/maps/dir/?api=1&origin=East%2034th%20Street%20and%20Third%20Avenue%2C%20New%20York%2C%20NY%2010016&destination=360%20Lexington%20Avenue%2C%20New%20York%2C%20NY%2010017&travelmode=walking"
+    },
+    {
+      "restaurantId": "curry-in-a-hurry",
+      "destinationAddress": "119 Lexington Avenue, New York, NY 10016",
+      "osmEstimatedMinutes": 9,
+      "googleEstimatedMinutes": 9,
+      "googleDistanceMiles": 0.4,
+      "googleRouteSummary": "Third Avenue",
+      "differenceMinutes": 0,
+      "sourceUrl": "https://www.google.com/maps/dir/?api=1&origin=East%2034th%20Street%20and%20Third%20Avenue%2C%20New%20York%2C%20NY%2010016&destination=119%20Lexington%20Avenue%2C%20New%20York%2C%20NY%2010016&travelmode=walking"
+    },
+    {
+      "restaurantId": "coletta",
+      "destinationAddress": "365 3rd Avenue, New York, NY 10016",
+      "osmEstimatedMinutes": 9,
+      "googleEstimatedMinutes": 8,
+      "googleDistanceMiles": 0.4,
+      "googleRouteSummary": "Third Avenue",
+      "differenceMinutes": -1,
+      "sourceUrl": "https://www.google.com/maps/dir/?api=1&origin=East%2034th%20Street%20and%20Third%20Avenue%2C%20New%20York%2C%20NY%2010016&destination=365%203rd%20Avenue%2C%20New%20York%2C%20NY%2010016&travelmode=walking"
+    }
+  ]
+}

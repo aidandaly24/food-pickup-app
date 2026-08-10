@@ -70,6 +70,8 @@ test("server-renders the Sidewalk POC", async () => {
   assert.match(html, /within estimated range/);
   assert.match(html, /EST MIN WALK/);
   assert.match(html, /OpenStreetMap route estimates/);
+  assert.match(html, /five farthest were cross-checked with Google Maps/);
+  assert.match(html, /field walks remain pending/);
   assert.doesNotMatch(html, /actually walkable|\d+ MIN WALK/);
   assert.match(html, /Sidewalk hands off to the source/);
   assert.match(html, /All 25 panel restaurants support discovery/);

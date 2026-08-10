@@ -5,9 +5,11 @@ and comparing the same basket across restaurant websites, DoorDash, and Uber
 Eats.
 
 The current build discovers all 25 real restaurants in a routed Kips Bay and
-Murray Hill evaluation panel. Six currently have dated checkout research. It
-does not claim those observations are live or name a cheapest channel without
-two equivalent, time-matched checkout totals.
+Murray Hill evaluation panel. The five farthest route estimates have an
+independent provider cross-check, while field walks remain pending. Six
+restaurants currently have dated checkout research. The POC does not claim
+those observations are live or name a cheapest channel without two equivalent,
+time-matched checkout totals.
 
 The first qualifying comparison found Uber Eats $0.69 cheaper than Kips Bay
 Deli's direct checkout for one equivalent pickup basket. That is a dated

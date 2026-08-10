@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import type { Map as LeafletMap, Marker as LeafletMarker } from "leaflet";
+import routeCrossChecks from "../research/phase-0/kips-bay-murray-hill/route-cross-checks.json";
 import { STUDY_CENTER } from "./study-data";
 import type { StudyRestaurant } from "./domain";
 
@@ -111,7 +112,9 @@ export function StudyMap({
           <h2 id="map-heading">What’s within estimated range</h2>
         </div>
         <p>
-          OpenStreetMap pedestrian estimates from {STUDY_CENTER.label}. Select a
+          OpenStreetMap pedestrian estimates from {STUDY_CENTER.label}. The five
+          farthest were cross-checked with Google Maps on{" "}
+          {routeCrossChecks.retrievedOn}; field walks remain pending. Select a
           marker or restaurant below.
         </p>
       </div>
