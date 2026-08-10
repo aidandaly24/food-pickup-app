@@ -83,7 +83,7 @@
           "channel": "restaurant_storefront",
           "provider": "DoorDash Commerce Platform",
           "relationship": "official_site_link",
-          "url": "https://order.online/"
+          "url": "https://order.online/business/pio-pio-7--kips-bay-15399"
         },
         {
           "channel": "doordash_marketplace",
@@ -92,7 +92,11 @@
           "url": "https://www.doordash.com/en-US/store/pio-pio-7-%E2%80%93-kips-bay-new-york-25125237/"
         }
       ],
-      "sources": ["https://www.piopio.shop/pio-7-kips-bay"]
+      "sources": [
+        "https://www.piopio.shop/pio-7-kips-bay",
+        "https://order.online/business/pio-pio-7--kips-bay-15399",
+        "https://www.doordash.com/store/pio-pio-7-%E2%80%93-kips-bay-new-york-25125237/"
+      ]
     },
     {
       "id": "nom-nam",
@@ -179,10 +183,13 @@
           "channel": "doordash_marketplace",
           "provider": "DoorDash",
           "relationship": "official_site_link",
-          "url": "https://www.doordash.com/"
+          "url": "https://www.doordash.com/store/banc-cafe-new-york-49491/"
         }
       ],
-      "sources": ["https://www.banccafe.com/delivery-pickup"]
+      "sources": [
+        "https://www.banccafe.com/delivery-pickup",
+        "https://www.doordash.com/store/banc-cafe-new-york-49491/"
+      ]
     },
     {
       "id": "momosan-lexington",
@@ -242,6 +249,12 @@
           "url": "https://order.online/store/bhatti-indian-grill-221684"
         },
         {
+          "channel": "doordash_marketplace",
+          "provider": "DoorDash",
+          "relationship": "location_matched",
+          "url": "https://www.doordash.com/store/bhatti-indian-grill-new-york-221684/"
+        },
+        {
           "channel": "grubhub",
           "provider": "Grubhub",
           "relationship": "location_matched",
@@ -256,7 +269,9 @@
       ],
       "sources": [
         "https://www.bhattinyc.com/contact",
-        "https://order.online/store/bhatti-indian-grill-221684"
+        "https://order.online/store/bhatti-indian-grill-221684",
+        "https://www.doordash.com/store/bhatti-indian-grill-new-york-221684/",
+        "https://www.ubereats.com/store/bhatti-indian-grill-kips-bay/Vtkze_NiTO-RY87xT-9U5w"
       ]
     },
     {
@@ -438,9 +453,18 @@
           "provider": "Slice",
           "relationship": "official_ordering_site",
           "url": "https://www.kipsbaydeli.com/"
+        },
+        {
+          "channel": "uber_eats",
+          "provider": "Uber Eats",
+          "relationship": "location_matched",
+          "url": "https://www.ubereats.com/store/kips-bay-deli-smb-parent/gJ9_tFeSWoy0wzcSnY6jvg"
         }
       ],
-      "sources": ["https://www.kipsbaydeli.com/"]
+      "sources": [
+        "https://www.kipsbaydeli.com/",
+        "https://www.ubereats.com/store/kips-bay-deli-smb-parent/gJ9_tFeSWoy0wzcSnY6jvg"
+      ]
     },
     {
       "id": "vezzo-thin-crust",
@@ -485,14 +509,15 @@
         },
         {
           "channel": "uber_eats",
-          "provider": "Uber Eats / Postmates",
+          "provider": "Uber Eats",
           "relationship": "location_matched",
-          "url": "https://postmates.com/store/tara-rose/sCISHchLTNSMGpfvxarcbQ"
+          "url": "https://www.ubereats.com/store/tara-rose/sCISHchLTNSMGpfvxarcbQ"
         }
       ],
       "sources": [
         "https://www.tararosenyc.com/our-story/",
-        "https://order.toasttab.com/online/tara-rose-384-third-ave"
+        "https://order.toasttab.com/online/tara-rose-384-third-ave",
+        "https://www.ubereats.com/store/tara-rose/sCISHchLTNSMGpfvxarcbQ"
       ]
     },
     {

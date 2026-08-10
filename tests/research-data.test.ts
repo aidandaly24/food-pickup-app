@@ -1,17 +1,11 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
 const studyRoot = new URL(
   "../research/phase-0/kips-bay-murray-hill/",
   import.meta.url,
 );
-const captureFiles = [
-  "checkout-observations.json",
-  "signed-in-checkout-observations.json",
-  "threshold-checkout-observations.json",
-] as const;
-
 interface RawRestaurant {
   readonly id: string;
   readonly website: string;
@@ -66,6 +60,12 @@ interface RawCaptureStudy {
 }
 
 async function readCaptureStudies(): Promise<readonly RawCaptureStudy[]> {
+  const captureFiles = (await readdir(studyRoot))
+    .filter((file) => file.endsWith("checkout-observations.json"))
+    .sort();
+
+  assert.ok(captureFiles.length > 0, "at least one capture file is required");
+
   return Promise.all(
     captureFiles.map(async (file) =>
       JSON.parse(await readFile(new URL(file, studyRoot), "utf8")),
@@ -123,6 +123,9 @@ test("every captured exact total reconciles and uses a public source", async () 
   const restaurantIds = new Set(
     catalog.restaurants.map((restaurant) => restaurant.id),
   );
+  const restaurantsById = new Map(
+    catalog.restaurants.map((restaurant) => [restaurant.id, restaurant]),
+  );
 
   assert.equal(
     new Set(studies.map((study) => study.captureRunId)).size,
@@ -139,6 +142,14 @@ test("every captured exact total reconciles and uses a public source", async () 
       assert.ok(
         restaurantIds.has(observation.restaurantId),
         `unknown restaurant ${observation.restaurantId}`,
+      );
+      assert.ok(
+        restaurantsById
+          .get(observation.restaurantId)
+          ?.channelsObserved.some(
+            (channel) => channel.channel === observation.channel,
+          ),
+        `${observation.restaurantId} is missing observed channel ${observation.channel}`,
       );
       assert.ok(observation.basketKey.length > 0);
       assert.ok(observation.itemSignature.length > 0);
