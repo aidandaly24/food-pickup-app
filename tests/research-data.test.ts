@@ -55,6 +55,7 @@ interface RawCaptureStudy {
     readonly winnerChannel: string;
     readonly savingsCents: number;
     readonly quoteWindowSeconds: number;
+    readonly recheckedAt: string;
   };
   readonly observations: readonly RawObservation[];
 }
@@ -196,7 +197,10 @@ test("declared comparisons are derived from equivalent fresh quotes", async () =
   assert.equal(comparisons.length, 2);
 
   for (const study of comparisons) {
+    const { comparison } = study;
     const exactCheckouts = exactComparison(study);
+
+    assert.ok(comparison);
     assert.ok(exactCheckouts.length >= 2);
     assert.equal(
       new Set(exactCheckouts.map((observation) => observation.channel)).size,
@@ -226,15 +230,22 @@ test("declared comparisons are derived from equivalent fresh quotes", async () =
     const quoteWindowSeconds = Math.round(
       (Math.max(...timestamps) - Math.min(...timestamps)) / 1_000,
     );
+    const recheckedAt = new Date(comparison.recheckedAt).getTime();
 
     assert.ok(timestamps.every(Number.isFinite));
-    assert.equal(study.comparison?.winnerChannel, winner.channel);
+    assert.ok(Number.isFinite(recheckedAt));
+    assert.ok(recheckedAt >= Math.max(...timestamps));
+    assert.ok(
+      recheckedAt - Math.max(...timestamps) <= 10 * 60 * 1_000,
+      `${study.captureRunId} was not rechecked within ten minutes`,
+    );
+    assert.equal(comparison.winnerChannel, winner.channel);
     assert.equal(
-      study.comparison?.savingsCents,
+      comparison.savingsCents,
       (runnerUp.finalTotalCents as number) -
         (winner.finalTotalCents as number),
     );
-    assert.equal(study.comparison?.quoteWindowSeconds, quoteWindowSeconds);
+    assert.equal(comparison.quoteWindowSeconds, quoteWindowSeconds);
     assert.ok(quoteWindowSeconds <= 10 * 60);
   }
 });
