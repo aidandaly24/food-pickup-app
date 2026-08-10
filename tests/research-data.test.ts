@@ -105,6 +105,8 @@ test("the 25-restaurant catalog and pedestrian routes stay aligned", async () =>
     for (const channel of restaurant.channelsObserved) {
       assert.ok(channel.channel.length > 0);
       assert.match(channel.url, /^https?:\/\//);
+      assert.notEqual(channel.url, "https://order.toasttab.com/");
+      assert.notEqual(channel.url, "https://www.grubhub.com/");
     }
   }
 

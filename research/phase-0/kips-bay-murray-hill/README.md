@@ -40,6 +40,11 @@ offers, and states whether the total is exact or estimated.
   bad label. Coletta's official Order Online link resolves to Square, while its
   separately discovered DoorDash storefront matches the same 365 Third Avenue
   location. Both listed the same Margherita Pizza at $24 before opening.
+- A provider homepage is not a usable restaurant deep link. Banc Cafe's generic
+  Toast and Grubhub URLs were replaced with official, location-specific links;
+  both resolve to 431 Third Avenue. Toast is pickup-only but currently reports
+  online ordering unavailable, while Grubhub requires a session-level pickup
+  switch that the URL does not preserve.
 - Menu parity cannot be assumed. Little Ruby's Bronte description differs between
   currently indexed sources even when the item name is the same.
 - Public list-price differences exist, but not for every restaurant. Pio Pio's

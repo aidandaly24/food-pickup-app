@@ -1,7 +1,7 @@
 {
   "studyCenter": "East 34th Street and Third Avenue, New York, NY 10016",
   "walkingLimitMinutes": 15,
-  "verifiedAt": "2026-08-10T01:08:51-04:00",
+  "verifiedAt": "2026-08-10T01:14:55-04:00",
   "routeStatus": "openstreetmap_pedestrian_estimate_complete; field_calibration_pending",
   "channelDiscoveryStatus": "initial_not_exhaustive",
   "restaurants": [
@@ -188,13 +188,13 @@
           "channel": "restaurant_direct",
           "provider": "Toast",
           "relationship": "official_site_link",
-          "url": "https://order.toasttab.com/"
+          "url": "https://order.toasttab.com/online/banc-cafe-431-3rd-ave"
         },
         {
           "channel": "grubhub",
           "provider": "Grubhub",
           "relationship": "official_site_link",
-          "url": "https://www.grubhub.com/"
+          "url": "https://www.grubhub.com/restaurant/banc-cafe-431-3rd-ave-new-york/2498252"
         },
         {
           "channel": "doordash_marketplace",
@@ -203,8 +203,11 @@
           "url": "https://www.doordash.com/store/banc-cafe-new-york-49491/"
         }
       ],
+      "notes": "The official delivery-and-pickup page links to all three channels. Toast resolves to the exact 431 Third Avenue location but reported online ordering unavailable and a Monday 4 PM opening during verification. Grubhub resolves to the exact location and supports pickup, though the URL itself does not preserve pickup mode.",
       "sources": [
         "https://www.banccafe.com/delivery-pickup",
+        "https://order.toasttab.com/online/banc-cafe-431-3rd-ave",
+        "https://www.grubhub.com/restaurant/banc-cafe-431-3rd-ave-new-york/2498252",
         "https://www.doordash.com/store/banc-cafe-new-york-49491/"
       ]
     },
