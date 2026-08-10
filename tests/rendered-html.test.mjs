@@ -31,10 +31,25 @@ test("server-renders the Sidewalk POC", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
+  const textHtml = html.replaceAll("<!-- -->", "");
   assert.match(html, /<title>Sidewalk — NYC Pickup, Priced Right<\/title>/i);
+  assert.match(
+    html,
+    /<meta property="og:image" content="http:\/\/localhost:3000\/og\.png">/i,
+  );
+  assert.match(
+    html,
+    /<meta name="twitter:card" content="summary_large_image">/i,
+  );
   assert.match(html, /Real places\./);
   assert.match(html, /Honest totals\./);
   assert.match(html, /OBSERVED DATA/);
+  assert.match(textHtml, /25 nearby restaurants/);
+  assert.match(textHtml, /38 known ordering links/);
+  assert.equal(html.match(/data-restaurant-id=/g)?.length, 25);
+  assert.match(html, /Sarge/);
+  assert.match(html, /Medium Rare Murray Hill/);
+  assert.match(html, /Not captured/);
   assert.match(html, /Pio Pio 7/);
   assert.match(html, /Bhatti Indian Grill/);
   assert.match(html, /Kips Bay Deli/);
@@ -48,6 +63,7 @@ test("server-renders the Sidewalk POC", async () => {
   assert.match(html, /actually walkable/);
   assert.match(html, /OpenStreetMap/);
   assert.match(html, /Sidewalk hands off to the source/);
+  assert.match(html, /All 25 panel restaurants support discovery/);
   assert.doesNotMatch(html, /Miso &amp; Main|seeded demonstration data/);
 });
 
@@ -64,6 +80,7 @@ test("removes starter-only code and dependencies", async () => {
     access(new URL("app/_sites-preview/preview.css", projectRoot)),
   );
   await assert.rejects(access(new URL("app/demo-data.ts", projectRoot)));
+  await access(new URL("../public/og.png", import.meta.url));
   assert.doesNotMatch(page, /SkeletonPreview|codex-preview/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton|drizzle/);
 });

@@ -841,6 +841,59 @@ a:focus-visible {
   gap: 7px;
 }
 
+.catalog-channel-list {
+  display: grid;
+  gap: 7px;
+}
+
+.catalog-channel {
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 13px;
+  border: 1px solid #41423d;
+  color: white;
+  text-decoration: none;
+  transition: 140ms ease;
+}
+
+.catalog-channel:hover {
+  border-color: var(--acid);
+  background: #2b2c27;
+}
+
+.catalog-channel small,
+.catalog-channel strong {
+  display: block;
+}
+
+.catalog-channel small {
+  margin-bottom: 5px;
+  color: #85877f;
+  font: 600 8px/1 var(--font-geist-mono), monospace;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.catalog-channel strong {
+  font-size: 11px;
+}
+
+.catalog-channel b {
+  color: var(--acid);
+  font-size: 17px;
+}
+
+.catalog-channel-empty {
+  padding: 18px;
+  border: 1px dashed #55564f;
+  color: #a3a59b;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
 .quote-row {
   width: 100%;
   min-height: 65px;

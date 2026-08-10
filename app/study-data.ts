@@ -17,15 +17,6 @@ import type {
   StudyRestaurant,
 } from "./domain";
 
-const STUDY_RESTAURANT_IDS = [
-  "pio-pio-7",
-  "tara-rose",
-  "bhatti-indian-grill",
-  "little-rubys-murray-hill",
-  "banc-cafe",
-  "kips-bay-deli",
-] as const;
-
 const RAW_OBSERVATIONS = [
   ...anonymousCheckoutStudy.observations.map((observation) => ({
     ...observation,
@@ -90,19 +81,28 @@ const OBSERVATION_RESULTS = [
   "availability_blocked",
 ] as const satisfies readonly ObservationResult[];
 
-const PRESENTATION = {
-  "pio-pio-7": { initials: "PP", accent: "#ff7a45", basketName: "Whole chicken" },
-  "tara-rose": { initials: "TR", accent: "#dafe61", basketName: "Tara Rose Burger" },
-  "bhatti-indian-grill": { initials: "BI", accent: "#b7a6ff", basketName: "Butter chicken" },
-  "little-rubys-murray-hill": { initials: "LR", accent: "#80b8ff", basketName: "Classic cheeseburger" },
-  "banc-cafe": { initials: "BC", accent: "#ffd15b", basketName: "The Banker" },
+const ACCENTS = [
+  "#ff7a45",
+  "#dafe61",
+  "#b7a6ff",
+  "#80b8ff",
+  "#ffd15b",
+  "#ff9ecb",
+] as const;
+
+const BASKET_NAMES: Readonly<
+  Record<string, { single: string; threshold?: string }>
+> = {
+  "pio-pio-7": { single: "Whole chicken" },
+  "tara-rose": { single: "Tara Rose Burger" },
+  "bhatti-indian-grill": { single: "Butter chicken" },
+  "little-rubys-murray-hill": { single: "Classic cheeseburger" },
+  "banc-cafe": { single: "The Banker" },
   "kips-bay-deli": {
-    initials: "KD",
-    accent: "#ff9ecb",
-    basketName: "Reuben on Rye",
-    thresholdBasketName: "Two Reubens",
+    single: "Reuben on Rye",
+    threshold: "Two Reubens",
   },
-} as const;
+};
 
 function parseOneOf<T extends string>(
   value: string,
@@ -138,6 +138,26 @@ function channelLabel(channel: string) {
     return { name: "Uber Eats", shortName: "UE" };
   }
   throw new Error(`Unknown channel: ${channel}`);
+}
+
+function catalogChannelName(channel: string): string {
+  if (channel === "restaurant_direct") return "Restaurant direct";
+  if (channel === "restaurant_storefront") return "Restaurant storefront";
+  if (channel === "doordash_marketplace") return "DoorDash marketplace";
+  if (channel === "uber_eats") return "Uber Eats";
+  if (channel === "grubhub") return "Grubhub";
+  if (channel === "restaurant_delivery") return "Restaurant delivery";
+  throw new Error(`Unknown catalog channel: ${channel}`);
+}
+
+function initials(name: string): string {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
 }
 
 function observationsFor(
@@ -212,9 +232,7 @@ function observationsFor(
     });
 }
 
-function basketsFor(
-  restaurantId: (typeof STUDY_RESTAURANT_IDS)[number],
-): readonly StudyBasket[] {
+function basketsFor(restaurantId: string): readonly StudyBasket[] {
   const rawObservations = RAW_OBSERVATIONS.filter(
     (observation) => observation.restaurantId === restaurantId,
   );
@@ -239,16 +257,15 @@ function basketsFor(
       BASKET_KINDS,
       "basket kind",
     );
-    const presentation = PRESENTATION[restaurantId];
-    const thresholdName =
-      "thresholdBasketName" in presentation
-        ? presentation.thresholdBasketName
-        : `${presentation.basketName} threshold`;
+    const names = BASKET_NAMES[restaurantId];
 
     return {
       id: captureRunId,
       kind,
-      name: kind === "threshold" ? thresholdName : presentation.basketName,
+      name:
+        kind === "threshold"
+          ? (names?.threshold ?? "Threshold basket")
+          : (names?.single ?? "Single basket"),
       basketKey: rawObservation.basketKey,
       description: rawObservation.itemSignature,
       capturedOn: rawObservation.capturedOn,
@@ -265,33 +282,47 @@ export const STUDY_CENTER = {
 } as const;
 
 export const STUDY_RESTAURANTS: readonly StudyRestaurant[] =
-  STUDY_RESTAURANT_IDS.map((id) => {
-    const restaurant = restaurantStudy.restaurants.find(
-      (candidate) => candidate.id === id,
+  restaurantStudy.restaurants.map((restaurant, index) => {
+    const route = routeStudy.routes.find(
+      (candidate) => candidate.restaurantId === restaurant.id,
     );
-    const route = routeStudy.routes.find((candidate) => candidate.restaurantId === id);
-    const baskets = basketsFor(id);
+    const baskets = basketsFor(restaurant.id);
 
-    if (!restaurant || !route || !baskets[0]) {
-      throw new Error(`Incomplete study data for ${id}`);
+    if (!route) {
+      throw new Error(`Missing pedestrian route for ${restaurant.id}`);
     }
 
     return {
-      id,
+      id: restaurant.id,
       name: restaurant.name,
-      initials: PRESENTATION[id].initials,
+      initials: initials(restaurant.name),
       cuisine: restaurant.cuisine,
       address: restaurant.address,
       latitude: route.latitude,
       longitude: route.longitude,
       walkMinutes: route.estimatedMinutes,
-      accent: PRESENTATION[id].accent,
+      accent: ACCENTS[index % ACCENTS.length],
+      anchorItem: restaurant.anchorItem,
+      websiteUrl: restaurant.website,
+      channels: restaurant.channelsObserved.map((channel) => ({
+        key: channel.channel,
+        name: catalogChannelName(channel.channel),
+        provider: channel.provider,
+        sourceUrl: channel.url,
+      })),
       baskets,
     };
   }).sort((left, right) => left.walkMinutes - right.walkMinutes);
 
 export const STUDY_SUMMARY = {
   restaurants: STUDY_RESTAURANTS.length,
+  knownChannels: STUDY_RESTAURANTS.reduce(
+    (total, restaurant) => total + restaurant.channels.length,
+    0,
+  ),
+  quotedRestaurants: STUDY_RESTAURANTS.filter(
+    (restaurant) => restaurant.baskets.length > 0,
+  ).length,
   observations: STUDY_RESTAURANTS.reduce(
     (total, restaurant) =>
       total +

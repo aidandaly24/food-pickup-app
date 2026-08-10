@@ -34,6 +34,13 @@ export interface OrderingChannel {
   readonly provider: string;
 }
 
+export interface CatalogChannel {
+  readonly key: string;
+  readonly name: string;
+  readonly provider: string;
+  readonly sourceUrl: string;
+}
+
 export interface PromotionObservation {
   readonly label: string;
   readonly applied: boolean;
@@ -86,6 +93,9 @@ export interface StudyRestaurant {
   readonly longitude: number;
   readonly walkMinutes: number;
   readonly accent: string;
+  readonly anchorItem: string;
+  readonly websiteUrl: string;
+  readonly channels: readonly CatalogChannel[];
   readonly baskets: readonly StudyBasket[];
 }
 

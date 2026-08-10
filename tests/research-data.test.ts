@@ -240,12 +240,20 @@ test("declared comparisons are derived from equivalent fresh quotes", async () =
 });
 
 test("published Phase 0 counts remain reproducible", async () => {
-  const studies = await readCaptureStudies();
+  const [studies, catalog] = await Promise.all([
+    readCaptureStudies(),
+    readJson<RawRestaurantStudy>("restaurants.json"),
+  ]);
   const observations = studies.flatMap((study) => study.observations);
+  const observedRestaurants = new Set(
+    observations.map((observation) => observation.restaurantId),
+  );
   const savings = studies.flatMap((study) =>
     study.comparison ? [study.comparison.savingsCents] : [],
   );
 
+  assert.equal(catalog.restaurants.length, 25);
+  assert.equal(observedRestaurants.size, 6);
   assert.equal(observations.length, 16);
   assert.equal(
     observations.filter((observation) => observation.finalTotalCents !== null)

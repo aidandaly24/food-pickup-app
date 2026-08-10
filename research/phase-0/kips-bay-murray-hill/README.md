@@ -1,6 +1,6 @@
 # Kips Bay / Murray Hill feasibility study
 
-Status: seed pass, first anonymous pass, and two signed-in basket comparisons complete; multi-day repetition not started
+Status: 25-restaurant discovery panel surfaced, first anonymous pass and two signed-in basket comparisons complete; multi-day repetition not started
 Verified: 2026-08-09  
 Study center: East 34th Street and Third Avenue, New York, NY 10016  
 Boundary: all 25 candidates fit within an OpenStreetMap pedestrian-route estimate of 11 minutes; field calibration remains pending
@@ -24,6 +24,9 @@ offers, and states whether the total is exact or estimated.
 
 - The seed catalog contains 25 real restaurants with street addresses and source
   URLs in [`restaurants.json`](./restaurants.json).
+- All 25 catalog entries now appear in the POC even when checkout evidence is
+  absent. Six currently have captured baskets; catalog-only entries never receive
+  synthetic availability, prices, or totals.
 - All 25 candidates resolved to pedestrian routes of 2–11 estimated minutes from
   the study center. The route evidence is in [`routes.json`](./routes.json); it
   still needs spot-calibration for walking pace and signal delay.
@@ -211,6 +214,14 @@ equivalence.
 
 ## Advancement gates
 
+For the concierge POC, discovery coverage is measured against the fixed
+25-restaurant evaluation panel in this directory. Restaurants leave the
+denominator only when closure, duplicate identity, or an observed walk over 15
+minutes is verified, and each removal requires a replacement. This makes the
+gate reproducible without pretending the panel is an exhaustive census of every
+restaurant in the neighborhood. A separate held-out sample is required before
+claiming broader NYC recall.
+
 Do not move to the technical POC until the sample shows:
 
 - at least 80% of relevant nearby restaurants are discoverable;
@@ -229,7 +240,7 @@ keep, revise, or reject them based on the actual failure distribution.
 
 | Gate signal | Evidence so far | Judgment |
 | --- | --- | --- |
-| Relevant restaurant discovery | 25 routed seed candidates; exhaustive storefront verification pending | Not yet measurable against the 80% gate |
+| Relevant restaurant discovery | 25 of 25 fixed-panel restaurants appear in the POC; six have checkout research | 100% panel recall passes the POC gate; neighborhood-wide recall remains unproven |
 | Correct physical-location matching | One DoorDash same-name/different-address result was detected and rejected | Identity rule works; sample is too small for a rate |
 | Exact comparison coverage | Two complete comparisons, both for Kips Bay Deli | Proven possible, not broad enough for the 70% gate |
 | Equivalent baskets | 2 of 2 declared comparisons used identical item, size, quantity, and modifiers | 100% in a very small sample |

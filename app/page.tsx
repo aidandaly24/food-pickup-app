@@ -48,11 +48,11 @@ function basketEvidenceScore(basket: StudyBasket): number {
   return outcome.kind === "incomplete" ? -1 : (outcome.savingsCents ?? 0);
 }
 
-function featuredBasket(restaurant: StudyRestaurant): StudyBasket {
+function featuredBasket(restaurant: StudyRestaurant): StudyBasket | null {
   const [firstBasket, ...otherBaskets] = restaurant.baskets;
 
   if (!firstBasket) {
-    throw new Error(`Restaurant ${restaurant.id} needs at least one basket.`);
+    return null;
   }
 
   return otherBaskets.reduce((best, candidate) => {
@@ -60,6 +60,28 @@ function featuredBasket(restaurant: StudyRestaurant): StudyBasket {
       ? candidate
       : best;
   }, firstBasket);
+}
+
+function PanelHeader({
+  restaurant,
+  label,
+}: {
+  restaurant: StudyRestaurant;
+  label: string;
+}) {
+  return (
+    <div className="comparison-header">
+      <div>
+        <span className="section-index section-index--light">/03</span>
+        <p>{label}</p>
+        <h2>{restaurant.name}</h2>
+      </div>
+      <span className="walk-badge">
+        {restaurant.walkMinutes}
+        <small>MIN</small>
+      </span>
+    </div>
+  );
 }
 
 function formatNullableMoney(cents: number | null) {
@@ -213,9 +235,10 @@ export default function Home() {
         <div className="hero-note">
           <span className="hero-note-number">01</span>
           <p>
-            {STUDY_SUMMARY.restaurants} nearby restaurants, {STUDY_SUMMARY.observations}{" "}
-            observed ordering channels, and {STUDY_SUMMARY.comparisons}{" "}
-            basket comparisons backed by equivalent checkout totals.
+            {STUDY_SUMMARY.restaurants} nearby restaurants,{" "}
+            {STUDY_SUMMARY.knownChannels} known ordering links, and{" "}
+            {STUDY_SUMMARY.comparisons} basket comparisons backed by equivalent
+            checkout totals.
           </p>
         </div>
       </section>
@@ -320,13 +343,14 @@ export default function Home() {
             <div className="restaurant-grid">
               {visibleRestaurants.map((restaurant) => {
                 const basket = featuredBasket(restaurant);
-                const restaurantComparison = new QuoteComparison(
-                  basket.observations,
-                );
-                const evidence =
-                  restaurantComparison.outcome.winner ??
-                  restaurantComparison.mostCompleteObservation;
-                const price = observationPrice(evidence);
+                const restaurantComparison = basket
+                  ? new QuoteComparison(basket.observations)
+                  : null;
+                const evidence = restaurantComparison
+                  ? (restaurantComparison.outcome.winner ??
+                    restaurantComparison.mostCompleteObservation)
+                  : null;
+                const price = evidence ? observationPrice(evidence) : null;
                 const isSelected = restaurant.id === selectedRestaurant?.id;
                 const wasAvailable = restaurant.baskets.some((candidate) =>
                   candidate.observations.some(
@@ -338,6 +362,7 @@ export default function Home() {
                 return (
                   <button
                     key={restaurant.id}
+                    data-restaurant-id={restaurant.id}
                     type="button"
                     className={`restaurant-card${
                       isSelected ? " restaurant-card--selected" : ""
@@ -358,24 +383,36 @@ export default function Home() {
                     <span className="restaurant-body">
                       <span className="restaurant-meta">
                         <span>{restaurant.walkMinutes} MIN WALK</span>
-                        <span>{wasAvailable ? "AVAILABLE" : "NOT ORDERABLE"}</span>
+                        <span>
+                          {wasAvailable
+                            ? "AVAILABLE IN CAPTURE"
+                            : basket
+                              ? "CAPTURED"
+                              : "CATALOG"}
+                        </span>
                       </span>
                       <strong className="restaurant-name">{restaurant.name}</strong>
                       <span className="restaurant-description">
                         {restaurant.address}
                       </span>
                       <span className="basket-preview">
-                        <small>Observed basket</small>
-                        {basket.name}
+                        <small>{basket ? "Observed basket" : "Basket target"}</small>
+                        {basket?.name ?? restaurant.anchorItem}
                       </span>
                       <span className="restaurant-footer">
                         <span>
-                          <small>Strongest evidence</small>
-                          <strong>{RESULT_LABELS[evidence.result]}</strong>
+                          <small>
+                            {evidence ? "Strongest evidence" : "Known channels"}
+                          </small>
+                          <strong>
+                            {evidence
+                              ? RESULT_LABELS[evidence.result]
+                              : `${restaurant.channels.length} found`}
+                          </strong>
                         </span>
                         <span className="card-price">
-                          <small>{price.label}</small>
-                          <strong>{price.value}</strong>
+                          <small>{price?.label ?? "quote status"}</small>
+                          <strong>{price?.value ?? "Not captured"}</strong>
                         </span>
                       </span>
                     </span>
@@ -409,17 +446,10 @@ export default function Home() {
           comparison &&
           activeObservation ? (
             <>
-              <div className="comparison-header">
-                <div>
-                  <span className="section-index section-index--light">/03</span>
-                  <p>Observed pickup channels</p>
-                  <h2>{selectedRestaurant.name}</h2>
-                </div>
-                <span className="walk-badge">
-                  {selectedRestaurant.walkMinutes}
-                  <small>MIN</small>
-                </span>
-              </div>
+              <PanelHeader
+                restaurant={selectedRestaurant}
+                label="Observed pickup channels"
+              />
 
               {selectedRestaurant.baskets.length > 1 && (
                 <div className="basket-options" aria-label="Observed baskets">
@@ -554,6 +584,72 @@ export default function Home() {
                 Sidewalk hands off to the source. It never places the order.
               </p>
             </>
+          ) : selectedRestaurant ? (
+            <>
+              <PanelHeader
+                restaurant={selectedRestaurant}
+                label="Catalog discovery"
+              />
+
+              <div className="basket-card catalog-basket-card">
+                <span className="basket-label">BASKET TARGET</span>
+                <strong>{selectedRestaurant.anchorItem}</strong>
+                <p>
+                  This target still needs item, modifier, and availability
+                  confirmation across at least two channels.
+                </p>
+              </div>
+
+              <div
+                className="catalog-channel-list"
+                aria-label="Known ordering channels"
+              >
+                {selectedRestaurant.channels.length > 0 ? (
+                  selectedRestaurant.channels.map((channel) => (
+                    <a
+                      className="catalog-channel"
+                      href={channel.sourceUrl}
+                      key={`${channel.key}-${channel.sourceUrl}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <span>
+                        <small>{channel.name}</small>
+                        <strong>{channel.provider}</strong>
+                      </span>
+                      <b aria-hidden="true">↗</b>
+                    </a>
+                  ))
+                ) : (
+                  <div className="catalog-channel-empty">
+                    No ordering channel was confirmed in the seed pass.
+                  </div>
+                )}
+              </div>
+
+              <div className="outcome-summary outcome-summary--incomplete">
+                <span>QUOTE STATUS</span>
+                <strong>No checkout evidence yet</strong>
+                <p>
+                  The location and walking route are real. Known links are
+                  discovery evidence only—not current availability or price
+                  quotes.
+                </p>
+              </div>
+
+              <a
+                className="handoff-button"
+                href={selectedRestaurant.websiteUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Open restaurant website
+                <span>↗</span>
+              </a>
+              <p className="handoff-note">
+                Sidewalk hands off to the source. It never places the order.
+              </p>
+            </>
           ) : (
             <div className="comparison-empty">
               <span>↙</span>
@@ -582,8 +678,9 @@ export default function Home() {
           <span>complete totals</span>
         </div>
         <p>
-          Discovery, walking filters, map selection, evidence inspection, and
-          source handoff use the real Kips Bay / Murray Hill feasibility study.
+          All 25 panel restaurants support discovery, walking filters, map
+          selection, and source handoff. {STUDY_SUMMARY.quotedRestaurants}{" "}
+          currently have checkout research.
         </p>
       </section>
 

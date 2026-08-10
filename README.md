@@ -4,9 +4,10 @@ A TypeScript proof of concept for discovering walkable NYC pickup restaurants
 and comparing the same basket across restaurant websites, DoorDash, and Uber
 Eats.
 
-The current build uses real, dated observations from a six-restaurant Kips Bay
-and Murray Hill feasibility study. It does not claim those observations are live
-or name a cheapest channel without two equivalent, time-matched checkout totals.
+The current build discovers all 25 real restaurants in a routed Kips Bay and
+Murray Hill evaluation panel. Six currently have dated checkout research. It
+does not claim those observations are live or name a cheapest channel without
+two equivalent, time-matched checkout totals.
 
 The first qualifying comparison found Uber Eats $0.69 cheaper than Kips Bay
 Deli's direct checkout for one equivalent pickup basket. That is a dated
@@ -49,7 +50,8 @@ The first real-data feasibility study is scoped to Kips Bay and Murray Hill. Its
 protocol live in
 [`research/phase-0/kips-bay-murray-hill`](./research/phase-0/kips-bay-murray-hill/README.md).
 
-The app reads the sanitized Phase 0 files directly. Menu-only and blocked
+The app reads the sanitized Phase 0 files directly. A restaurant can appear from
+catalog and walking-route evidence before it has a quote. Menu-only and blocked
 observations remain visibly incomplete; only exact checkout evidence is eligible
 to produce a comparison winner.
 
