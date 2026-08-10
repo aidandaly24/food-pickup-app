@@ -142,6 +142,23 @@ test("the 25-restaurant catalog and pedestrian routes stay aligned", async () =>
     (restaurant) => restaurant.id === "bareburger-murray-hill",
   );
   assert.equal(bareburger?.channelsObserved[0]?.provider, "Lunchbox");
+
+  const dig = catalog.restaurants.find(
+    (restaurant) => restaurant.id === "dig-murray-hill",
+  );
+  assert.equal(
+    dig?.channelsObserved[0]?.url,
+    "https://www.diginn.com/menu/228552",
+  );
+
+  const shakeShack = catalog.restaurants.find(
+    (restaurant) => restaurant.id === "shake-shack-midtown-east",
+  );
+  assert.equal(
+    shakeShack?.website,
+    "https://shakeshack.com/location/midtown-east-ny",
+  );
+  assert.equal(shakeShack?.channelsObserved[0]?.url, shakeShack?.website);
 });
 
 test("every captured exact total reconciles and uses a public source", async () => {

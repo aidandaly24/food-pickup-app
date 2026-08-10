@@ -477,13 +477,13 @@
       "address": "630 3rd Avenue, New York, NY 10017",
       "cuisine": "American bowls",
       "anchorItem": "Classic DIG",
-      "website": "https://catering.diginn.com/locations/ny/new-york/630-3rd-ave/",
+      "website": "https://www.diginn.com/locations/ny/new-york/630-3rd-ave/",
       "channelsObserved": [
         {
           "channel": "restaurant_direct",
           "provider": "DIG branded ordering",
-          "relationship": "official_site_order_flow",
-          "url": "https://catering.diginn.com/locations/ny/new-york/630-3rd-ave/"
+          "relationship": "official_site_pickup_handoff",
+          "url": "https://www.diginn.com/menu/228552"
         },
         {
           "channel": "restaurant_storefront",
@@ -492,8 +492,10 @@
           "url": "https://order.online/store/DIG-23104320/"
         }
       ],
+      "notes": "The official 630 Third Avenue page offers pickup and hands off to a stable location-specific menu. That menu listed the Classic Dig at $13.75 during verification; no cart or checkout was created.",
       "sources": [
-        "https://catering.diginn.com/locations/ny/new-york/630-3rd-ave/",
+        "https://www.diginn.com/locations/ny/new-york/630-3rd-ave/",
+        "https://www.diginn.com/menu/228552",
         "https://order.online/store/DIG-23104320/"
       ]
     },
@@ -503,16 +505,17 @@
       "address": "600 3rd Avenue, New York, NY 10016",
       "cuisine": "Burgers",
       "anchorItem": "ShackBurger plus fries",
-      "website": "https://shakeshack.com/",
+      "website": "https://shakeshack.com/location/midtown-east-ny",
       "channelsObserved": [
         {
           "channel": "restaurant_direct",
           "provider": "Shake Shack web/app",
-          "relationship": "official_brand_order_flow",
-          "url": "https://shakeshack.com/"
+          "relationship": "official_location_page_pickup_handoff",
+          "url": "https://shakeshack.com/location/midtown-east-ny"
         }
       ],
-      "sources": ["https://stg.shakeshack.com/location/midtown-east-ny"]
+      "notes": "The official page matches 600 Third Avenue and advertises pickup. Its Order Online Now control exposes /home#/location/1134, but clean navigation redirects to the brand homepage, so no stable ordering deep link is claimed.",
+      "sources": ["https://shakeshack.com/location/midtown-east-ny"]
     },
     {
       "id": "kips-bay-deli",
