@@ -14,6 +14,8 @@ export type Availability =
 
 export type CaptureStage = "menu" | "cart" | "active_cart" | "checkout";
 
+export type AccountContext = "anonymous" | "signed_in";
+
 export type ObservationResult =
   | "exact_checkout"
   | "exact_active_cart"
@@ -40,6 +42,7 @@ export interface PickupObservation {
   readonly availability: Availability;
   readonly captureStage: CaptureStage;
   readonly result: ObservationResult;
+  readonly accountContext: AccountContext;
   readonly itemsSubtotalCents: number;
   readonly taxCents: number | null;
   readonly feesCents: number | null;
@@ -79,8 +82,9 @@ export interface ComparisonOutcome {
 
 /**
  * Quote eligibility is shared by the discovery card and comparison panel.
- * A winner needs two equivalent exact checkouts captured within ten minutes;
- * menu prices and active-cart totals remain useful evidence, never winners.
+ * A winner needs two equivalent exact checkouts for the intended user's real
+ * channel contexts, captured within ten minutes. Menu prices and active-cart
+ * totals remain useful evidence, never winners.
  */
 export class QuoteComparison {
   private readonly observations: readonly PickupObservation[];

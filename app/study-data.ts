@@ -1,7 +1,9 @@
-import checkoutStudy from "../research/phase-0/kips-bay-murray-hill/checkout-observations.json";
+import anonymousCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/checkout-observations.json";
 import restaurantStudy from "../research/phase-0/kips-bay-murray-hill/restaurants.json";
 import routeStudy from "../research/phase-0/kips-bay-murray-hill/routes.json";
+import signedInCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/signed-in-checkout-observations.json";
 import type {
+  AccountContext,
   Availability,
   CaptureStage,
   ChannelKind,
@@ -16,7 +18,25 @@ const STUDY_RESTAURANT_IDS = [
   "bhatti-indian-grill",
   "little-rubys-murray-hill",
   "banc-cafe",
+  "kips-bay-deli",
 ] as const;
+
+const RAW_OBSERVATIONS = [
+  ...anonymousCheckoutStudy.observations.map((observation) => ({
+    ...observation,
+    accountContext: anonymousCheckoutStudy.accountContext,
+    capturedOn: anonymousCheckoutStudy.capturedOn,
+  })),
+  ...signedInCheckoutStudy.observations.map((observation) => ({
+    ...observation,
+    capturedOn: signedInCheckoutStudy.capturedOn,
+  })),
+];
+
+const ACCOUNT_CONTEXTS = [
+  "anonymous",
+  "signed_in",
+] as const satisfies readonly AccountContext[];
 
 const AVAILABILITIES = [
   "available_now",
@@ -48,6 +68,7 @@ const PRESENTATION = {
   "bhatti-indian-grill": { initials: "BI", accent: "#b7a6ff", basketName: "Butter chicken" },
   "little-rubys-murray-hill": { initials: "LR", accent: "#80b8ff", basketName: "Classic cheeseburger" },
   "banc-cafe": { initials: "BC", accent: "#ffd15b", basketName: "The Banker" },
+  "kips-bay-deli": { initials: "KD", accent: "#ff9ecb", basketName: "Reuben on Rye" },
 } as const;
 
 function parseOneOf<T extends string>(
@@ -87,7 +108,7 @@ function channelLabel(channel: string) {
 }
 
 function observationsFor(restaurantId: string): readonly PickupObservation[] {
-  return checkoutStudy.observations
+  return RAW_OBSERVATIONS
     .filter((observation) => observation.restaurantId === restaurantId)
     .map((observation, index) => {
       const label = channelLabel(observation.channel);
@@ -114,6 +135,11 @@ function observationsFor(restaurantId: string): readonly PickupObservation[] {
           observation.result,
           OBSERVATION_RESULTS,
           "observation result",
+        ),
+        accountContext: parseOneOf(
+          observation.accountContext,
+          ACCOUNT_CONTEXTS,
+          "account context",
         ),
         itemsSubtotalCents: observation.itemsSubtotalCents,
         taxCents: observation.taxCents,
@@ -150,7 +176,7 @@ export const STUDY_RESTAURANTS: readonly StudyRestaurant[] =
     );
     const route = routeStudy.routes.find((candidate) => candidate.restaurantId === id);
     const observations = observationsFor(id);
-    const rawObservation = checkoutStudy.observations.find(
+    const rawObservation = RAW_OBSERVATIONS.find(
       (observation) => observation.restaurantId === id,
     );
 
@@ -170,7 +196,7 @@ export const STUDY_RESTAURANTS: readonly StudyRestaurant[] =
       accent: PRESENTATION[id].accent,
       basketName: PRESENTATION[id].basketName,
       basketDescription: rawObservation.itemSignature,
-      capturedOn: checkoutStudy.capturedOn,
+      capturedOn: rawObservation.capturedOn,
       observations,
     };
   }).sort((left, right) => left.walkMinutes - right.walkMinutes);

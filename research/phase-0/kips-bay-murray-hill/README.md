@@ -1,13 +1,12 @@
 # Kips Bay / Murray Hill feasibility study
 
-Status: seed pass and first anonymous checkout pass complete; repetition not started
+Status: seed pass, first anonymous pass, and first signed-in comparison complete; repetition not started
 Verified: 2026-08-09  
 Study center: East 34th Street and Third Avenue, New York, NY 10016  
 Boundary: all 25 candidates fit within an OpenStreetMap pedestrian-route estimate of 11 minutes; field calibration remains pending
 
-This is research data, not live Sidewalk product data. The deployed POC remains
-explicitly fictional until the study produces trustworthy, comparable checkout
-quotes.
+This is dated research evidence, not live Sidewalk pricing. The POC renders only
+captured facts and labels them with their observation date.
 
 ## Product question
 
@@ -49,8 +48,10 @@ offers, and states whether the total is exact or estimated.
 
 The preliminary public menu observations are in
 [`observations.json`](./observations.json). The first live anonymous pickup pass
-is in [`checkout-observations.json`](./checkout-observations.json). The live file
-supersedes preliminary rows when they conflict.
+is in [`checkout-observations.json`](./checkout-observations.json). The first
+signed-in-where-available comparison is in
+[`signed-in-checkout-observations.json`](./signed-in-checkout-observations.json).
+The live files supersede preliminary rows when they conflict.
 
 ## First anonymous checkout pass
 
@@ -75,6 +76,28 @@ $14 Classic Burger, and Bhatti's live Uber Eats item price was $23.95 rather tha
 the previously indexed $24. This is essential menu-version and freshness
 complexity, not evidence that we need a generalized crawler.
 
+## First qualifying comparison
+
+At 11:12 PM local time, Kips Bay Deli was accepting immediate pickup orders on
+its Slice-powered direct site and Uber Eats. The basket was one `16. Reuben on
+Rye Classic Deli Sandwich`, size Roll, with no extras:
+
+| Channel | Account context | Item | Tax | Fee | Tip | Final total |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Restaurant direct (Slice) | Anonymous | $9.99 | $0.89 | $1.99 | $0 | **$12.87** |
+| Uber Eats | Signed in | $11.19 | $0.99 | $0 | $0 | **$12.18** |
+
+The quotes were captured 50 seconds apart and immediately rechecked. Uber Eats
+was **$0.69 cheaper** despite its $1.20 higher item price because the direct
+checkout added a $1.99 service fee. No promotion applied. DoorDash was excluded
+because the similarly named result it surfaced was a different physical
+location. Both temporary carts were cleared and no order was placed.
+
+This result changes one rule from the anonymous pass: comparisons should model
+the account context actually available on each channel, not require every
+channel to share an artificial context. The context must be recorded per quote,
+and repetitions should test how much it changes the result.
+
 ## Complexity assessment
 
 | Class | Complexity in this POC | Treatment now |
@@ -85,16 +108,17 @@ complexity, not evidence that we need a generalized crawler.
 | Transitional | A fixed study center, a curated 25-restaurant ledger, manual route checks, and human-assisted checkout capture | Accept for the one-to-two-week experiment, then delete or replace only if evidence warrants it |
 | Unknown | How often totals change, how much offers personalize, how many baskets are genuinely comparable, and which provider families dominate the neighborhood | Measure before choosing architecture |
 
-Decision: continue Phase 0. Do not expand the product or replace the demo data
-yet. The essential difficulty is acquiring a trustworthy equivalent checkout
-quote, not rendering a restaurant card or inventing an adapter hierarchy.
+Decision: continue Phase 0 and surface the qualifying evidence in the existing
+POC. The essential difficulty remains acquiring a trustworthy equivalent
+checkout quote, not inventing an adapter hierarchy.
 
 ## Evidence and quote rules
 
 Every observation gets one of these levels:
 
-1. `exact_checkout`: same fulfillment mode, location, basket, modifiers, and
-   account context; final payable total visible immediately before order.
+1. `exact_checkout`: same fulfillment mode, location, basket, and modifiers;
+   each channel's account context is recorded, and the final payable total is
+   visible immediately before order.
 2. `exact_active_cart`: subtotal, tax, and cart total are visible, but the final
    checkout page was not captured. This remains distinct from checkout.
 3. `exact_menu`: exact public item and modifier prices, but no final checkout
@@ -103,10 +127,10 @@ Every observation gets one of these levels:
 5. `unavailable`: the channel or equivalent basket could not be obtained.
 
 An exact comparison requires all channels to be captured within a 10-minute
-window. Personalized and anonymous/public observations are separate experiments.
-Pickup and delivery are never mixed. A promotion is recorded with minimum spend,
-maximum discount, eligible items, membership requirement, expiration, and
-whether it was automatically applied.
+window. Account context is explicit for every quote so personalization can be
+measured rather than hidden. Pickup and delivery are never mixed. A promotion
+is recorded with minimum spend, maximum discount, eligible items, membership
+requirement, expiration, and whether it was automatically applied.
 
 ## Representative baskets
 

@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "capturedOn": "2026-08-09",
+  "timeZone": "America/New_York",
+  "fulfillment": "pickup",
+  "experimentContext": "Use the user's normal channel context: anonymous where no account is required and signed in where the marketplace requires an account.",
+  "tipPolicy": "Set optional pickup tips to $0 before recording a final checkout total.",
+  "comparisonStatus": "Uber Eats was $0.69 cheaper than the restaurant's Slice-powered direct checkout for one equivalent Kips Bay Deli basket captured within 50 seconds.",
+  "comparison": {
+    "winnerChannel": "uber_eats",
+    "savingsCents": 69,
+    "quoteWindowSeconds": 50,
+    "recheckedAt": "2026-08-10T03:13:15.821Z"
+  },
+  "limitations": [
+    "This is one basket at one restaurant on one date, not evidence of a persistent cheapest channel.",
+    "The direct checkout was anonymous and Uber Eats was signed in because those were the user's normal available paths; account context is recorded per observation.",
+    "DoorDash was excluded because its similarly named search result resolved to a different physical address.",
+    "No observed promotion applied to this basket."
+  ],
+  "observations": [
+    {
+      "restaurantId": "kips-bay-deli",
+      "basketKey": "reuben-on-rye-roll",
+      "itemSignature": "16. Reuben on Rye Classic Deli Sandwich; size Roll; quantity 1; no extras; no note",
+      "channel": "restaurant_direct",
+      "provider": "Slice",
+      "accountContext": "anonymous",
+      "availability": "available_now",
+      "captureStage": "checkout",
+      "itemsSubtotalCents": 999,
+      "taxCents": 89,
+      "feesCents": 199,
+      "discountCents": 0,
+      "tipCents": 0,
+      "finalTotalCents": 1287,
+      "result": "exact_checkout",
+      "basketComparable": true,
+      "capturedAt": "2026-08-10T03:12:10.466Z",
+      "promotionsObserved": [],
+      "source": "https://www.kipsbaydeli.com/"
+    },
+    {
+      "restaurantId": "kips-bay-deli",
+      "basketKey": "reuben-on-rye-roll",
+      "itemSignature": "16. Reuben on Rye Classic Deli Sandwich; size Roll; quantity 1; no extras; no note",
+      "channel": "uber_eats",
+      "provider": "Uber Eats",
+      "accountContext": "signed_in",
+      "availability": "available_now",
+      "captureStage": "checkout",
+      "itemsSubtotalCents": 1119,
+      "taxCents": 99,
+      "feesCents": 0,
+      "discountCents": 0,
+      "tipCents": 0,
+      "finalTotalCents": 1218,
+      "result": "exact_checkout",
+      "basketComparable": true,
+      "capturedAt": "2026-08-10T03:13:00.690Z",
+      "promotionsObserved": [
+        {
+          "label": "5% off orders $15+ (basket below minimum)",
+          "applied": false,
+          "conditionsVerified": true
+        },
+        {
+          "label": "$5 off $20+ at this store (basket below minimum)",
+          "applied": false,
+          "conditionsVerified": true
+        },
+        {
+          "label": "15% off $25+ priority delivery (not pickup-eligible)",
+          "applied": false,
+          "conditionsVerified": true
+        }
+      ],
+      "notes": "No promotion applied. The $12.18 pickup total was immediately rechecked before the temporary cart was cleared.",
+      "source": "https://www.ubereats.com/store/kips-bay-deli-smb-parent/gJ9_tFeSWoy0wzcSnY6jvg"
+    }
+  ]
+}

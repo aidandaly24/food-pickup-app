@@ -37,7 +37,10 @@ test("server-renders the Sidewalk POC", async () => {
   assert.match(html, /OBSERVED DATA/);
   assert.match(html, /Pio Pio 7/);
   assert.match(html, /Bhatti Indian Grill/);
-  assert.match(html, /No winner yet/);
+  assert.match(html, /Kips Bay Deli/);
+  assert.match(html, /Uber Eats is cheapest/);
+  assert.match(html, /Save .*\$0\.69/);
+  assert.match(html, /Signed-in pickup/);
   assert.match(html, /Observed August 9, 2026/);
   assert.match(html, /actually walkable/);
   assert.match(html, /OpenStreetMap/);

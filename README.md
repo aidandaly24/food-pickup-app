@@ -4,9 +4,13 @@ A TypeScript proof of concept for discovering walkable NYC pickup restaurants
 and comparing the same basket across restaurant websites, DoorDash, and Uber
 Eats.
 
-The current build uses real, dated observations from a five-restaurant Kips Bay
+The current build uses real, dated observations from a six-restaurant Kips Bay
 and Murray Hill feasibility study. It does not claim those observations are live
 or name a cheapest channel without two equivalent, time-matched checkout totals.
+
+The first qualifying comparison found Uber Eats $0.69 cheaper than Kips Bay
+Deli's direct checkout for one equivalent pickup basket. That is a dated
+observation, not a claim that Uber Eats is always cheaper.
 
 ## Run locally
 

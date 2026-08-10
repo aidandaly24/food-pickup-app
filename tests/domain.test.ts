@@ -26,6 +26,7 @@ function observation(
     availability: "available_now",
     captureStage: "checkout",
     result: "exact_checkout",
+    accountContext: "anonymous",
     itemsSubtotalCents: 2_000,
     taxCents: 178,
     feesCents: 0,
@@ -40,11 +41,12 @@ function observation(
   };
 }
 
-test("names a winner only from two time-matched exact checkouts", () => {
+test("names a winner from time-matched checkouts with recorded channel contexts", () => {
   const direct = observation();
   const marketplace = observation({
     id: "marketplace",
     channel: DOORDASH_CHANNEL,
+    accountContext: "signed_in",
     finalTotalCents: 2_350,
     capturedAt: "2026-08-10T12:08:00-04:00",
   });

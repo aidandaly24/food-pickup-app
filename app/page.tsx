@@ -27,6 +27,12 @@ const RESULT_LABELS = {
   availability_blocked: "Availability blocked",
 } as const;
 
+const DEFAULT_RESTAURANT_ID =
+  STUDY_RESTAURANTS.find(
+    (restaurant) =>
+      new QuoteComparison(restaurant.observations).outcome.kind === "winner",
+  )?.id ?? STUDY_RESTAURANTS[0].id;
+
 function formatNullableMoney(cents: number | null) {
   return cents === null ? "Not captured" : formatMoney(cents);
 }
@@ -87,7 +93,7 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [availableOnly, setAvailableOnly] = useState(false);
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(
-    STUDY_RESTAURANTS[0].id,
+    DEFAULT_RESTAURANT_ID,
   );
   const [selectedObservationId, setSelectedObservationId] = useState<
     string | null
@@ -123,7 +129,9 @@ export default function Home() {
   const activeObservation = selectedRestaurant
     ? (selectedRestaurant.observations.find(
         (observation) => observation.id === selectedObservationId,
-      ) ?? comparison?.mostCompleteObservation)
+      ) ??
+      comparison?.outcome.winner ??
+      comparison?.mostCompleteObservation)
     : null;
 
   function selectRestaurant(restaurantId: string) {
@@ -160,8 +168,9 @@ export default function Home() {
         <div className="hero-note">
           <span className="hero-note-number">01</span>
           <p>
-            Five nearby restaurants, twelve observed ordering channels, and no
-            invented winner when checkout evidence is incomplete.
+            {STUDY_SUMMARY.restaurants} nearby restaurants, {STUDY_SUMMARY.observations}{" "}
+            observed ordering channels, and one winner backed by equivalent
+            checkout totals.
           </p>
         </div>
       </section>
@@ -169,8 +178,8 @@ export default function Home() {
       <section className="study-notice" aria-label="Data freshness">
         <strong>Observed August 9, 2026</strong>
         <span>
-          These are real anonymous pickup observations, not live prices. Open a
-          channel to confirm its current total before ordering.
+          These are dated anonymous and signed-in pickup observations, not live
+          prices. Open a channel to confirm its current total before ordering.
         </span>
       </section>
 
@@ -268,7 +277,9 @@ export default function Home() {
                 const restaurantComparison = new QuoteComparison(
                   restaurant.observations,
                 );
-                const evidence = restaurantComparison.mostCompleteObservation;
+                const evidence =
+                  restaurantComparison.outcome.winner ??
+                  restaurantComparison.mostCompleteObservation;
                 const price = observationPrice(evidence);
                 const isSelected = restaurant.id === selectedRestaurant?.id;
                 const wasAvailable = restaurant.observations.some(
@@ -422,7 +433,11 @@ export default function Home() {
                     <span>✦</span>
                     <p>
                       <strong>{promotion.label}</strong>
-                      Not applied; conditions were not fully verified.
+                      {promotion.applied
+                        ? "Applied to this basket."
+                        : promotion.conditionsVerified
+                          ? "Not applied; the basket did not meet the verified conditions."
+                          : "Not applied; conditions were not fully verified."}
                     </p>
                   </div>
                 ))}
@@ -432,7 +447,11 @@ export default function Home() {
                 )}
 
                 <div className="provenance-row">
-                  <span>Anonymous pickup</span>
+                  <span>
+                    {activeObservation.accountContext === "signed_in"
+                      ? "Signed-in pickup"
+                      : "Anonymous pickup"}
+                  </span>
                   <span>Observed {selectedRestaurant.capturedOn}</span>
                 </div>
               </div>
