@@ -89,7 +89,7 @@ complexity, not evidence that we need a generalized crawler.
 
 ## Next open-hours capture targets
 
-A late-evening preflight on August 9 confirmed the next two comparison targets
+A closed-hours preflight on August 9–10 confirmed the next comparison targets
 without creating scheduled orders:
 
 | Restaurant | Verified location | Single-basket target | Channels ready for an open-hours pass | Current constraint |
@@ -98,6 +98,7 @@ without creating scheduled orders:
 | 2nd Ave Deli | 162 East 33rd Street | One Hot Pastrami Sandwich, regular cut on rye, with no add-ons | Its branded DoorDash storefront and DoorDash Marketplace both showed $28.95 and exposed the same cut, bread, and add-on choices | Both channels were closed until 11 AM; comparing two DoorDash-powered surfaces still tests channel-specific totals and offers, but not provider-family diversity |
 | Bhatti Indian Grill | 100 Lexington Avenue | One Dilli Ka Butter Chicken with every optional add-on unselected | DoorDash-powered storefront and Uber Eats both showed the same item at $23.95 | Both channels were closed; the storefront showed a noon opening |
 | Little Ruby's Murray Hill | 442 Third Avenue | One Classic Cheeseburger with no modifiers | Toast and Uber Eats resolve to the same location; Uber showed the target at $16.50 | Both channels were closed; Toast hides its live menu until Monday at 9 AM |
+| Tara Rose | 384 Third Avenue | One Tara Rose Burger, quantity 1, with optional side and bread substitutions unselected and no note | Toast, Uber Eats, and Grubhub all showed the same description and $23.00 base price | All three channels showed an 11 AM pickup opening; scheduled checkout was excluded because it is not an immediate quote |
 | The Flying Cock | 497 Third Avenue | One Famous Crispy Chicken Sandwich; modifiers and included-side parity still need open-hours confirmation | Grubhub, Uber Eats, and DoorDash resolve to the same location; Uber showed $20.00 and DoorDash showed $21.50 | All channels were closed until 3 PM, and Grubhub hid the current pickup price, so this is not yet a comparable basket |
 
 Sarge's exposes an identical base item description, required bread group, and
@@ -109,7 +110,9 @@ checkout policies diverge, but it cannot establish independent adapter coverage.
 Bhatti's direct item dialog exposed only optional add-on groups, including naan
 and rice, so the unmodified entrée is a reproducible basket. Little Ruby's Toast
 configuration still needs to be rechecked while open before its Uber basket can
-be declared equivalent. Uber also displayed account-specific and time-limited
+be declared equivalent. Tara Rose's three menus align on description, base
+price, quantity, and optional substitution groups, making the unmodified burger
+a reproducible three-provider target. Uber also displayed account-specific and time-limited
 offers during the preflight; those are observations to recapture at checkout,
 not durable basket assumptions.
 

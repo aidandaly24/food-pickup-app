@@ -1,7 +1,7 @@
 {
   "studyCenter": "East 34th Street and Third Avenue, New York, NY 10016",
   "walkingLimitMinutes": 15,
-  "verifiedAt": "2026-08-10T00:36:02-04:00",
+  "verifiedAt": "2026-08-10T00:56:07-04:00",
   "routeStatus": "openstreetmap_pedestrian_estimate_complete; field_calibration_pending",
   "channelDiscoveryStatus": "initial_not_exhaustive",
   "restaurants": [
@@ -538,7 +538,7 @@
       "name": "Tara Rose",
       "address": "384 3rd Avenue, New York, NY 10016",
       "cuisine": "American / Irish",
-      "anchorItem": "Classic Burger",
+      "anchorItem": "Tara Rose Burger; quantity 1; optional side and bread substitutions unselected; no note",
       "website": "https://www.tararosenyc.com/",
       "channelsObserved": [
         {
@@ -560,6 +560,7 @@
           "url": "https://www.ubereats.com/store/tara-rose/sCISHchLTNSMGpfvxarcbQ"
         }
       ],
+      "notes": "Toast, Uber Eats, and Grubhub all matched 384 Third Avenue, listed the same Tara Rose Burger description at $23.00, and exposed only optional side and bread substitutions. All three showed an 11 AM pickup opening, so this is an exact menu-parity target rather than a current final quote.",
       "sources": [
         "https://www.tararosenyc.com/our-story/",
         "https://order.toasttab.com/online/tara-rose-384-third-ave",
