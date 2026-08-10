@@ -4,10 +4,9 @@ A TypeScript proof of concept for discovering walkable NYC pickup restaurants
 and comparing the same basket across restaurant websites, DoorDash, and Uber
 Eats.
 
-The current build uses explicit demonstration data. It does not claim live
-prices or connect to ordering platforms. That boundary is intentional: the POC
-tests the discovery, quote, offer-context, and handoff experience before a data
-collection strategy is selected.
+The current build uses real, dated observations from a five-restaurant Kips Bay
+and Murray Hill feasibility study. It does not claim those observations are live
+or name a cheapest channel without two equivalent, time-matched checkout totals.
 
 ## Run locally
 
@@ -25,9 +24,10 @@ npm test
 
 ## Code shape
 
-- `app/domain.ts` contains the domain types and the one shared comparison class.
-- `app/demo-data.ts` contains curated restaurant and quote fixtures.
-- `app/page.tsx` contains the interactive POC.
+- `app/domain.ts` contains the domain types and the shared comparison invariant.
+- `app/study-data.ts` converts the public research files into the UI model.
+- `app/study-map.tsx` provides the Leaflet/OpenStreetMap map.
+- `app/page.tsx` contains the interactive discovery and comparison POC.
 - `app/globals.css` contains the responsive visual system.
 
 No database, authentication, queue, scraper, or provider framework is included
@@ -40,5 +40,12 @@ The first real-data feasibility study is scoped to Kips Bay and Murray Hill. Its
 protocol live in
 [`research/phase-0/kips-bay-murray-hill`](./research/phase-0/kips-bay-murray-hill/README.md).
 
-Research observations are intentionally separate from `app/demo-data.ts`; public
-menu pages are not trustworthy enough to become live product quotes.
+The app reads the sanitized Phase 0 files directly. Menu-only and blocked
+observations remain visibly incomplete; only exact checkout evidence is eligible
+to produce a comparison winner.
+
+## Map data
+
+The map uses the open-source [Leaflet](https://leafletjs.com/) library and
+OpenStreetMap coordinates and tiles. OpenStreetMap attribution is displayed in
+the map, and this low-volume POC follows the public tile-service usage policy.

@@ -1,105 +1,177 @@
-export type ChannelKind = "direct" | "doordash" | "uber-eats";
-export type QuoteConfidence = "exact" | "estimated";
+export type ChannelKind =
+  | "direct"
+  | "storefront"
+  | "doordash"
+  | "uber-eats";
+
+export type Availability =
+  | "available_now"
+  | "not_accepting_online_orders"
+  | "closed_opens_11am"
+  | "available_monday_11am"
+  | "online_ordering_unavailable"
+  | "closed_order_for_later";
+
+export type CaptureStage = "menu" | "cart" | "active_cart" | "checkout";
+
+export type ObservationResult =
+  | "exact_checkout"
+  | "exact_active_cart"
+  | "checkout_blocked_by_sign_in"
+  | "challenge_blocked_before_cart"
+  | "availability_blocked";
 
 export interface OrderingChannel {
   readonly kind: ChannelKind;
   readonly name: string;
   readonly shortName: string;
-  readonly provider?: string;
+  readonly provider: string;
 }
 
-export interface PersonalOffer {
+export interface PromotionObservation {
   readonly label: string;
-  readonly discountCents: number;
+  readonly applied: boolean;
+  readonly conditionsVerified: boolean;
 }
 
-export interface PickupQuote {
+export interface PickupObservation {
   readonly id: string;
   readonly channel: OrderingChannel;
+  readonly availability: Availability;
+  readonly captureStage: CaptureStage;
+  readonly result: ObservationResult;
   readonly itemsSubtotalCents: number;
-  readonly feesCents: number;
-  readonly taxCents: number;
-  readonly publicDiscountCents: number;
-  readonly publicOffer?: string;
-  readonly personalOffer?: PersonalOffer;
-  readonly offerCondition?: string;
-  readonly freshnessMinutes: number;
-  readonly confidence: QuoteConfidence;
+  readonly taxCents: number | null;
+  readonly feesCents: number | null;
+  readonly discountCents: number | null;
+  readonly tipCents: number | null;
+  readonly finalTotalCents: number | null;
+  readonly basketComparable: boolean;
+  readonly capturedAt?: string;
+  readonly promotions: readonly PromotionObservation[];
+  readonly notes?: string;
+  readonly sourceUrl: string;
 }
 
-export interface Restaurant {
+export interface StudyRestaurant {
   readonly id: string;
   readonly name: string;
   readonly initials: string;
   readonly cuisine: string;
-  readonly description: string;
   readonly address: string;
+  readonly latitude: number;
+  readonly longitude: number;
   readonly walkMinutes: number;
-  readonly hasOrderedBefore: boolean;
   readonly accent: string;
   readonly basketName: string;
-  readonly basketItems: readonly string[];
-  readonly quotes: readonly PickupQuote[];
+  readonly basketDescription: string;
+  readonly capturedOn: string;
+  readonly observations: readonly PickupObservation[];
 }
 
-export interface RankedQuote {
-  readonly quote: PickupQuote;
-  readonly discountCents: number;
-  readonly totalCents: number;
-  readonly appliedOffers: readonly string[];
+export interface ComparisonOutcome {
+  readonly kind: "winner" | "incomplete";
+  readonly headline: string;
+  readonly explanation: string;
+  readonly winner?: PickupObservation;
+  readonly savingsCents?: number;
 }
 
 /**
- * The one earned abstraction in the POC: every restaurant needs identical,
- * auditable quote math for both its discovery card and comparison panel.
+ * Quote eligibility is shared by the discovery card and comparison panel.
+ * A winner needs two equivalent exact checkouts captured within ten minutes;
+ * menu prices and active-cart totals remain useful evidence, never winners.
  */
 export class QuoteComparison {
-  public constructor(
-    private readonly quotes: readonly PickupQuote[],
-    private readonly includePersonalOffers: boolean,
-  ) {
-    if (quotes.length < 2) {
-      throw new Error("A comparison requires at least two pickup quotes.");
+  private readonly observations: readonly PickupObservation[];
+
+  public constructor(observations: readonly PickupObservation[]) {
+    this.observations = observations;
+  }
+
+  public get outcome(): ComparisonOutcome {
+    const exactByChannel = new Map(
+      this.observations
+        .filter(
+          (observation) =>
+            observation.result === "exact_checkout" &&
+            observation.basketComparable &&
+            observation.finalTotalCents !== null &&
+            observation.capturedAt,
+        )
+        .map(
+          (observation) => [observation.channel.kind, observation] as const,
+        ),
+    );
+    const exactCheckouts = [...exactByChannel.values()].sort(
+      (left, right) =>
+        (left.finalTotalCents ?? Infinity) -
+        (right.finalTotalCents ?? Infinity),
+    );
+
+    if (exactCheckouts.length < 2) {
+      return {
+        kind: "incomplete",
+        headline: "No winner yet",
+        explanation:
+          "We need at least two exact checkout totals for the same basket.",
+      };
     }
-  }
 
-  public get rankedQuotes(): readonly RankedQuote[] {
-    return this.quotes
-      .map((quote) => this.rank(quote))
-      .sort((left, right) => left.totalCents - right.totalCents);
-  }
+    const timestamps = exactCheckouts.map((observation) =>
+      new Date(observation.capturedAt as string).getTime(),
+    );
 
-  public get winner(): RankedQuote {
-    return this.rankedQuotes[0];
-  }
+    if (timestamps.some((timestamp) => !Number.isFinite(timestamp))) {
+      return {
+        kind: "incomplete",
+        headline: "Quote timing is invalid",
+        explanation: "Every exact checkout needs a valid capture timestamp.",
+      };
+    }
 
-  public get savingsAgainstNextBestCents(): number {
-    const [winner, runnerUp] = this.rankedQuotes;
-    return Math.max(0, runnerUp.totalCents - winner.totalCents);
-  }
+    const comparisonWindowMinutes =
+      (Math.max(...timestamps) - Math.min(...timestamps)) / 60_000;
 
-  private rank(quote: PickupQuote): RankedQuote {
-    const personalDiscount = this.includePersonalOffers
-      ? (quote.personalOffer?.discountCents ?? 0)
-      : 0;
-    const discountCents = quote.publicDiscountCents + personalDiscount;
-    const appliedOffers = [
-      quote.publicOffer,
-      this.includePersonalOffers ? quote.personalOffer?.label : undefined,
-    ].filter((offer): offer is string => Boolean(offer));
+    if (comparisonWindowMinutes > 10) {
+      return {
+        kind: "incomplete",
+        headline: "Quotes are too far apart",
+        explanation:
+          "Exact checkout totals must be captured within one ten-minute window.",
+      };
+    }
+
+    const [winner, runnerUp] = exactCheckouts;
 
     return {
-      quote,
-      discountCents,
-      appliedOffers,
-      totalCents: Math.max(
-        0,
-        quote.itemsSubtotalCents +
-          quote.feesCents +
-          quote.taxCents -
-          discountCents,
-      ),
+      kind: "winner",
+      headline: `${winner.channel.name} is cheapest`,
+      explanation: "Compared from equivalent, time-matched checkout totals.",
+      winner,
+      savingsCents:
+        (runnerUp.finalTotalCents as number) -
+        (winner.finalTotalCents as number),
     };
+  }
+
+  public get mostCompleteObservation(): PickupObservation {
+    const ranked = [...this.observations].sort(
+      (left, right) => this.completeness(right) - this.completeness(left),
+    );
+
+    if (!ranked[0]) {
+      throw new Error("A restaurant needs at least one channel observation.");
+    }
+
+    return ranked[0];
+  }
+
+  private completeness(observation: PickupObservation): number {
+    if (observation.result === "exact_checkout") return 4;
+    if (observation.result === "exact_active_cart") return 3;
+    if (observation.captureStage === "cart") return 2;
+    return 1;
   }
 }
 

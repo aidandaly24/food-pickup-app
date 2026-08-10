@@ -1,53 +1,63 @@
 "use client";
 
 import { useMemo, useState, type CSSProperties } from "react";
-import { RESTAURANTS } from "./demo-data";
-import {
-  QuoteComparison,
-  formatMoney,
-  type RankedQuote,
-  type Restaurant,
-} from "./domain";
+import { QuoteComparison, formatMoney, type PickupObservation } from "./domain";
+import { STUDY_RESTAURANTS, STUDY_SUMMARY } from "./study-data";
+import { StudyMap } from "./study-map";
 
 const CUISINES = [
   "All",
-  "Japanese",
-  "Mediterranean",
-  "Pizza",
-  "Indian",
-  "Mexican",
-  "Sandwiches",
-] as const;
+  ...new Set(STUDY_RESTAURANTS.map((restaurant) => restaurant.cuisine)),
+];
 
-type Cuisine = (typeof CUISINES)[number];
+const AVAILABILITY_LABELS = {
+  available_now: "Available in capture",
+  not_accepting_online_orders: "Not accepting orders",
+  closed_opens_11am: "Closed · opens 11 AM",
+  available_monday_11am: "Available Monday 11 AM",
+  online_ordering_unavailable: "Online ordering unavailable",
+  closed_order_for_later: "Closed · order for later",
+} as const;
 
-function restaurantPrice(
-  restaurant: Restaurant,
-  includePersonalOffers: boolean,
-) {
-  return new QuoteComparison(
-    restaurant.quotes,
-    includePersonalOffers,
-  ).winner.totalCents;
+const RESULT_LABELS = {
+  exact_checkout: "Exact checkout",
+  exact_active_cart: "Exact active cart",
+  checkout_blocked_by_sign_in: "Sign-in required",
+  challenge_blocked_before_cart: "Security check blocked",
+  availability_blocked: "Availability blocked",
+} as const;
+
+function formatNullableMoney(cents: number | null) {
+  return cents === null ? "Not captured" : formatMoney(cents);
 }
 
-function freshnessLabel(minutes: number) {
-  if (minutes < 2) return "just now";
-  return `${minutes}m ago`;
+function observationPrice(observation: PickupObservation) {
+  if (observation.finalTotalCents !== null) {
+    return {
+      label:
+        observation.result === "exact_checkout"
+          ? "pickup total"
+          : "active-cart total",
+      value: formatMoney(observation.finalTotalCents),
+    };
+  }
+
+  return {
+    label: "item price only",
+    value: formatMoney(observation.itemsSubtotalCents),
+  };
 }
 
 function QuoteRow({
-  result,
-  winnerId,
+  observation,
   selected,
   onSelect,
 }: {
-  result: RankedQuote;
-  winnerId: string;
+  observation: PickupObservation;
   selected: boolean;
   onSelect: () => void;
 }) {
-  const { quote } = result;
+  const price = observationPrice(observation);
 
   return (
     <button
@@ -56,22 +66,16 @@ function QuoteRow({
       onClick={onSelect}
       aria-pressed={selected}
     >
-      <span className={`channel-mark channel-mark--${quote.channel.kind}`}>
-        {quote.channel.shortName}
+      <span className={`channel-mark channel-mark--${observation.channel.kind}`}>
+        {observation.channel.shortName}
       </span>
       <span className="quote-channel">
-        <strong>{quote.channel.name}</strong>
-        <small>
-          {quote.channel.provider
-            ? `via ${quote.channel.provider}`
-            : quote.confidence === "exact"
-              ? "Cart verified"
-              : "Menu estimate"}
-        </small>
+        <strong>{observation.channel.name}</strong>
+        <small>{observation.channel.provider}</small>
       </span>
       <span className="quote-total">
-        {quote.id === winnerId && <small>Best today</small>}
-        <strong>{formatMoney(result.totalCents)}</strong>
+        <small>{price.label}</small>
+        <strong>{price.value}</strong>
       </span>
     </button>
   );
@@ -79,59 +83,52 @@ function QuoteRow({
 
 export default function Home() {
   const [maxWalkMinutes, setMaxWalkMinutes] = useState(15);
-  const [cuisine, setCuisine] = useState<Cuisine>("All");
+  const [cuisine, setCuisine] = useState("All");
   const [search, setSearch] = useState("");
-  const [newOnly, setNewOnly] = useState(false);
-  const [includePersonalOffers, setIncludePersonalOffers] = useState(false);
+  const [availableOnly, setAvailableOnly] = useState(false);
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(
-    RESTAURANTS[0].id,
+    STUDY_RESTAURANTS[0].id,
   );
-  const [selectedQuoteId, setSelectedQuoteId] = useState<string | null>(null);
-  const [handoffMessage, setHandoffMessage] = useState(false);
+  const [selectedObservationId, setSelectedObservationId] = useState<
+    string | null
+  >(null);
 
   const visibleRestaurants = useMemo(() => {
     const query = search.trim().toLowerCase();
 
-    return RESTAURANTS.filter((restaurant) => {
-      const withinRange = restaurant.walkMinutes <= maxWalkMinutes;
-      const matchesCuisine =
-        cuisine === "All" || restaurant.cuisine === cuisine;
-      const matchesHistory = !newOnly || !restaurant.hasOrderedBefore;
-      const matchesQuery =
-        !query ||
-        restaurant.name.toLowerCase().includes(query) ||
-        restaurant.cuisine.toLowerCase().includes(query) ||
-        restaurant.basketName.toLowerCase().includes(query);
-
-      return withinRange && matchesCuisine && matchesHistory && matchesQuery;
-    }).sort((left, right) => {
-      return (
-        restaurantPrice(left, includePersonalOffers) -
-        restaurantPrice(right, includePersonalOffers)
+    return STUDY_RESTAURANTS.filter((restaurant) => {
+      const isAvailable = restaurant.observations.some(
+        (observation) => observation.availability === "available_now",
       );
-    });
-  }, [cuisine, includePersonalOffers, maxWalkMinutes, newOnly, search]);
+
+      return (
+        restaurant.walkMinutes <= maxWalkMinutes &&
+        (cuisine === "All" || restaurant.cuisine === cuisine) &&
+        (!availableOnly || isAvailable) &&
+        (!query ||
+          restaurant.name.toLowerCase().includes(query) ||
+          restaurant.cuisine.toLowerCase().includes(query) ||
+          restaurant.basketName.toLowerCase().includes(query))
+      );
+    }).sort((left, right) => left.walkMinutes - right.walkMinutes);
+  }, [availableOnly, cuisine, maxWalkMinutes, search]);
 
   const selectedRestaurant =
     visibleRestaurants.find(
       (restaurant) => restaurant.id === selectedRestaurantId,
     ) ?? visibleRestaurants[0];
-
   const comparison = selectedRestaurant
-    ? new QuoteComparison(
-        selectedRestaurant.quotes,
-        includePersonalOffers,
-      )
+    ? new QuoteComparison(selectedRestaurant.observations)
     : null;
-  const rankedQuotes = comparison?.rankedQuotes ?? [];
-  const activeQuote =
-    rankedQuotes.find((result) => result.quote.id === selectedQuoteId) ??
-    rankedQuotes[0];
+  const activeObservation = selectedRestaurant
+    ? (selectedRestaurant.observations.find(
+        (observation) => observation.id === selectedObservationId,
+      ) ?? comparison?.mostCompleteObservation)
+    : null;
 
   function selectRestaurant(restaurantId: string) {
     setSelectedRestaurantId(restaurantId);
-    setSelectedQuoteId(null);
-    setHandoffMessage(false);
+    setSelectedObservationId(null);
   }
 
   return (
@@ -146,29 +143,35 @@ export default function Home() {
           <span>SIDEWALK</span>
         </a>
         <div className="prototype-pill">
-          <span /> POC · CURATED DATA
+          <span /> POC · OBSERVED DATA
         </div>
-        <button className="avatar-button" type="button" aria-label="Demo profile">
-          AD
-        </button>
+        <span className="study-area">KIPS BAY / MURRAY HILL</span>
       </header>
 
       <section className="hero" id="top">
         <div>
-          <p className="eyebrow">NEW YORK PICKUP, MINUS THE GUESSWORK</p>
+          <p className="eyebrow">REAL NYC PICKUP EVIDENCE</p>
           <h1>
-            Good food.
+            Real places.
             <br />
-            <em>Better route.</em>
+            <em>Honest totals.</em>
           </h1>
         </div>
         <div className="hero-note">
           <span className="hero-note-number">01</span>
           <p>
-            Find something worth the walk, then compare the same order across
-            every available pickup channel.
+            Five nearby restaurants, twelve observed ordering channels, and no
+            invented winner when checkout evidence is incomplete.
           </p>
         </div>
+      </section>
+
+      <section className="study-notice" aria-label="Data freshness">
+        <strong>Observed August 9, 2026</strong>
+        <span>
+          These are real anonymous pickup observations, not live prices. Open a
+          channel to confirm its current total before ordering.
+        </span>
       </section>
 
       <section className="control-deck" aria-label="Discovery controls">
@@ -178,11 +181,8 @@ export default function Home() {
           </span>
           <span>
             <small>Starting from</small>
-            <strong>Union Square, Manhattan</strong>
+            <strong>East 34th St &amp; Third Ave</strong>
           </span>
-          <button type="button" aria-label="Change demo location">
-            Change
-          </button>
         </div>
 
         <label className="search-control">
@@ -190,8 +190,8 @@ export default function Home() {
           <input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search food or restaurants"
-            aria-label="Search food or restaurants"
+            placeholder="Search restaurant, cuisine, or basket"
+            aria-label="Search restaurant, cuisine, or basket"
           />
         </label>
 
@@ -206,7 +206,7 @@ export default function Home() {
           <input
             type="range"
             min="5"
-            max="20"
+            max="15"
             step="5"
             value={maxWalkMinutes}
             onChange={(event) => setMaxWalkMinutes(Number(event.target.value))}
@@ -214,7 +214,7 @@ export default function Home() {
           />
           <div className="range-labels" aria-hidden="true">
             <span>5m</span>
-            <span>20m</span>
+            <span>15m</span>
           </div>
         </div>
       </section>
@@ -234,26 +234,31 @@ export default function Home() {
           ))}
         </div>
         <button
-          className={`new-toggle${newOnly ? " is-active" : ""}`}
+          className={`new-toggle${availableOnly ? " is-active" : ""}`}
           type="button"
-          aria-pressed={newOnly}
-          onClick={() => setNewOnly((current) => !current)}
+          aria-pressed={availableOnly}
+          onClick={() => setAvailableOnly((current) => !current)}
         >
-          <span>✦</span> New to me
+          <span>●</span> Available in capture
         </button>
       </section>
+
+      <StudyMap
+        restaurants={visibleRestaurants}
+        selectedRestaurantId={selectedRestaurant?.id ?? ""}
+        onSelect={selectRestaurant}
+      />
 
       <section className="workspace">
         <div className="restaurant-column">
           <div className="section-heading">
             <div>
-              <span className="section-index">/01</span>
-              <h2>Worth the walk</h2>
+              <span className="section-index">/02</span>
+              <h2>Within walking range</h2>
             </div>
             <p>
               {visibleRestaurants.length} place
-              {visibleRestaurants.length === 1 ? "" : "s"} · sorted by best
-              current total
+              {visibleRestaurants.length === 1 ? "" : "s"} · sorted by walk
             </p>
           </div>
 
@@ -261,11 +266,14 @@ export default function Home() {
             <div className="restaurant-grid">
               {visibleRestaurants.map((restaurant) => {
                 const restaurantComparison = new QuoteComparison(
-                  restaurant.quotes,
-                  includePersonalOffers,
+                  restaurant.observations,
                 );
-                const winner = restaurantComparison.winner;
+                const evidence = restaurantComparison.mostCompleteObservation;
+                const price = observationPrice(evidence);
                 const isSelected = restaurant.id === selectedRestaurant?.id;
+                const wasAvailable = restaurant.observations.some(
+                  (observation) => observation.availability === "available_now",
+                );
 
                 return (
                   <button
@@ -290,24 +298,24 @@ export default function Home() {
                     <span className="restaurant-body">
                       <span className="restaurant-meta">
                         <span>{restaurant.walkMinutes} MIN WALK</span>
-                        {!restaurant.hasOrderedBefore && <span>NEW TO YOU</span>}
+                        <span>{wasAvailable ? "AVAILABLE" : "NOT ORDERABLE"}</span>
                       </span>
                       <strong className="restaurant-name">{restaurant.name}</strong>
                       <span className="restaurant-description">
-                        {restaurant.description}
+                        {restaurant.address}
                       </span>
                       <span className="basket-preview">
-                        <small>Compared basket</small>
+                        <small>Observed basket</small>
                         {restaurant.basketName}
                       </span>
                       <span className="restaurant-footer">
                         <span>
-                          <small>Best via</small>
-                          <strong>{winner.quote.channel.name}</strong>
+                          <small>Strongest evidence</small>
+                          <strong>{RESULT_LABELS[evidence.result]}</strong>
                         </span>
                         <span className="card-price">
-                          <small>pickup total</small>
-                          <strong>{formatMoney(winner.totalCents)}</strong>
+                          <small>{price.label}</small>
+                          <strong>{price.value}</strong>
                         </span>
                       </span>
                     </span>
@@ -318,14 +326,14 @@ export default function Home() {
           ) : (
             <div className="empty-state">
               <span>○</span>
-              <h3>No places match this exact mix.</h3>
+              <h3>No observed places match.</h3>
               <p>Try a longer walk, another cuisine, or clear your search.</p>
               <button
                 type="button"
                 onClick={() => {
                   setSearch("");
                   setCuisine("All");
-                  setNewOnly(false);
+                  setAvailableOnly(false);
                   setMaxWalkMinutes(15);
                 }}
               >
@@ -336,12 +344,12 @@ export default function Home() {
         </div>
 
         <aside className="comparison-panel" aria-live="polite">
-          {selectedRestaurant && comparison && activeQuote ? (
+          {selectedRestaurant && comparison && activeObservation ? (
             <>
               <div className="comparison-header">
                 <div>
-                  <span className="section-index section-index--light">/02</span>
-                  <p>Compare pickup</p>
+                  <span className="section-index section-index--light">/03</span>
+                  <p>Observed pickup channels</p>
                   <h2>{selectedRestaurant.name}</h2>
                 </div>
                 <span className="walk-badge">
@@ -351,37 +359,18 @@ export default function Home() {
               </div>
 
               <div className="basket-card">
-                <span className="basket-label">SAME BASKET EVERYWHERE</span>
+                <span className="basket-label">EQUIVALENT BASKET TARGET</span>
                 <strong>{selectedRestaurant.basketName}</strong>
-                <p>{selectedRestaurant.basketItems.join(" · ")}</p>
-              </div>
-
-              <div className="pricing-mode">
-                <span>
-                  <small>Pricing context</small>
-                  <strong>
-                    {includePersonalOffers ? "Aidan’s demo offers" : "Public prices"}
-                  </strong>
-                </span>
-                <button
-                  className={`switch${includePersonalOffers ? " is-on" : ""}`}
-                  type="button"
-                  role="switch"
-                  aria-checked={includePersonalOffers}
-                  onClick={() => setIncludePersonalOffers((current) => !current)}
-                >
-                  <span />
-                </button>
+                <p>{selectedRestaurant.basketDescription}</p>
               </div>
 
               <div className="quote-list">
-                {rankedQuotes.map((result) => (
+                {selectedRestaurant.observations.map((observation) => (
                   <QuoteRow
-                    key={result.quote.id}
-                    result={result}
-                    winnerId={comparison.winner.quote.id}
-                    selected={activeQuote.quote.id === result.quote.id}
-                    onSelect={() => setSelectedQuoteId(result.quote.id)}
+                    key={observation.id}
+                    observation={observation}
+                    selected={activeObservation.id === observation.id}
+                    onSelect={() => setSelectedObservationId(observation.id)}
                   />
                 ))}
               </div>
@@ -389,129 +378,123 @@ export default function Home() {
               <div className="breakdown">
                 <div className="breakdown-heading">
                   <span>
-                    <small>Selected breakdown</small>
-                    <strong>{activeQuote.quote.channel.name}</strong>
+                    <small>Selected observation</small>
+                    <strong>{activeObservation.channel.name}</strong>
                   </span>
-                  <span
-                    className={`confidence confidence--${activeQuote.quote.confidence}`}
-                  >
-                    {activeQuote.quote.confidence === "exact"
-                      ? "Cart verified"
-                      : "Estimated"}
+                  <span className={`confidence confidence--${activeObservation.result}`}>
+                    {RESULT_LABELS[activeObservation.result]}
                   </span>
                 </div>
+                <p className="availability-line">
+                  {AVAILABILITY_LABELS[activeObservation.availability]}
+                </p>
                 <dl>
                   <div>
-                    <dt>Items</dt>
-                    <dd>{formatMoney(activeQuote.quote.itemsSubtotalCents)}</dd>
+                    <dt>Item price</dt>
+                    <dd>{formatMoney(activeObservation.itemsSubtotalCents)}</dd>
                   </div>
                   <div>
                     <dt>Pickup fees</dt>
-                    <dd>
-                      {activeQuote.quote.feesCents === 0
-                        ? "—"
-                        : formatMoney(activeQuote.quote.feesCents)}
-                    </dd>
+                    <dd>{formatNullableMoney(activeObservation.feesCents)}</dd>
                   </div>
                   <div>
                     <dt>NYC tax</dt>
-                    <dd>{formatMoney(activeQuote.quote.taxCents)}</dd>
+                    <dd>{formatNullableMoney(activeObservation.taxCents)}</dd>
                   </div>
-                  <div className="discount-line">
-                    <dt>Savings applied</dt>
-                    <dd>
-                      {activeQuote.discountCents === 0
-                        ? "—"
-                        : `−${formatMoney(activeQuote.discountCents)}`}
-                    </dd>
+                  <div>
+                    <dt>Discount</dt>
+                    <dd>{formatNullableMoney(activeObservation.discountCents)}</dd>
+                  </div>
+                  <div>
+                    <dt>Tip</dt>
+                    <dd>{formatNullableMoney(activeObservation.tipCents)}</dd>
                   </div>
                   <div className="total-line">
                     <dt>Pickup total</dt>
-                    <dd>{formatMoney(activeQuote.totalCents)}</dd>
+                    <dd>
+                      {formatNullableMoney(activeObservation.finalTotalCents)}
+                    </dd>
                   </div>
                 </dl>
 
-                {activeQuote.appliedOffers.length > 0 && (
-                  <div className="offer-note">
+                {activeObservation.promotions.map((promotion) => (
+                  <div className="offer-note" key={promotion.label}>
                     <span>✦</span>
                     <p>
-                      <strong>{activeQuote.appliedOffers.join(" + ")}</strong>
-                      {activeQuote.quote.offerCondition}
+                      <strong>{promotion.label}</strong>
+                      Not applied; conditions were not fully verified.
                     </p>
                   </div>
+                ))}
+
+                {activeObservation.notes && (
+                  <p className="observation-note">{activeObservation.notes}</p>
                 )}
 
                 <div className="provenance-row">
-                  <span>
-                    Checked {freshnessLabel(activeQuote.quote.freshnessMinutes)}
-                  </span>
-                  <span>Demo snapshot</span>
+                  <span>Anonymous pickup</span>
+                  <span>Observed {selectedRestaurant.capturedOn}</span>
                 </div>
               </div>
 
-              <div className="winner-summary">
-                <span>YOU SAVE</span>
-                <strong>
-                  {formatMoney(comparison.savingsAgainstNextBestCents)}
-                </strong>
-                <p>
-                  by choosing {comparison.winner.quote.channel.name} over the
-                  next-best channel for this basket.
-                </p>
+              <div className={`outcome-summary outcome-summary--${comparison.outcome.kind}`}>
+                <span>COMPARISON RESULT</span>
+                <strong>{comparison.outcome.headline}</strong>
+                <p>{comparison.outcome.explanation}</p>
+                {comparison.outcome.savingsCents !== undefined && (
+                  <b>Save {formatMoney(comparison.outcome.savingsCents)}</b>
+                )}
               </div>
 
-              <button
+              <a
                 className="handoff-button"
-                type="button"
-                onClick={() => setHandoffMessage(true)}
+                href={activeObservation.sourceUrl}
+                target="_blank"
+                rel="noreferrer"
               >
-                Continue with {comparison.winner.quote.channel.name}
+                Open {activeObservation.channel.name}
                 <span>↗</span>
-              </button>
-              {handoffMessage && (
-                <p className="handoff-note">
-                  POC handoff verified. A live build will open the exact
-                  storefront after its source URL is validated.
-                </p>
-              )}
+              </a>
+              <p className="handoff-note">
+                Sidewalk hands off to the source. It never places the order.
+              </p>
             </>
           ) : (
             <div className="comparison-empty">
               <span>↙</span>
               <h2>Choose a restaurant</h2>
-              <p>We’ll line up its pickup channels here.</p>
+              <p>We’ll show its observed pickup channels here.</p>
             </div>
           )}
         </aside>
       </section>
 
-      <section className="proof-strip" aria-label="POC boundaries">
+      <section className="proof-strip" aria-label="POC evidence">
         <div>
-          <span className="section-index">/03</span>
-          <h2>What this POC proves</h2>
+          <span className="section-index">/04</span>
+          <h2>What works now</h2>
         </div>
         <div className="proof-item">
-          <strong>06</strong>
-          <span>curated restaurants</span>
+          <strong>{String(STUDY_SUMMARY.restaurants).padStart(2, "0")}</strong>
+          <span>real restaurants</span>
         </div>
         <div className="proof-item">
-          <strong>18</strong>
-          <span>comparable quotes</span>
+          <strong>{String(STUDY_SUMMARY.observations).padStart(2, "0")}</strong>
+          <span>channel observations</span>
         </div>
         <div className="proof-item">
-          <strong>04</strong>
-          <span>direct-site providers</span>
+          <strong>{String(STUDY_SUMMARY.completeTotals).padStart(2, "0")}</strong>
+          <span>complete totals</span>
         </div>
         <p>
-          Prices are intentionally seeded demonstration data—not live claims.
-          The next experiment replaces one source at a time with verified
-          observations.
+          Discovery, walking filters, map selection, evidence inspection, and
+          source handoff use the real Kips Bay / Murray Hill feasibility study.
         </p>
       </section>
 
       <footer>
         <span>SIDEWALK / NYC PICKUP POC</span>
-        <span>Built to learn, not to pretend.</span>
+        <span>OpenStreetMap data · observed ordering evidence</span>
       </footer>
     </main>
   );

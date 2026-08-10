@@ -32,11 +32,17 @@ test("server-renders the Sidewalk POC", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>Sidewalk — NYC Pickup, Priced Right<\/title>/i);
-  assert.match(html, /Good food\./);
-  assert.match(html, /Better route\./);
-  assert.match(html, /CURATED DATA/);
-  assert.match(html, /Miso &amp; Main/);
-  assert.match(html, /Prices are intentionally seeded demonstration data/);
+  assert.match(html, /Real places\./);
+  assert.match(html, /Honest totals\./);
+  assert.match(html, /OBSERVED DATA/);
+  assert.match(html, /Pio Pio 7/);
+  assert.match(html, /Bhatti Indian Grill/);
+  assert.match(html, /No winner yet/);
+  assert.match(html, /Observed August 9, 2026/);
+  assert.match(html, /actually walkable/);
+  assert.match(html, /OpenStreetMap/);
+  assert.match(html, /Sidewalk hands off to the source/);
+  assert.doesNotMatch(html, /Miso &amp; Main|seeded demonstration data/);
 });
 
 test("removes starter-only code and dependencies", async () => {
@@ -51,6 +57,7 @@ test("removes starter-only code and dependencies", async () => {
   await assert.rejects(
     access(new URL("app/_sites-preview/preview.css", projectRoot)),
   );
+  await assert.rejects(access(new URL("app/demo-data.ts", projectRoot)));
   assert.doesNotMatch(page, /SkeletonPreview|codex-preview/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton|drizzle/);
 });
