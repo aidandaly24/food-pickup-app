@@ -1,7 +1,7 @@
 {
   "studyCenter": "East 34th Street and Third Avenue, New York, NY 10016",
   "walkingLimitMinutes": 15,
-  "verifiedAt": "2026-08-10T01:19:31-04:00",
+  "verifiedAt": "2026-08-10T01:23:18-04:00",
   "routeStatus": "openstreetmap_pedestrian_estimate_complete; field_calibration_pending",
   "channelDiscoveryStatus": "initial_not_exhaustive",
   "restaurants": [
@@ -146,12 +146,16 @@
       "channelsObserved": [
         {
           "channel": "restaurant_direct",
-          "provider": "Unresolved branded storefront",
-          "relationship": "brand_ordering_site",
+          "provider": "Lunchbox",
+          "relationship": "location_matched_brand_ordering_site",
           "url": "https://order.bareburger.com/3/"
         }
       ],
-      "sources": ["https://order.bareburger.com/3/"]
+      "notes": "The branded storefront resolves to Murray Hill at 430 Third Avenue and exposes delivery and pickup. Lunchbox's official Bareburger case study identifies Lunchbox as the web-ordering provider; no cart or checkout was created during verification.",
+      "sources": [
+        "https://order.bareburger.com/3/",
+        "https://lunchbox.io/clients/bareburger"
+      ]
     },
     {
       "id": "little-rubys-murray-hill",

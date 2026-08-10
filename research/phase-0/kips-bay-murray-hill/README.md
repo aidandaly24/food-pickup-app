@@ -50,6 +50,10 @@ offers, and states whether the total is exact or estimated.
   required a second resolution step. Nom Nam links directly to its exact Sauce
   menu, while Patrizia's exact Sauce page is currently unavailable and does not
   prove pickup capability.
+- A branded ordering domain can still have a third-party provider. Bareburger's
+  exact Murray Hill storefront exposes pickup at 430 Third Avenue, while
+  Lunchbox's own Bareburger case study confirms that Lunchbox powers its web
+  ordering. Provider identity should come from evidence, not URL appearance.
 - Menu parity cannot be assumed. Little Ruby's Bronte description differs between
   currently indexed sources even when the item name is the same.
 - Public list-price differences exist, but not for every restaurant. Pio Pio's

@@ -137,6 +137,11 @@ test("the 25-restaurant catalog and pedestrian routes stay aligned", async () =>
       },
     ],
   );
+
+  const bareburger = catalog.restaurants.find(
+    (restaurant) => restaurant.id === "bareburger-murray-hill",
+  );
+  assert.equal(bareburger?.channelsObserved[0]?.provider, "Lunchbox");
 });
 
 test("every captured exact total reconciles and uses a public source", async () => {
