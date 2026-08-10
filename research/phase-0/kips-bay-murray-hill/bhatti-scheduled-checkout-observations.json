@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "captureRunId": "2026-08-10-bhatti-single-scheduled-1230",
+  "basketKind": "single",
+  "capturedOn": "2026-08-10",
+  "timeZone": "America/New_York",
+  "fulfillment": "pickup",
+  "pickupTiming": "scheduled",
+  "experimentContext": "Compare the anonymous DoorDash Commerce Platform storefront with the user's signed-in Uber Eats context for one overlapping scheduled pickup opportunity.",
+  "tipPolicy": "Set optional pickup tips to $0 before recording a final checkout total.",
+  "comparisonStatus": "Uber Eats was $1.19 cheaper than Bhatti's DoorDash-powered direct storefront for one equivalent basket. Its $1.20 signed-in membership benefit reversed the one-cent pre-benefit advantage of the direct checkout.",
+  "collection": {
+    "scope": "post_parity_basket_assembly_quote_and_recheck",
+    "startedAt": "2026-08-10T07:02:54.192Z",
+    "completedAt": "2026-08-10T07:05:56.730Z",
+    "durationSeconds": 183,
+    "cleanupCompletedAt": "2026-08-10T07:07:35.779Z",
+    "durationThroughCleanupSeconds": 282
+  },
+  "comparison": {
+    "winnerChannel": "uber_eats",
+    "savingsCents": 119,
+    "quoteWindowSeconds": 63,
+    "recheckedAt": "2026-08-10T07:05:56.730Z",
+    "pickupWindowStart": "2026-08-10T12:40:00-04:00",
+    "pickupWindowEnd": "2026-08-10T12:50:00-04:00"
+  },
+  "limitations": [
+    "The restaurant was closed for immediate ordering. The direct pickup window was 12:40–12:50 PM and the Uber Eats window was 12:30–1:00 PM, producing a shared 12:40–12:50 PM opportunity.",
+    "This is one basket at one restaurant on one date, not evidence of a persistent cheapest channel.",
+    "The direct storefront was anonymous and Uber Eats was signed in because those were the user's normal available paths; account context is recorded per observation.",
+    "The direct checkout exposed optional sides, desserts, and drinks while Uber Eats exposed no modifiers for this item. Every optional direct add-on was left unselected, quantity remained one, and neither channel received a note.",
+    "The 183-second timer began after location and basket parity were established, so it measures basket assembly through immediate quote recheck rather than end-to-end restaurant discovery.",
+    "Both temporary carts were empty before assembly and were cleared within 282 seconds of the timed start. No order was placed."
+  ],
+  "observations": [
+    {
+      "restaurantId": "bhatti-indian-grill",
+      "basketKey": "dilli-ka-butter-chicken",
+      "itemSignature": "Dilli Ka Butter Chicken; quantity 1; all optional add-ons unselected; no note",
+      "channel": "restaurant_storefront",
+      "provider": "DoorDash Commerce Platform",
+      "accountContext": "anonymous",
+      "availability": "closed_order_for_later",
+      "captureStage": "checkout",
+      "itemsSubtotalCents": 2395,
+      "taxCents": 212,
+      "feesCents": 0,
+      "discountCents": 0,
+      "tipCents": 0,
+      "finalTotalCents": 2607,
+      "result": "exact_checkout",
+      "basketComparable": true,
+      "capturedAt": "2026-08-10T07:04:34.484Z",
+      "pickupWindowStart": "2026-08-10T12:40:00-04:00",
+      "pickupWindowEnd": "2026-08-10T12:50:00-04:00",
+      "promotionsObserved": [],
+      "notes": "The anonymous checkout showed pickup fulfillment, the scheduled window, a $0 tip, and the $26.07 total immediately before the final order action. No contact or payment information was entered.",
+      "source": "https://order.online/store/bhatti-indian-grill-221684"
+    },
+    {
+      "restaurantId": "bhatti-indian-grill",
+      "basketKey": "dilli-ka-butter-chicken",
+      "itemSignature": "Dilli Ka Butter Chicken; quantity 1; all optional add-ons unselected; no note",
+      "channel": "uber_eats",
+      "provider": "Uber Eats",
+      "accountContext": "signed_in",
+      "availability": "closed_order_for_later",
+      "captureStage": "checkout",
+      "itemsSubtotalCents": 2395,
+      "taxCents": 213,
+      "feesCents": 0,
+      "discountCents": 120,
+      "tipCents": 0,
+      "finalTotalCents": 2488,
+      "result": "exact_checkout",
+      "basketComparable": true,
+      "capturedAt": "2026-08-10T07:05:37.134Z",
+      "pickupWindowStart": "2026-08-10T12:30:00-04:00",
+      "pickupWindowEnd": "2026-08-10T13:00:00-04:00",
+      "promotionsObserved": [
+        {
+          "label": "Uber One Membership Benefit ($1.20)",
+          "applied": true,
+          "conditionsVerified": true
+        }
+      ],
+      "notes": "The signed-in checkout explicitly attributed $1.20 in savings to Uber One. The $24.88 total and 12:30–1:00 PM window were immediately rechecked before the temporary cart was cleared.",
+      "source": "https://www.ubereats.com/store/bhatti-indian-grill-kips-bay/Vtkze_NiTO-RY87xT-9U5w"
+    }
+  ]
+}

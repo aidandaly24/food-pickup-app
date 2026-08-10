@@ -11,12 +11,13 @@
     "threshold-checkout-observations.json",
     "repeat-checkout-observations.json",
     "cross-midnight-checkout-observations.json",
-    "sarges-scheduled-checkout-observations.json"
+    "sarges-scheduled-checkout-observations.json",
+    "bhatti-scheduled-checkout-observations.json"
   ],
   "adapterDecision": {
     "status": "deferred_until_phase_0_gate",
     "leadingCandidate": "doordash_commerce_platform",
-    "reason": "It is the largest observed provider family at 9 of 47 catalog links, all nine links have exact-location evidence, and one anonymous exact checkout is already proven.",
+    "reason": "It is the largest observed provider family at 9 of 47 catalog links, all nine links have exact-location evidence, and Bhatti now has an equivalent cross-channel comparison through this family.",
     "revisitWhen": [
       "At least two restaurants on this family have equivalent cross-channel exact checkout comparisons.",
       "End-to-end capture time is measured for at least three restaurants.",
@@ -32,7 +33,7 @@
       "restaurantCount": 9,
       "verifiedLocationLinkCount": 9,
       "exactMenuObservations": 2,
-      "exactCheckoutObservations": 1,
+      "exactCheckoutObservations": 2,
       "exactActiveCartObservations": 0,
       "blockedCheckoutAttempts": 0
     },
@@ -56,7 +57,7 @@
       "restaurantCount": 8,
       "verifiedLocationLinkCount": 8,
       "exactMenuObservations": 1,
-      "exactCheckoutObservations": 5,
+      "exactCheckoutObservations": 6,
       "exactActiveCartObservations": 0,
       "blockedCheckoutAttempts": 2
     },

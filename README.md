@@ -25,6 +25,11 @@ totaled $31.94 versus $33.47 on DoorDash for overlapping pickup windows. Toast's
 lower displayed amount remains incomplete because its disclosed card surcharge
 was unresolved without a payment method.
 
+Bhatti added a third restaurant and the first comparison through a DoorDash
+Commerce Platform storefront: signed-in Uber Eats totaled $24.88 versus $26.07
+direct. Uber's $1.20 membership benefit reversed a one-cent pre-benefit direct
+advantage.
+
 ## Run locally
 
 ```bash

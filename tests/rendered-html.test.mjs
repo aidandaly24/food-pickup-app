@@ -46,7 +46,7 @@ test("server-renders the Sidewalk POC", async () => {
   assert.match(html, /OBSERVED DATA/);
   assert.match(textHtml, /25 nearby restaurants/);
   assert.match(textHtml, /47 known ordering links/);
-  assert.match(textHtml, /5 basket comparisons/);
+  assert.match(textHtml, /6 basket comparisons/);
   assert.match(textHtml, /45 of 47 ordering links have exact-location evidence/);
   assert.match(html, /Exact location/);
   assert.match(html, /Location unverified/);
@@ -56,6 +56,7 @@ test("server-renders the Sidewalk POC", async () => {
   assert.match(html, /Not captured/);
   assert.match(html, /Pio Pio 7/);
   assert.match(html, /Bhatti Indian Grill/);
+  assert.match(html, /\$24\.88/);
   assert.match(html, /Kips Bay Deli/);
   assert.match(html, /Two Reubens/);
   assert.match(html, /Uber Eats is cheapest/);

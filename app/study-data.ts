@@ -1,4 +1,5 @@
 import anonymousCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/checkout-observations.json";
+import bhattiScheduledCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/bhatti-scheduled-checkout-observations.json";
 import crossMidnightCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/cross-midnight-checkout-observations.json";
 import repeatCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/repeat-checkout-observations.json";
 import restaurantStudy from "../research/phase-0/kips-bay-murray-hill/restaurants.json";
@@ -27,6 +28,7 @@ const EXACT_CHECKOUT_STUDIES = [
   repeatCheckoutStudy,
   crossMidnightCheckoutStudy,
   sargesScheduledCheckoutStudy,
+  bhattiScheduledCheckoutStudy,
 ] as const;
 
 const RAW_OBSERVATIONS = [

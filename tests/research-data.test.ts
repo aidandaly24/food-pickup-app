@@ -86,6 +86,8 @@ interface RawCaptureStudy {
     readonly startedAt: string;
     readonly completedAt: string;
     readonly durationSeconds: number;
+    readonly cleanupCompletedAt?: string;
+    readonly durationThroughCleanupSeconds?: number;
   };
   readonly comparison?: {
     readonly winnerChannel: string;
@@ -393,7 +395,7 @@ test("declared comparisons are derived from equivalent fresh quotes", async () =
   const studies = await readCaptureStudies();
   const comparisons = studies.filter((study) => study.comparison);
 
-  assert.equal(comparisons.length, 5);
+  assert.equal(comparisons.length, 6);
 
   for (const study of comparisons) {
     const { comparison } = study;
@@ -564,6 +566,21 @@ test("timed collection metadata reconciles", async () => {
       Math.round((completedAt - startedAt) / 1_000),
     );
     assert.equal(study.comparison?.recheckedAt, collection.completedAt);
+
+    if (collection.cleanupCompletedAt !== undefined) {
+      const cleanupCompletedAt = new Date(
+        collection.cleanupCompletedAt,
+      ).getTime();
+
+      assert.ok(Number.isFinite(cleanupCompletedAt));
+      assert.ok(cleanupCompletedAt >= completedAt);
+      assert.equal(
+        collection.durationThroughCleanupSeconds,
+        Math.round((cleanupCompletedAt - startedAt) / 1_000),
+      );
+    } else {
+      assert.equal(collection.durationThroughCleanupSeconds, undefined);
+    }
   }
 });
 
@@ -693,16 +710,17 @@ test("published Phase 0 counts remain reproducible", async () => {
 
   assert.equal(catalog.restaurants.length, 25);
   assert.equal(observedRestaurants.size, 7);
-  assert.equal(observations.length, 23);
+  assert.equal(observations.length, 25);
   assert.equal(
     observations.filter((observation) => observation.finalTotalCents !== null)
       .length,
-    12,
+    14,
   );
   assert.deepEqual(savings.sort((left, right) => left - right), [
     69,
     69,
     69,
+    119,
     153,
     594,
   ]);

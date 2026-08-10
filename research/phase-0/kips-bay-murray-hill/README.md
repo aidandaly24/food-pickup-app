@@ -1,6 +1,6 @@
 # Kips Bay / Murray Hill feasibility study
 
-Status: 25-restaurant discovery panel surfaced, first anonymous pass and five comparisons using signed-in marketplace channels complete across two restaurants, including two same-night repeats and one scheduled-pickup run; nonconsecutive multi-day repetition not started
+Status: 25-restaurant discovery panel surfaced, first anonymous pass and six comparisons using signed-in marketplace channels complete across three restaurants, including two same-night repeats and two scheduled-pickup runs; nonconsecutive multi-day repetition not started
 Verified: 2026-08-10
 Study center: East 34th Street and Third Avenue, New York, NY 10016  
 Boundary: all 25 candidates fit within an OpenStreetMap pedestrian-route estimate of 11 minutes; the five farthest also fit within an independent 8–11-minute Google Maps estimate; field calibration remains pending
@@ -94,6 +94,9 @@ The cross-midnight repeat is in
 [`cross-midnight-checkout-observations.json`](./cross-midnight-checkout-observations.json),
 and the first scheduled cross-restaurant comparison is in
 [`sarges-scheduled-checkout-observations.json`](./sarges-scheduled-checkout-observations.json).
+The second scheduled comparison, and the first through DoorDash Commerce
+Platform, is in
+[`bhatti-scheduled-checkout-observations.json`](./bhatti-scheduled-checkout-observations.json).
 The live files supersede preliminary rows when they conflict.
 
 ## First anonymous checkout pass
@@ -259,6 +262,37 @@ and correcting DoorDash from delivery to pickup before accepting its quote.
 That exceeds the five-minute gate. It is a useful first timing observation, not
 a median. All temporary carts were cleared and no order was placed.
 
+## Second scheduled cross-restaurant comparison
+
+At 3:04–3:06 AM, Bhatti was closed for immediate ordering but its DoorDash
+Commerce Platform storefront and Uber Eats both accepted scheduled pickup. The
+basket was one Dilli Ka Butter Chicken, quantity one, with all optional direct
+add-ons unselected and no note:
+
+| Channel | Account context | Pickup window | Item | Discount | Tax | Fee | Final total |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Restaurant storefront (DoorDash Commerce Platform) | Anonymous | 12:40–12:50 PM | $23.95 | $0 | $2.12 | $0 | **$26.07** |
+| Uber Eats | Signed in | 12:30–1:00 PM | $23.95 | $1.20 | $2.13 | $0 | **$24.88** |
+
+The pickup windows shared 12:40–12:50 PM. The quotes were captured 63 seconds
+apart and immediately rechecked. Uber Eats was **$1.19 cheaper**. Without the
+explicit $1.20 Uber One benefit, Uber would have totaled $26.08 and the direct
+storefront would have been one cent cheaper. Along with Sarge's, this is a
+second observed restaurant where signed-in personalization reversed the winner.
+
+The direct provider refined the selected 12:30–12:50 PM slot to a promised
+12:40–12:50 PM checkout window. This confirms that comparisons should preserve
+the final promised window rather than the user's initial schedule selection.
+The same direct $26.07 total also matched the earlier anonymous checkout pass;
+the signed-in Uber flow supplied the first exact competing quote after the
+anonymous pass had stopped at a security challenge.
+
+After location and basket parity were established, basket assembly through
+quote recheck took 183 seconds. Both carts were cleared within 282 seconds of
+the timed start. That post-parity workflow fit inside five minutes, but it is
+not an end-to-end discovery measurement and does not erase the 838-second
+Sarge's result. No order was placed.
+
 ## Complexity assessment
 
 | Class | Complexity in this POC | Treatment now |
@@ -271,10 +305,11 @@ a median. All temporary carts were cleared and no order was placed.
 
 Decision: continue Phase 0 and surface the qualifying evidence in the existing
 POC. DoorDash Commerce Platform is the leading future adapter candidate because
-it has the widest fixed-panel coverage and one anonymous exact checkout, but no
-adapter is justified until cross-restaurant quote coverage and end-to-end timing
-improve. The essential difficulty remains acquiring a trustworthy equivalent
-checkout quote, not inventing an adapter hierarchy.
+it has the widest fixed-panel coverage and now supports one equivalent
+cross-channel comparison at Bhatti. The adapter remains deferred until the same
+family works at a second restaurant and end-to-end timing improves. The
+essential difficulty remains acquiring a trustworthy equivalent checkout quote,
+not inventing an adapter hierarchy.
 
 ## Evidence and quote rules
 
@@ -379,11 +414,11 @@ keep, revise, or reject them based on the actual failure distribution.
 | Relevant restaurant discovery | 25 of 25 fixed-panel restaurants appear in the POC; seven have checkout research | 100% panel recall passes the POC gate; neighborhood-wide recall remains unproven |
 | Walking boundary | The five longest OSM estimates are 9–11 minutes; independent Google Maps estimates are 8–11 minutes | Fixed-panel routing is supported by two providers with at least four minutes of estimate margin; field observation remains pending |
 | Correct physical-location matching | 45 of 47 known links have explicit exact-location evidence; Sticky's direct handoff and Patrizia's Sauce page remain unverified | 95.7% passes the fixed-panel 95% gate; link freshness still requires ongoing checks |
-| Exact comparison coverage | Five complete comparison runs across Kips Bay Deli and Sarge's | Proven repeatable at one restaurant and feasible at a second, not broad enough for the 70% gate |
-| Equivalent baskets | 5 of 5 declared comparisons used identical item, size, quantity, and modifiers within each run; the scheduled run also had overlapping pickup windows | 100% in a very small sample |
-| Winner recheck stability | 5 of 5 winners remained unchanged on immediate recheck; the Kips Bay single-basket totals also survived a 2.5-hour cross-midnight span | Promising short-term stability; nonconsecutive multi-day freshness remains unknown |
-| Meaningful savings | $0.69 on all three Kips Bay single-basket runs, $5.94 on its threshold basket, and $1.53 at Sarge's after an account benefit reversed the pre-benefit result | Promising; cross-restaurant frequency remains unknown |
-| Manual capture time and adapter burden | One post-assembly quote/recheck took 310 seconds; the first end-to-end scheduled capture took 838 seconds | The end-to-end observation fails the five-minute gate; the sample is too small for a median, and stale-cart, fulfillment-mode, and surcharge interpretation remain observed burdens |
+| Exact comparison coverage | Six complete runs across Kips Bay Deli, Sarge's, and Bhatti; 3 of 7 researched restaurants and 3 of 25 panel restaurants now have a comparison | Repeatable at one restaurant and feasible at two more; 42.9% of the researched subset and 12% of the panel remain below the 70% gate |
+| Equivalent baskets | 6 of 6 declared comparisons used identical item, size, quantity, and modifiers within each run; both scheduled runs also had overlapping pickup windows | 100% in a very small sample |
+| Winner recheck stability | 6 of 6 winners remained unchanged on immediate recheck; the Kips Bay single-basket totals also survived a 2.5-hour cross-midnight span | Promising short-term stability; nonconsecutive multi-day freshness remains unknown |
+| Meaningful savings | $0.69 on all three Kips Bay single-basket runs, $5.94 on its threshold basket, $1.53 at Sarge's, and $1.19 at Bhatti | Savings appeared in every complete run; account benefits reversed the pre-benefit winner at two of three restaurants, but broader frequency remains unknown |
+| Manual capture time and adapter burden | One post-assembly quote/recheck took 310 seconds; the Sarge's end-to-end scheduled capture took 838 seconds; Bhatti took 183 seconds from post-parity assembly through recheck and 282 seconds through cleanup | Bhatti's bounded workflow fit inside five minutes, but Sarge's end-to-end result fails; the sample and scopes remain too inconsistent for a defensible median |
 
 ## Keys and access
 
