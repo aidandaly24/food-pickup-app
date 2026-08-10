@@ -2,13 +2,18 @@ import anonymousCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/che
 import restaurantStudy from "../research/phase-0/kips-bay-murray-hill/restaurants.json";
 import routeStudy from "../research/phase-0/kips-bay-murray-hill/routes.json";
 import signedInCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/signed-in-checkout-observations.json";
+import thresholdCheckoutStudy from "../research/phase-0/kips-bay-murray-hill/threshold-checkout-observations.json";
+import { QuoteComparison } from "./domain";
 import type {
   AccountContext,
   Availability,
+  BasketKind,
   CaptureStage,
   ChannelKind,
+  Fulfillment,
   ObservationResult,
   PickupObservation,
+  StudyBasket,
   StudyRestaurant,
 } from "./domain";
 
@@ -25,11 +30,24 @@ const RAW_OBSERVATIONS = [
   ...anonymousCheckoutStudy.observations.map((observation) => ({
     ...observation,
     accountContext: anonymousCheckoutStudy.accountContext,
+    basketKind: anonymousCheckoutStudy.basketKind,
+    captureRunId: anonymousCheckoutStudy.captureRunId,
     capturedOn: anonymousCheckoutStudy.capturedOn,
+    fulfillment: anonymousCheckoutStudy.fulfillment,
   })),
   ...signedInCheckoutStudy.observations.map((observation) => ({
     ...observation,
+    basketKind: signedInCheckoutStudy.basketKind,
+    captureRunId: signedInCheckoutStudy.captureRunId,
     capturedOn: signedInCheckoutStudy.capturedOn,
+    fulfillment: signedInCheckoutStudy.fulfillment,
+  })),
+  ...thresholdCheckoutStudy.observations.map((observation) => ({
+    ...observation,
+    basketKind: thresholdCheckoutStudy.basketKind,
+    captureRunId: thresholdCheckoutStudy.captureRunId,
+    capturedOn: thresholdCheckoutStudy.capturedOn,
+    fulfillment: thresholdCheckoutStudy.fulfillment,
   })),
 ];
 
@@ -37,6 +55,13 @@ const ACCOUNT_CONTEXTS = [
   "anonymous",
   "signed_in",
 ] as const satisfies readonly AccountContext[];
+
+const FULFILLMENTS = ["pickup"] as const satisfies readonly Fulfillment[];
+
+const BASKET_KINDS = [
+  "single",
+  "threshold",
+] as const satisfies readonly BasketKind[];
 
 const AVAILABILITIES = [
   "available_now",
@@ -68,7 +93,12 @@ const PRESENTATION = {
   "bhatti-indian-grill": { initials: "BI", accent: "#b7a6ff", basketName: "Butter chicken" },
   "little-rubys-murray-hill": { initials: "LR", accent: "#80b8ff", basketName: "Classic cheeseburger" },
   "banc-cafe": { initials: "BC", accent: "#ffd15b", basketName: "The Banker" },
-  "kips-bay-deli": { initials: "KD", accent: "#ff9ecb", basketName: "Reuben on Rye" },
+  "kips-bay-deli": {
+    initials: "KD",
+    accent: "#ff9ecb",
+    basketName: "Reuben on Rye",
+    thresholdBasketName: "Two Reubens",
+  },
 } as const;
 
 function parseOneOf<T extends string>(
@@ -107,14 +137,30 @@ function channelLabel(channel: string) {
   throw new Error(`Unknown channel: ${channel}`);
 }
 
-function observationsFor(restaurantId: string): readonly PickupObservation[] {
+function observationsFor(
+  restaurantId: string,
+  captureRunId: string,
+): readonly PickupObservation[] {
   return RAW_OBSERVATIONS
-    .filter((observation) => observation.restaurantId === restaurantId)
+    .filter(
+      (observation) =>
+        observation.restaurantId === restaurantId &&
+        observation.captureRunId === captureRunId,
+    )
     .map((observation, index) => {
       const label = channelLabel(observation.channel);
 
       return {
         id: `${restaurantId}-${observation.channel}-${index}`,
+        captureRunId: observation.captureRunId,
+        restaurantId: observation.restaurantId,
+        basketKey: observation.basketKey,
+        itemSignature: observation.itemSignature,
+        fulfillment: parseOneOf(
+          observation.fulfillment,
+          FULFILLMENTS,
+          "fulfillment",
+        ),
         channel: {
           kind: channelKind(observation.channel),
           name: label.name,
@@ -163,6 +209,51 @@ function observationsFor(restaurantId: string): readonly PickupObservation[] {
     });
 }
 
+function basketsFor(
+  restaurantId: (typeof STUDY_RESTAURANT_IDS)[number],
+): readonly StudyBasket[] {
+  const rawObservations = RAW_OBSERVATIONS.filter(
+    (observation) => observation.restaurantId === restaurantId,
+  );
+  const captureRunIds = [
+    ...new Set(rawObservations.map((observation) => observation.captureRunId)),
+  ];
+
+  return captureRunIds.map((captureRunId) => {
+    const rawObservation = rawObservations.find(
+      (observation) => observation.captureRunId === captureRunId,
+    );
+    const observations = observationsFor(restaurantId, captureRunId);
+
+    if (!rawObservation || !observations[0]) {
+      throw new Error(
+        `Incomplete basket data for ${restaurantId}/${captureRunId}`,
+      );
+    }
+
+    const kind = parseOneOf(
+      rawObservation.basketKind,
+      BASKET_KINDS,
+      "basket kind",
+    );
+    const presentation = PRESENTATION[restaurantId];
+    const thresholdName =
+      "thresholdBasketName" in presentation
+        ? presentation.thresholdBasketName
+        : `${presentation.basketName} threshold`;
+
+    return {
+      id: captureRunId,
+      kind,
+      name: kind === "threshold" ? thresholdName : presentation.basketName,
+      basketKey: rawObservation.basketKey,
+      description: rawObservation.itemSignature,
+      capturedOn: rawObservation.capturedOn,
+      observations,
+    };
+  });
+}
+
 export const STUDY_CENTER = {
   label: routeStudy.center.label,
   latitude: routeStudy.center.latitude,
@@ -175,12 +266,9 @@ export const STUDY_RESTAURANTS: readonly StudyRestaurant[] =
       (candidate) => candidate.id === id,
     );
     const route = routeStudy.routes.find((candidate) => candidate.restaurantId === id);
-    const observations = observationsFor(id);
-    const rawObservation = RAW_OBSERVATIONS.find(
-      (observation) => observation.restaurantId === id,
-    );
+    const baskets = basketsFor(id);
 
-    if (!restaurant || !route || !observations[0] || !rawObservation) {
+    if (!restaurant || !route || !baskets[0]) {
       throw new Error(`Incomplete study data for ${id}`);
     }
 
@@ -194,24 +282,40 @@ export const STUDY_RESTAURANTS: readonly StudyRestaurant[] =
       longitude: route.longitude,
       walkMinutes: route.estimatedMinutes,
       accent: PRESENTATION[id].accent,
-      basketName: PRESENTATION[id].basketName,
-      basketDescription: rawObservation.itemSignature,
-      capturedOn: rawObservation.capturedOn,
-      observations,
+      baskets,
     };
   }).sort((left, right) => left.walkMinutes - right.walkMinutes);
 
 export const STUDY_SUMMARY = {
   restaurants: STUDY_RESTAURANTS.length,
   observations: STUDY_RESTAURANTS.reduce(
-    (total, restaurant) => total + restaurant.observations.length,
+    (total, restaurant) =>
+      total +
+      restaurant.baskets.reduce(
+        (basketTotal, basket) => basketTotal + basket.observations.length,
+        0,
+      ),
     0,
   ),
   completeTotals: STUDY_RESTAURANTS.reduce(
     (total, restaurant) =>
       total +
-      restaurant.observations.filter(
-        (observation) => observation.finalTotalCents !== null,
+      restaurant.baskets.reduce(
+        (basketTotal, basket) =>
+          basketTotal +
+          basket.observations.filter(
+            (observation) => observation.finalTotalCents !== null,
+          ).length,
+        0,
+      ),
+    0,
+  ),
+  comparisons: STUDY_RESTAURANTS.reduce(
+    (total, restaurant) =>
+      total +
+      restaurant.baskets.filter(
+        (basket) =>
+          new QuoteComparison(basket.observations).outcome.kind === "winner",
       ).length,
     0,
   ),

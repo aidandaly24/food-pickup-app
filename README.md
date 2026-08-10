@@ -12,6 +12,11 @@ The first qualifying comparison found Uber Eats $0.69 cheaper than Kips Bay
 Deli's direct checkout for one equivalent pickup basket. That is a dated
 observation, not a claim that Uber Eats is always cheaper.
 
+A second, promotion-threshold basket made the reason to model deals explicit:
+two matching Reubens totaled $23.74 direct and $17.80 on signed-in Uber Eats
+after $6.12 in applied savings. The POC exposes both baskets separately rather
+than mixing their quotes.
+
 ## Run locally
 
 ```bash

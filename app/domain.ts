@@ -16,6 +16,10 @@ export type CaptureStage = "menu" | "cart" | "active_cart" | "checkout";
 
 export type AccountContext = "anonymous" | "signed_in";
 
+export type Fulfillment = "pickup";
+
+export type BasketKind = "single" | "threshold";
+
 export type ObservationResult =
   | "exact_checkout"
   | "exact_active_cart"
@@ -38,6 +42,11 @@ export interface PromotionObservation {
 
 export interface PickupObservation {
   readonly id: string;
+  readonly captureRunId: string;
+  readonly restaurantId: string;
+  readonly basketKey: string;
+  readonly itemSignature: string;
+  readonly fulfillment: Fulfillment;
   readonly channel: OrderingChannel;
   readonly availability: Availability;
   readonly captureStage: CaptureStage;
@@ -56,6 +65,16 @@ export interface PickupObservation {
   readonly sourceUrl: string;
 }
 
+export interface StudyBasket {
+  readonly id: string;
+  readonly kind: BasketKind;
+  readonly name: string;
+  readonly basketKey: string;
+  readonly description: string;
+  readonly capturedOn: string;
+  readonly observations: readonly PickupObservation[];
+}
+
 export interface StudyRestaurant {
   readonly id: string;
   readonly name: string;
@@ -66,10 +85,7 @@ export interface StudyRestaurant {
   readonly longitude: number;
   readonly walkMinutes: number;
   readonly accent: string;
-  readonly basketName: string;
-  readonly basketDescription: string;
-  readonly capturedOn: string;
-  readonly observations: readonly PickupObservation[];
+  readonly baskets: readonly StudyBasket[];
 }
 
 export interface ComparisonOutcome {
@@ -94,18 +110,17 @@ export class QuoteComparison {
   }
 
   public get outcome(): ComparisonOutcome {
+    const exactCandidates = this.observations.filter(
+      (observation) =>
+        observation.result === "exact_checkout" &&
+        observation.basketComparable &&
+        observation.finalTotalCents !== null &&
+        observation.capturedAt,
+    );
     const exactByChannel = new Map(
-      this.observations
-        .filter(
-          (observation) =>
-            observation.result === "exact_checkout" &&
-            observation.basketComparable &&
-            observation.finalTotalCents !== null &&
-            observation.capturedAt,
-        )
-        .map(
-          (observation) => [observation.channel.kind, observation] as const,
-        ),
+      exactCandidates.map(
+        (observation) => [observation.channel.kind, observation] as const,
+      ),
     );
     const exactCheckouts = [...exactByChannel.values()].sort(
       (left, right) =>
@@ -119,6 +134,24 @@ export class QuoteComparison {
         headline: "No winner yet",
         explanation:
           "We need at least two exact checkout totals for the same basket.",
+      };
+    }
+
+    if (!this.hasOneQuoteIdentity(exactCheckouts)) {
+      return {
+        kind: "incomplete",
+        headline: "Quote identity mismatch",
+        explanation:
+          "Every compared checkout must share one capture run, restaurant, basket, item configuration, and fulfillment mode.",
+      };
+    }
+
+    if (exactCheckouts.some((observation) => !this.totalReconciles(observation))) {
+      return {
+        kind: "incomplete",
+        headline: "Checkout total is inconsistent",
+        explanation:
+          "The item subtotal, tax, fees, discount, and tip must reconcile to the captured total.",
       };
     }
 
@@ -176,6 +209,45 @@ export class QuoteComparison {
     if (observation.result === "exact_active_cart") return 3;
     if (observation.captureStage === "cart") return 2;
     return 1;
+  }
+
+  private hasOneQuoteIdentity(
+    observations: readonly PickupObservation[],
+  ): boolean {
+    const [first] = observations;
+
+    return observations.every(
+      (observation) =>
+        observation.captureRunId === first.captureRunId &&
+        observation.restaurantId === first.restaurantId &&
+        observation.basketKey === first.basketKey &&
+        observation.itemSignature === first.itemSignature &&
+        observation.fulfillment === first.fulfillment,
+    );
+  }
+
+  private totalReconciles(observation: PickupObservation): boolean {
+    const { taxCents, feesCents, discountCents, tipCents, finalTotalCents } =
+      observation;
+
+    if (
+      taxCents === null ||
+      feesCents === null ||
+      discountCents === null ||
+      tipCents === null ||
+      finalTotalCents === null
+    ) {
+      return false;
+    }
+
+    return (
+      observation.itemsSubtotalCents +
+        taxCents +
+        feesCents +
+        tipCents -
+        discountCents ===
+      finalTotalCents
+    );
   }
 }
 

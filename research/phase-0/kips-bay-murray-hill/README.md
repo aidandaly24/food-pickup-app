@@ -1,6 +1,6 @@
 # Kips Bay / Murray Hill feasibility study
 
-Status: seed pass, first anonymous pass, and first signed-in comparison complete; repetition not started
+Status: seed pass, first anonymous pass, and two signed-in basket comparisons complete; multi-day repetition not started
 Verified: 2026-08-09  
 Study center: East 34th Street and Third Avenue, New York, NY 10016  
 Boundary: all 25 candidates fit within an OpenStreetMap pedestrian-route estimate of 11 minutes; field calibration remains pending
@@ -51,6 +51,8 @@ The preliminary public menu observations are in
 is in [`checkout-observations.json`](./checkout-observations.json). The first
 signed-in-where-available comparison is in
 [`signed-in-checkout-observations.json`](./signed-in-checkout-observations.json).
+The first promotion-threshold comparison is in
+[`threshold-checkout-observations.json`](./threshold-checkout-observations.json).
 The live files supersede preliminary rows when they conflict.
 
 ## First anonymous checkout pass
@@ -97,6 +99,22 @@ This result changes one rule from the anonymous pass: comparisons should model
 the account context actually available on each channel, not require every
 channel to share an artificial context. The context must be recorded per quote,
 and repetitions should test how much it changes the result.
+
+## First promotion-threshold comparison
+
+The same session tested two matching Roll Reubens, the smallest simple basket
+that crossed Uber's visible $20 promotion minimum:
+
+| Channel | Account context | Item | Discount | Tax | Fee | Final total |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Restaurant direct (Slice) | Anonymous | $19.98 | $0 | $1.77 | $1.99 | **$23.74** |
+| Uber Eats | Signed in | $22.38 | $6.12 | $1.54 | $0 | **$17.80** |
+
+Uber applied a $5 promotion and a separately labeled $1.12 Membership Benefit.
+The two checkouts were rechecked together inside five seconds. Uber was
+**$5.94 cheaper**, even though its pre-discount item subtotal was $2.40 higher.
+This is direct evidence that menu-price comparison alone can select the wrong
+channel and that threshold baskets must remain distinct from single baskets.
 
 ## Complexity assessment
 
@@ -189,6 +207,18 @@ Do not move to the technical POC until the sample shows:
 
 These are experiment thresholds, not product promises. After ten days we should
 keep, revise, or reject them based on the actual failure distribution.
+
+### Current gate snapshot
+
+| Gate signal | Evidence so far | Judgment |
+| --- | --- | --- |
+| Relevant restaurant discovery | 25 routed seed candidates; exhaustive storefront verification pending | Not yet measurable against the 80% gate |
+| Correct physical-location matching | One DoorDash same-name/different-address result was detected and rejected | Identity rule works; sample is too small for a rate |
+| Exact comparison coverage | Two complete comparisons, both for Kips Bay Deli | Proven possible, not broad enough for the 70% gate |
+| Equivalent baskets | 2 of 2 declared comparisons used identical item, size, quantity, and modifiers | 100% in a very small sample |
+| Winner recheck stability | 2 of 2 winners remained unchanged on immediate recheck | 100% in a very small sample |
+| Meaningful savings | $0.69 on the single basket and $5.94 on the threshold basket | Promising; frequency remains unknown |
+| Manual capture time and adapter burden | Capture duration is not yet recorded consistently; no automated adapter exists | Unknown |
 
 ## Keys and access
 

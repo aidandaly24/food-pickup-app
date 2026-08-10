@@ -17,6 +17,11 @@ function observation(
 ): PickupObservation {
   return {
     id: "direct",
+    captureRunId: "run-1",
+    restaurantId: "restaurant-1",
+    basketKey: "basket-1",
+    itemSignature: "One configured item; quantity 1",
+    fulfillment: "pickup",
     channel: {
       kind: "direct",
       name: "Restaurant direct",
@@ -47,6 +52,7 @@ test("names a winner from time-matched checkouts with recorded channel contexts"
     id: "marketplace",
     channel: DOORDASH_CHANNEL,
     accountContext: "signed_in",
+    feesCents: 172,
     finalTotalCents: 2_350,
     capturedAt: "2026-08-10T12:08:00-04:00",
   });
@@ -84,7 +90,6 @@ test("rejects exact checkout totals captured outside ten minutes", () => {
   const second = observation({
     id: "later",
     channel: DOORDASH_CHANNEL,
-    finalTotalCents: 2_100,
     capturedAt: "2026-08-10T12:11:00-04:00",
   });
 
@@ -109,5 +114,43 @@ test("requires two distinct channels with valid timestamps", () => {
   assert.equal(
     new QuoteComparison([observation(), invalidTimestamp]).outcome.headline,
     "Quote timing is invalid",
+  );
+});
+
+test("rejects quotes with different run or basket identities", () => {
+  const marketplace = observation({
+    id: "marketplace",
+    channel: DOORDASH_CHANNEL,
+    captureRunId: "run-2",
+  });
+
+  assert.equal(
+    new QuoteComparison([observation(), marketplace]).outcome.headline,
+    "Quote identity mismatch",
+  );
+
+  assert.equal(
+    new QuoteComparison([
+      observation(),
+      observation({
+        id: "other-basket",
+        channel: DOORDASH_CHANNEL,
+        basketKey: "basket-2",
+      }),
+    ]).outcome.headline,
+    "Quote identity mismatch",
+  );
+});
+
+test("rejects an exact checkout whose components do not reconcile", () => {
+  const marketplace = observation({
+    id: "marketplace",
+    channel: DOORDASH_CHANNEL,
+    finalTotalCents: 2_179,
+  });
+
+  assert.equal(
+    new QuoteComparison([observation(), marketplace]).outcome.headline,
+    "Checkout total is inconsistent",
   );
 });

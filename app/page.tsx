@@ -1,7 +1,13 @@
 "use client";
 
 import { useMemo, useState, type CSSProperties } from "react";
-import { QuoteComparison, formatMoney, type PickupObservation } from "./domain";
+import {
+  QuoteComparison,
+  formatMoney,
+  type PickupObservation,
+  type StudyBasket,
+  type StudyRestaurant,
+} from "./domain";
 import { STUDY_RESTAURANTS, STUDY_SUMMARY } from "./study-data";
 import { StudyMap } from "./study-map";
 
@@ -30,8 +36,28 @@ const RESULT_LABELS = {
 const DEFAULT_RESTAURANT_ID =
   STUDY_RESTAURANTS.find(
     (restaurant) =>
-      new QuoteComparison(restaurant.observations).outcome.kind === "winner",
+      restaurant.baskets.some(
+        (basket) =>
+          new QuoteComparison(basket.observations).outcome.kind === "winner",
+      ),
   )?.id ?? STUDY_RESTAURANTS[0].id;
+
+function featuredBasket(restaurant: StudyRestaurant): StudyBasket {
+  const [firstBasket, ...otherBaskets] = restaurant.baskets;
+
+  if (!firstBasket) {
+    throw new Error(`Restaurant ${restaurant.id} needs at least one basket.`);
+  }
+
+  return otherBaskets.reduce((best, candidate) => {
+    const bestSavings =
+      new QuoteComparison(best.observations).outcome.savingsCents ?? -1;
+    const candidateSavings =
+      new QuoteComparison(candidate.observations).outcome.savingsCents ?? -1;
+
+    return candidateSavings > bestSavings ? candidate : best;
+  }, firstBasket);
+}
 
 function formatNullableMoney(cents: number | null) {
   return cents === null ? "Not captured" : formatMoney(cents);
@@ -98,13 +124,16 @@ export default function Home() {
   const [selectedObservationId, setSelectedObservationId] = useState<
     string | null
   >(null);
+  const [selectedBasketId, setSelectedBasketId] = useState<string | null>(null);
 
   const visibleRestaurants = useMemo(() => {
     const query = search.trim().toLowerCase();
 
     return STUDY_RESTAURANTS.filter((restaurant) => {
-      const isAvailable = restaurant.observations.some(
-        (observation) => observation.availability === "available_now",
+      const isAvailable = restaurant.baskets.some((basket) =>
+        basket.observations.some(
+          (observation) => observation.availability === "available_now",
+        ),
       );
 
       return (
@@ -114,7 +143,9 @@ export default function Home() {
         (!query ||
           restaurant.name.toLowerCase().includes(query) ||
           restaurant.cuisine.toLowerCase().includes(query) ||
-          restaurant.basketName.toLowerCase().includes(query))
+          restaurant.baskets.some((basket) =>
+            basket.name.toLowerCase().includes(query),
+          ))
       );
     }).sort((left, right) => left.walkMinutes - right.walkMinutes);
   }, [availableOnly, cuisine, maxWalkMinutes, search]);
@@ -123,11 +154,16 @@ export default function Home() {
     visibleRestaurants.find(
       (restaurant) => restaurant.id === selectedRestaurantId,
     ) ?? visibleRestaurants[0];
-  const comparison = selectedRestaurant
-    ? new QuoteComparison(selectedRestaurant.observations)
+  const selectedBasket = selectedRestaurant
+    ? (selectedRestaurant.baskets.find(
+        (basket) => basket.id === selectedBasketId,
+      ) ?? featuredBasket(selectedRestaurant))
     : null;
-  const activeObservation = selectedRestaurant
-    ? (selectedRestaurant.observations.find(
+  const comparison = selectedBasket
+    ? new QuoteComparison(selectedBasket.observations)
+    : null;
+  const activeObservation = selectedBasket
+    ? (selectedBasket.observations.find(
         (observation) => observation.id === selectedObservationId,
       ) ??
       comparison?.outcome.winner ??
@@ -136,6 +172,12 @@ export default function Home() {
 
   function selectRestaurant(restaurantId: string) {
     setSelectedRestaurantId(restaurantId);
+    setSelectedBasketId(null);
+    setSelectedObservationId(null);
+  }
+
+  function selectBasket(basketId: string) {
+    setSelectedBasketId(basketId);
     setSelectedObservationId(null);
   }
 
@@ -169,8 +211,8 @@ export default function Home() {
           <span className="hero-note-number">01</span>
           <p>
             {STUDY_SUMMARY.restaurants} nearby restaurants, {STUDY_SUMMARY.observations}{" "}
-            observed ordering channels, and one winner backed by equivalent
-            checkout totals.
+            observed ordering channels, and {STUDY_SUMMARY.comparisons}{" "}
+            basket comparisons backed by equivalent checkout totals.
           </p>
         </div>
       </section>
@@ -274,16 +316,20 @@ export default function Home() {
           {visibleRestaurants.length > 0 ? (
             <div className="restaurant-grid">
               {visibleRestaurants.map((restaurant) => {
+                const basket = featuredBasket(restaurant);
                 const restaurantComparison = new QuoteComparison(
-                  restaurant.observations,
+                  basket.observations,
                 );
                 const evidence =
                   restaurantComparison.outcome.winner ??
                   restaurantComparison.mostCompleteObservation;
                 const price = observationPrice(evidence);
                 const isSelected = restaurant.id === selectedRestaurant?.id;
-                const wasAvailable = restaurant.observations.some(
-                  (observation) => observation.availability === "available_now",
+                const wasAvailable = restaurant.baskets.some((candidate) =>
+                  candidate.observations.some(
+                    (observation) =>
+                      observation.availability === "available_now",
+                  ),
                 );
 
                 return (
@@ -317,7 +363,7 @@ export default function Home() {
                       </span>
                       <span className="basket-preview">
                         <small>Observed basket</small>
-                        {restaurant.basketName}
+                        {basket.name}
                       </span>
                       <span className="restaurant-footer">
                         <span>
@@ -355,7 +401,10 @@ export default function Home() {
         </div>
 
         <aside className="comparison-panel" aria-live="polite">
-          {selectedRestaurant && comparison && activeObservation ? (
+          {selectedRestaurant &&
+          selectedBasket &&
+          comparison &&
+          activeObservation ? (
             <>
               <div className="comparison-header">
                 <div>
@@ -369,14 +418,33 @@ export default function Home() {
                 </span>
               </div>
 
+              {selectedRestaurant.baskets.length > 1 && (
+                <div className="basket-options" aria-label="Observed baskets">
+                  {selectedRestaurant.baskets.map((basket) => (
+                    <button
+                      key={basket.id}
+                      type="button"
+                      className={
+                        basket.id === selectedBasket.id ? "is-active" : ""
+                      }
+                      aria-pressed={basket.id === selectedBasket.id}
+                      onClick={() => selectBasket(basket.id)}
+                    >
+                      <small>{basket.kind}</small>
+                      <strong>{basket.name}</strong>
+                    </button>
+                  ))}
+                </div>
+              )}
+
               <div className="basket-card">
                 <span className="basket-label">EQUIVALENT BASKET TARGET</span>
-                <strong>{selectedRestaurant.basketName}</strong>
-                <p>{selectedRestaurant.basketDescription}</p>
+                <strong>{selectedBasket.name}</strong>
+                <p>{selectedBasket.description}</p>
               </div>
 
               <div className="quote-list">
-                {selectedRestaurant.observations.map((observation) => (
+                {selectedBasket.observations.map((observation) => (
                   <QuoteRow
                     key={observation.id}
                     observation={observation}
@@ -452,7 +520,7 @@ export default function Home() {
                       ? "Signed-in pickup"
                       : "Anonymous pickup"}
                   </span>
-                  <span>Observed {selectedRestaurant.capturedOn}</span>
+                  <span>Observed {selectedBasket.capturedOn}</span>
                 </div>
               </div>
 
